@@ -1,0 +1,84 @@
+cabal-version:      2.4
+name:               build-monitor-hs
+version:            0.1
+license:            MIT
+license-file:       LICENSE
+tested-with:        GHC ==9.10.1 || ==9.12.1
+copyright:          2022-2025 Thomas Bidne
+author:             Thomas Bidne
+maintainer:         tbidne@protonmail.com
+homepage:           https://github.com/tbidne/build-monitor-hs/
+bug-reports:        https://github.com/tbidne/build-monitor-hs/issues
+synopsis:           Template
+description:        A Template
+category:           Template
+extra-source-files:
+  .gitignore
+  cabal.project
+  README.md
+
+extra-doc-files:    CHANGELOG.md
+
+source-repository head
+  type:     git
+  location: https://github.com/tbidne/build-monitor-hs
+
+common common-lang
+  default-extensions:
+    BangPatterns
+    ConstraintKinds
+    DataKinds
+    DeriveAnyClass
+    DeriveFunctor
+    DeriveGeneric
+    DeriveTraversable
+    DerivingStrategies
+    DerivingVia
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    GeneralizedNewtypeDeriving
+    ImportQualifiedPost
+    InstanceSigs
+    LambdaCase
+    MultiParamTypeClasses
+    MultiWayIf
+    NamedFieldPuns
+    NumericUnderscores
+    OverloadedRecordDot
+    OverloadedStrings
+    PatternSynonyms
+    RankNTypes
+    ScopedTypeVariables
+    StandaloneDeriving
+    StandaloneKindSignatures
+    TupleSections
+    TypeApplications
+    TypeFamilyDependencies
+    TypeOperators
+
+  default-language:   GHC2024
+
+library
+  import:          common-lang
+  exposed-modules: Monitor
+  build-depends:
+    , base               >=4.14.0.0 && <4.22
+    , concurrent-output  ^>=1.10.7
+    , containers         >=0.6.3.1  && <0.8
+    , fs-utils           ^>=0.1
+    , text               >=1.2.3.2  && <2.2
+
+  hs-source-dirs:  src
+
+executable build-monitor-hs
+  import:         common-lang
+  main-is:        Main.hs
+  build-depends:
+    , base
+    , build-monitor-hs
+    , fs-utils
+
+  hs-source-dirs: app
+  ghc-options:    -threaded -with-rtsopts=-N

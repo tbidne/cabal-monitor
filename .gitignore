@@ -1,0 +1,6 @@
+# cabal
+dist-newstyle*
+cabal.project.local
+
+# nix
+result*

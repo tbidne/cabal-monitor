@@ -1,0 +1,7 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:build-monitor-hs"
+
+    - path: "./app/Main.hs"
+      component: "build-monitor-hs:exe:build-monitor-hs"
