@@ -1,8 +1,6 @@
-{-# LANGUAGE AllowAmbiguousTypes #-}
-
 module Monitor
   ( -- * High level
-    run,
+    runMonitor,
 
     -- * Low level
     monitorBuild,
@@ -34,7 +32,7 @@ import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
 import Monitor.Logger qualified as Logger
 import System.Console.Regions (RegionLayout (Linear))
 
-run ::
+runMonitor ::
   forall r ->
   forall es void.
   ( Concurrent :> es,
@@ -44,7 +42,7 @@ run ::
     RegionLogger r :> es
   ) =>
   Eff es void
-run rType = do
+runMonitor rType = do
   args <- Args.getArgs
   monitorBuild rType args
 

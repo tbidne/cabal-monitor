@@ -12,7 +12,7 @@ import System.Console.Regions (ConsoleRegion)
 --
 -- @since 0.1
 main :: IO ()
-main = runner (Monitor.run ConsoleRegion)
+main = runner (Monitor.runMonitor ConsoleRegion)
   where
     runner =
       runEff

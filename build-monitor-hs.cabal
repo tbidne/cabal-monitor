@@ -77,3 +77,22 @@ executable build-monitor-hs
 
   hs-source-dirs: app
   ghc-options:    -threaded -with-rtsopts=-N
+
+test-suite functional
+  import:         common-lang
+  type:           exitcode-stdio-1.0
+  main-is:        Main.hs
+  build-depends:
+    , base
+    , build-monitor-hs
+    , containers
+    , effectful
+    , env-guard           ^>=0.2
+    , fs-effectful
+    , fs-utils
+    , optparse-effectful
+    , tasty               >=1.1.0.3 && <1.6
+    , tasty-hunit         >=0.9     && <0.11
+    , text
+
+  hs-source-dirs: test/functional
