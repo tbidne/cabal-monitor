@@ -37,6 +37,7 @@ common common-lang
     OverloadedStrings
     RequiredTypeArguments
     TypeAbstractions
+    TypeFamilies
 
   default-language:   GHC2024
 
@@ -47,13 +48,18 @@ library
   exposed-modules:
     Monitor
     Monitor.Args
+    Monitor.Logger
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22
     , concurrent-output     ^>=1.10.7
     , containers            >=0.6.3.1  && <0.8
+    , effectful             ^>=2.5.0.0
+    , effectful-utils       ^>=0.1
+    , fs-effectful          ^>=0.1
     , fs-utils              ^>=0.1
     , optparse-applicative  >=0.15     && <0.19
+    , optparse-effectful    ^>=0.1
     , text                  >=1.2.3.2  && <2.2
 
   hs-source-dirs:  src
@@ -64,6 +70,10 @@ executable build-monitor-hs
   build-depends:
     , base
     , build-monitor-hs
+    , concurrent-output
+    , effectful
+    , fs-effectful
+    , optparse-effectful
 
   hs-source-dirs: app
   ghc-options:    -threaded -with-rtsopts=-N

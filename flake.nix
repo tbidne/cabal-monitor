@@ -5,6 +5,23 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-hs-utils.url = "github:tbidne/nix-hs-utils";
 
+    effectful-libs = {
+      url = "github:tbidne/effectful-libs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nix-hs-utils.follows = "nix-hs-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+
+      inputs.exception-utils.follows = "exception-utils";
+      inputs.fs-utils.follows = "fs-utils";
+    };
+
+    exception-utils = {
+      url = "github:tbidne/exception-utils";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nix-hs-utils.follows = "nix-hs-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     fs-utils = {
       url = "github:tbidne/fs-utils";
       inputs.flake-parts.follows = "flake-parts";
@@ -30,10 +47,18 @@
             overrides =
               final: prev:
               {
+                effectful-core = prev.effectful-core_2_5_1_0;
+                effectful = prev.effectful_2_5_1_0;
                 path = hlib.dontCheck prev.path_0_9_6;
               }
               // nix-hs-utils.mkLibs inputs final [
+                "exception-utils"
                 "fs-utils"
+              ]
+              // nix-hs-utils.mkRelLibs "${inputs.effectful-libs}/lib" final [
+                "effectful-utils"
+                "fs-effectful"
+                "optparse-effectful"
               ];
           };
           compilerPkgs = {

@@ -7,6 +7,10 @@ where
 import Data.List qualified as L
 import Data.String (IsString (fromString))
 import Data.Version (Version (versionBranch))
+import Effectful (Eff, (:>))
+import Effectful.Dispatch.Dynamic (HasCallStack)
+import Effectful.Optparse.Static (Optparse)
+import Effectful.Optparse.Static qualified as EOA
 import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
 import Options.Applicative
@@ -38,8 +42,8 @@ data Args = MkArgs
   }
   deriving stock (Eq, Show)
 
-getArgs :: IO Args
-getArgs = OA.execParser parserInfo
+getArgs :: (HasCallStack, Optparse :> es) => Eff es Args
+getArgs = EOA.execParser parserInfo
 
 -- | Optparse-Applicative info.
 parserInfo :: ParserInfo Args

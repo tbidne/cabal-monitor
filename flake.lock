@@ -1,5 +1,123 @@
 {
   "nodes": {
+    "algebra-simple": {
+      "inputs": {
+        "flake-parts": [
+          "effectful-libs",
+          "flake-parts"
+        ],
+        "nix-hs-utils": [
+          "effectful-libs",
+          "nix-hs-utils"
+        ],
+        "nixpkgs": [
+          "effectful-libs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1736903086,
+        "narHash": "sha256-gvQvQ1ZT+HlJMkNma0f0VG9zpzF50FeCDuQ4nTUKc7s=",
+        "owner": "tbidne",
+        "repo": "algebra-simple",
+        "rev": "973852fc69a3bb7c0477dafcc933c14ec4cb0f75",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tbidne",
+        "repo": "algebra-simple",
+        "type": "github"
+      }
+    },
+    "bounds": {
+      "inputs": {
+        "flake-parts": [
+          "effectful-libs",
+          "flake-parts"
+        ],
+        "nix-hs-utils": [
+          "effectful-libs",
+          "nix-hs-utils"
+        ],
+        "nixpkgs": [
+          "effectful-libs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1736903719,
+        "narHash": "sha256-FTet9BtDMzNUYAy6xESAC+zuXzSvKgsnYoVvZBYXSpA=",
+        "owner": "tbidne",
+        "repo": "bounds",
+        "rev": "b7ca541cfdd8564bcebe5d38456fe7abf77885b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tbidne",
+        "repo": "bounds",
+        "type": "github"
+      }
+    },
+    "effectful-libs": {
+      "inputs": {
+        "algebra-simple": "algebra-simple",
+        "bounds": "bounds",
+        "exception-utils": [
+          "exception-utils"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "fs-utils": [
+          "fs-utils"
+        ],
+        "nix-hs-utils": [
+          "nix-hs-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740433043,
+        "narHash": "sha256-wQ0ceIu+U3mfiFhM4ycEd00q6weFgSWMb8sF9Z9Vw8Q=",
+        "owner": "tbidne",
+        "repo": "effectful-libs",
+        "rev": "dc6de14e5e259d5557c34b2fd7ebd597900b6ea7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tbidne",
+        "repo": "effectful-libs",
+        "type": "github"
+      }
+    },
+    "exception-utils": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nix-hs-utils": [
+          "nix-hs-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738875981,
+        "narHash": "sha256-UXYDrw4/bty2qyjNmvaTYSng0L+MDdzAzawG5gXBcF8=",
+        "owner": "tbidne",
+        "repo": "exception-utils",
+        "rev": "e28b28ae3bc90a0336abf69eff28369b790f4e13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tbidne",
+        "repo": "exception-utils",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -89,6 +207,8 @@
     },
     "root": {
       "inputs": {
+        "effectful-libs": "effectful-libs",
+        "exception-utils": "exception-utils",
         "flake-parts": "flake-parts",
         "fs-utils": "fs-utils",
         "nix-hs-utils": "nix-hs-utils",

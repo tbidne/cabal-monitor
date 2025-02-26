@@ -1,9 +1,14 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+
 module Monitor
-  ( monitorBuild,
+  ( -- * High level
+    run,
+
+    -- * Low level
+    monitorBuild,
   )
 where
 
-import Control.Concurrent qualified as CC
 import Control.Monad (forever)
 import Data.Foldable (foldMap')
 import Data.Maybe (fromMaybe)
@@ -14,27 +19,65 @@ import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder)
 import Data.Text.Lazy.Builder qualified as TLB
-import FileSystem.IO qualified as IO
+import Effectful (Eff, type (:>))
+import Effectful.Concurrent (Concurrent)
+import Effectful.Concurrent qualified as CC
+import Effectful.Dispatch.Dynamic (HasCallStack)
+import Effectful.FileSystem.FileReader.Static (FileReader)
+import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.Optparse.Static (Optparse)
 import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
 import Monitor.Args (Args (filePath, period))
-import System.Console.Regions (ConsoleRegion, RegionLayout (Linear))
-import System.Console.Regions qualified as Regions
+import Monitor.Args qualified as Args
+import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
+import Monitor.Logger qualified as Logger
+import System.Console.Regions (RegionLayout (Linear))
 
-monitorBuild :: Args -> IO void
-monitorBuild args =
-  Regions.displayConsoleRegions $
-    Regions.withConsoleRegion Linear $ \r -> forever $ do
+run ::
+  forall r ->
+  forall es void.
+  ( Concurrent :> es,
+    FileReader :> es,
+    HasCallStack,
+    Optparse :> es,
+    RegionLogger r :> es
+  ) =>
+  Eff es void
+run rType = do
+  args <- Args.getArgs
+  monitorBuild rType args
+
+monitorBuild ::
+  forall r ->
+  forall es void.
+  ( Concurrent :> es,
+    FileReader :> es,
+    HasCallStack,
+    RegionLogger r :> es
+  ) =>
+  Args ->
+  Eff es void
+monitorBuild rType args =
+  Logger.displayRegions rType $
+    Logger.withRegion @rType Linear $ \r -> forever $ do
       readPrintStatus r args.filePath
       CC.threadDelay period_ms
   where
     period_ms = 1_000_000 * (fromMaybe 5 args.period)
 
-readPrintStatus :: ConsoleRegion -> OsPath -> IO ()
+readPrintStatus ::
+  ( FileReader :> es,
+    HasCallStack,
+    RegionLogger r :> es
+  ) =>
+  r ->
+  OsPath ->
+  Eff es ()
 readPrintStatus region path = do
   status <- readStatus path
   let formatted = fmtStatus status
-  Regions.setConsoleRegion region formatted
+  Logger.logRegion LogModeSet region formatted
 
 newtype Package = MkPackage {unPackage :: Text}
   deriving stock (Eq, Ord, Show)
@@ -53,9 +96,14 @@ instance Semigroup Status where
 instance Monoid Status where
   mempty = MkStatus mempty mempty mempty
 
-readStatus :: OsPath -> IO Status
+readStatus ::
+  ( FileReader :> es,
+    HasCallStack
+  ) =>
+  OsPath ->
+  Eff es Status
 readStatus path = do
-  contents <- UTF8.decodeUtf8ThrowM =<< IO.readBinaryFileIO path
+  contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile path
   pure $ parseStatus $ T.lines contents
 
 parseStatus :: [Text] -> Status
