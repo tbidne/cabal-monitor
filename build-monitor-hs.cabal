@@ -25,50 +25,36 @@ source-repository head
 
 common common-lang
   default-extensions:
-    BangPatterns
-    ConstraintKinds
-    DataKinds
+    ApplicativeDo
     DeriveAnyClass
-    DeriveFunctor
-    DeriveGeneric
-    DeriveTraversable
-    DerivingStrategies
     DerivingVia
-    FlexibleContexts
-    FlexibleInstances
-    FunctionalDependencies
-    GADTs
-    GeneralizedNewtypeDeriving
-    ImportQualifiedPost
-    InstanceSigs
-    LambdaCase
-    MultiParamTypeClasses
+    DuplicateRecordFields
+    LexicalNegation
     MultiWayIf
     NamedFieldPuns
     NumericUnderscores
     OverloadedRecordDot
     OverloadedStrings
-    PatternSynonyms
-    RankNTypes
-    ScopedTypeVariables
-    StandaloneDeriving
-    StandaloneKindSignatures
-    TupleSections
-    TypeApplications
-    TypeFamilyDependencies
-    TypeOperators
+    RequiredTypeArguments
+    TypeAbstractions
 
   default-language:   GHC2024
 
 library
   import:          common-lang
-  exposed-modules: Monitor
+  other-modules:   Paths_build_monitor_hs
+  autogen-modules: Paths_build_monitor_hs
+  exposed-modules:
+    Monitor
+    Monitor.Args
+
   build-depends:
-    , base               >=4.14.0.0 && <4.22
-    , concurrent-output  ^>=1.10.7
-    , containers         >=0.6.3.1  && <0.8
-    , fs-utils           ^>=0.1
-    , text               >=1.2.3.2  && <2.2
+    , base                  >=4.14.0.0 && <4.22
+    , concurrent-output     ^>=1.10.7
+    , containers            >=0.6.3.1  && <0.8
+    , fs-utils              ^>=0.1
+    , optparse-applicative  >=0.15     && <0.19
+    , text                  >=1.2.3.2  && <2.2
 
   hs-source-dirs:  src
 
@@ -78,7 +64,6 @@ executable build-monitor-hs
   build-depends:
     , base
     , build-monitor-hs
-    , fs-utils
 
   hs-source-dirs: app
   ghc-options:    -threaded -with-rtsopts=-N

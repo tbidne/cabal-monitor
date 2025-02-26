@@ -6,6 +6,7 @@ where
 import Control.Concurrent qualified as CC
 import Control.Monad (forever)
 import Data.Foldable (foldMap')
+import Data.Maybe (fromMaybe)
 import Data.Set (Set)
 import Data.Set qualified as Set
 import Data.Text (Text)
@@ -16,15 +17,18 @@ import Data.Text.Lazy.Builder qualified as TLB
 import FileSystem.IO qualified as IO
 import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
+import Monitor.Args (Args (filePath, period))
 import System.Console.Regions (ConsoleRegion, RegionLayout (Linear))
 import System.Console.Regions qualified as Regions
 
-monitorBuild :: OsPath -> IO void
-monitorBuild path =
+monitorBuild :: Args -> IO void
+monitorBuild args =
   Regions.displayConsoleRegions $
     Regions.withConsoleRegion Linear $ \r -> forever $ do
-      readPrintStatus r path
-      CC.threadDelay 5_000_000
+      readPrintStatus r args.filePath
+      CC.threadDelay period_ms
+  where
+    period_ms = 1_000_000 * (fromMaybe 5 args.period)
 
 readPrintStatus :: ConsoleRegion -> OsPath -> IO ()
 readPrintStatus region path = do
