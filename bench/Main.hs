@@ -4,12 +4,10 @@
 module Main (main) where
 
 import Data.ByteString (ByteString)
-import Data.Text (Text)
-import Data.Text qualified as T
+import Data.ByteString.Char8 qualified as C8
 import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import FileSystem.OsPath (OsPath, ospPathSep)
-import FileSystem.UTF8 qualified as UTF8
 import GHC.Stack (HasCallStack)
 import Monitor (Status)
 import Monitor qualified
@@ -31,7 +29,7 @@ main = do
       benchReadFormatted samplePath
     ]
 
-benchParseStatus :: [Text] -> Benchmark
+benchParseStatus :: [ByteString] -> Benchmark
 benchParseStatus txtLines =
   bench "parseStatus" $ nf Monitor.parseStatus txtLines
 
@@ -50,8 +48,8 @@ samplePath = [ospPathSep|./bench/sample.txt|]
 sampleBS :: ByteString
 sampleBS = $$TH.readSampleTH
 
-sampleLines :: [Text]
-sampleLines = T.lines (UTF8.unsafeDecodeUtf8 sampleBS)
+sampleLines :: [ByteString]
+sampleLines = C8.lines sampleBS
 
 sampleStatus :: Status
 sampleStatus = Monitor.parseStatus sampleLines

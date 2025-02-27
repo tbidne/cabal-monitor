@@ -54,6 +54,7 @@ library
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22
+    , bytestring            >=0.10.12  && <0.13
     , concurrent-output     ^>=1.10.7
     , containers            >=0.6.3.1  && <0.8
     , deepseq               >=1.4.6.0  && <1.6
@@ -114,6 +115,5 @@ benchmark benchmarks
     , fs-utils
     , tasty-bench       >=0.3  && <0.5
     , template-haskell  >=2.21 && <2.24
-    , text
 
   hs-source-dirs: bench

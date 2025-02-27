@@ -18,15 +18,18 @@ where
 
 import Control.DeepSeq (NFData)
 import Control.Monad (forever)
+import Data.ByteString (ByteString)
+import Data.ByteString qualified as BS
+import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder qualified as BSB
+import Data.ByteString.Char8 qualified as C8
+import Data.ByteString.Lazy qualified as BSL
 import Data.Foldable (foldMap')
 import Data.Maybe (fromMaybe)
 import Data.Set (Set)
 import Data.Set qualified as Set
 import Data.Text (Text)
 import Data.Text qualified as T
-import Data.Text.Lazy qualified as TL
-import Data.Text.Lazy.Builder (Builder)
-import Data.Text.Lazy.Builder qualified as TLB
 import Effectful (Eff, type (:>))
 import Effectful.Concurrent (Concurrent)
 import Effectful.Concurrent qualified as CC
@@ -108,7 +111,7 @@ readFormattedStatus path = do
   status <- readStatus path
   pure $ formatStatus status
 
-newtype Package = MkPackage {unPackage :: Text}
+newtype Package = MkPackage {unPackage :: ByteString}
   deriving stock (Eq, Generic, Ord, Show)
   deriving anyclass (NFData)
 
@@ -134,8 +137,8 @@ readStatus ::
   OsPath ->
   Eff es Status
 readStatus path = do
-  contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile path
-  pure $ parseStatus $ T.lines contents
+  contents <- FR.readBinaryFile path
+  pure $ parseStatus $ C8.lines contents
 
 logCounter ::
   forall r ->
@@ -164,29 +167,30 @@ logCounter rType = do
           " second(s)"
         ]
 
-parseStatus :: [Text] -> Status
+parseStatus :: [ByteString] -> Status
 parseStatus = foldMap' go
   where
-    go txt = case T.stripPrefix " - " txt of
-      Just rest -> mkLib (T.takeWhile (/= ' ') rest)
-      Nothing -> case T.stripPrefix "Building" txt of
+    go txt = case BS.stripPrefix " - " txt of
+      Just rest -> mkLib (BS.takeWhile (/= 32) rest)
+      Nothing -> case BS.stripPrefix "Building" txt of
         Just rest -> mkBuilding (takeSkipLeadingSpc rest)
-        Nothing -> case T.stripPrefix "Completed" txt of
+        Nothing -> case BS.stripPrefix "Completed" txt of
           Just rest -> mkCompleted (takeSkipLeadingSpc rest)
           Nothing -> mempty
 
-    takeSkipLeadingSpc = T.takeWhile (/= ' ') . T.dropWhile (== ' ')
+    takeSkipLeadingSpc = BS.takeWhile (/= 32) . BS.dropWhile (== 32)
 
 formatStatus :: Status -> Text
 formatStatus status =
-  TL.toStrict $
-    TLB.toLazyText $
-      mconcat
-        [ "Packages: " <> showtlb (length status.allLibs),
-          "\nCompleted: " <> showtlb (length status.completed),
-          "\nBuilding " <> numBuilding <> ": " <> fmtBuilding (Set.toList building),
-          "\n"
-        ]
+  UTF8.unsafeDecodeUtf8 $
+    BSL.toStrict $
+      BSB.toLazyByteString $
+        mconcat
+          [ "Packages: " <> showtlb (length status.allLibs),
+            "\nCompleted: " <> showtlb (length status.completed),
+            "\nBuilding " <> numBuilding <> ": " <> fmtBuilding (Set.toList building),
+            "\n"
+          ]
   where
     numBuilding = showtlb (length building)
     building =
@@ -198,12 +202,12 @@ formatStatus status =
     fmtBuilding [] = ""
     fmtBuilding xs =
       mconcat $
-        fmap (\p -> "\n - " <> TLB.fromText p.unPackage) xs
+        fmap (\p -> "\n - " <> BSB.byteString p.unPackage) xs
 
-    showtlb :: forall a. (Show a) => a -> Builder
-    showtlb = TLB.fromString . show
+    showtlb :: Int -> Builder
+    showtlb = BSB.intDec
 
-mkLib :: Text -> Status
+mkLib :: ByteString -> Status
 mkLib lib =
   MkStatus
     { allLibs = Set.singleton $ MkPackage lib,
@@ -211,7 +215,7 @@ mkLib lib =
       completed = mempty
     }
 
-mkBuilding :: Text -> Status
+mkBuilding :: ByteString -> Status
 mkBuilding lib =
   MkStatus
     { allLibs = mempty,
@@ -219,7 +223,7 @@ mkBuilding lib =
       completed = mempty
     }
 
-mkCompleted :: Text -> Status
+mkCompleted :: ByteString -> Status
 mkCompleted lib =
   MkStatus
     { allLibs = mempty,
