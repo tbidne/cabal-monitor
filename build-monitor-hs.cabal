@@ -14,8 +14,10 @@ description:        A Template
 category:           Template
 extra-source-files:
   .gitignore
+  bench/sample.txt
   cabal.project
   README.md
+  test/functional/build.sh
 
 extra-doc-files:    CHANGELOG.md
 
@@ -102,14 +104,16 @@ benchmark benchmarks
   import:         common-lang
   type:           exitcode-stdio-1.0
   main-is:        Main.hs
+  other-modules:  TH
   build-depends:
     , base
     , build-monitor-hs
-    , deepseq
+    , bytestring
     , effectful
     , fs-effectful
     , fs-utils
-    , tasty-bench       >=0.3 && <0.5
+    , tasty-bench       >=0.3  && <0.5
+    , template-haskell  >=2.21 && <2.24
     , text
 
   hs-source-dirs: bench

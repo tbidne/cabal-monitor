@@ -1,18 +1,19 @@
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Main (main) where
 
-import Control.DeepSeq (NFData)
+import Data.ByteString (ByteString)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import FileSystem.OsPath (OsPath, ospPathSep)
 import FileSystem.UTF8 qualified as UTF8
-import GHC.Generics (Generic)
 import GHC.Stack (HasCallStack)
 import Monitor (Status)
 import Monitor qualified
+import TH qualified
 import Test.Tasty.Bench
   ( Benchmark,
     bench,
@@ -25,8 +26,8 @@ import Test.Tasty.Bench
 main :: IO ()
 main = do
   defaultMain
-    [ env sampleLines benchParseStatus,
-      env sampleStatus benchFormatStatus,
+    [ env (pure sampleLines) benchParseStatus,
+      env (pure sampleStatus) benchFormatStatus,
       benchReadFormatted samplePath
     ]
 
@@ -46,19 +47,14 @@ benchReadFormatted path =
 samplePath :: OsPath
 samplePath = [ospPathSep|./bench/sample.txt|]
 
--- TODO: Should probably make these pure
+sampleBS :: ByteString
+sampleBS = $$TH.readSampleTH
 
-sampleLines :: IO [Text]
-sampleLines = runBenchEff $ do
-  contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile samplePath
-  pure $ T.lines contents
+sampleLines :: [Text]
+sampleLines = T.lines (UTF8.unsafeDecodeUtf8 sampleBS)
 
-sampleStatus :: (HasCallStack) => IO Status
-sampleStatus = runBenchEff $ do
-  contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile samplePath
-  let txtLines = T.lines contents
-      status = Monitor.parseStatus txtLines
-  pure status
+sampleStatus :: Status
+sampleStatus = Monitor.parseStatus sampleLines
 
 runBenchEff ::
   (HasCallStack) =>
