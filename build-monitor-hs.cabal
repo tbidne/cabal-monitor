@@ -38,6 +38,7 @@ common common-lang
     OverloadedRecordDot
     OverloadedStrings
     RequiredTypeArguments
+    StrictData
     TypeAbstractions
     TypeFamilies
 
