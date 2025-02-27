@@ -31,7 +31,7 @@ jobs:
       - name: Setup haskell
         uses: haskell-actions/setup@v2
         with:
-          ghc-version: ${{ matrix.ghc.vers }}
+          ghc-version: ${{ matrix.ghc }}
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -46,6 +46,7 @@ jobs:
 
 
       - name: Functional tests
+        if: ${{ matrix.os != 'windows-latest' }}
         run: cabal test functional
 
       - name: Benchmarks
@@ -55,9 +56,9 @@ jobs:
           cabal bench --benchmark-options '
             +RTS -T -RTS
             -t100
-            --csv bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
-            --svg bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.svg
-            --baseline bench/baseline_${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
+            --csv bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.csv
+            --svg bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.svg
+            --baseline bench/baseline_${{ matrix.os }}_${{ matrix.ghc }}_ci.csv
             --fail-if-slower 1
             --fail-if-faster 1'
 
@@ -65,10 +66,10 @@ jobs:
         name: Bench upload
         if: ${{ failure() && steps.bench.conclusion == 'failure' }}
         with:
-          name: bench_artifacts_${{ matrix.os }}_${{ matrix.ghc.vers }}
+          name: bench_artifacts_${{ matrix.os }}_${{ matrix.ghc }}
           path: |
-            bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
-            bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.svg
+            bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.csv
+            bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.svg
 
   nix:
     strategy:

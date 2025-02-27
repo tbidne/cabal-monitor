@@ -14,6 +14,7 @@ import Effectful.Concurrent qualified as ECC
 import Effectful.Concurrent.Async qualified as EAsync
 import Effectful.Dispatch.Dynamic (interpret, localSeqUnlift)
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.PathReader.Static (PathReader)
 import Effectful.FileSystem.PathReader.Static qualified as PR
 import Effectful.FileSystem.PathWriter.Static qualified as PW
 import Effectful.Optparse.Static qualified as EOA
@@ -140,6 +141,7 @@ runMonitorLogs testArgs cliArgs = do
         . ECC.runConcurrent
         . EProcess.runProcess
         . runRegionLoggerMock ref
+        . PR.runPathReader
         . FR.runFileReader
         . EOA.runOptparse
 
@@ -165,6 +167,7 @@ runRegionLoggerMock logsRef = interpret $ \env -> \case
 runBuildScript ::
   ( IOE :> es,
     HasCallStack,
+    PathReader :> es,
     Process :> es
   ) =>
   IO TestArgs ->
@@ -172,7 +175,9 @@ runBuildScript ::
 runBuildScript getTestArgs = do
   testArgs <- liftIO $ getTestArgs
 
-  scriptPath <- decodeThrowM [ospPathSep|./test/functional/build.sh|]
+  pwd <- PR.getCurrentDirectory
+  scriptPath <- decodeThrowM (pwd </> [ospPathSep|test/functional/build.sh|])
+
   outPath <- decodeThrowM testArgs.buildFile
 
   void $ EProcess.createProcess $ EProcess.proc scriptPath [outPath]
