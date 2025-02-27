@@ -4,7 +4,7 @@ version:            0.1
 license:            MIT
 license-file:       LICENSE
 tested-with:        GHC ==9.10.1 || ==9.12.1
-copyright:          2022-2025 Thomas Bidne
+copyright:          2025 Thomas Bidne
 author:             Thomas Bidne
 maintainer:         tbidne@protonmail.com
 homepage:           https://github.com/tbidne/build-monitor-hs/
