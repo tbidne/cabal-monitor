@@ -20,10 +20,12 @@ import Data.Text.Lazy.Builder qualified as TLB
 import Effectful (Eff, type (:>))
 import Effectful.Concurrent (Concurrent)
 import Effectful.Concurrent qualified as CC
+import Effectful.Concurrent.Async qualified as Async
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.Optparse.Static (Optparse)
+import Effectful.State.Static.Local qualified as State
 import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
 import Monitor.Args (Args (filePath, period))
@@ -57,11 +59,20 @@ monitorBuild ::
   Args ->
   Eff es void
 monitorBuild rType args =
-  Logger.displayRegions rType $
-    Logger.withRegion @rType Linear $ \r -> forever $ do
+  Logger.displayRegions rType $ do
+    eResult <-
+      Async.race
+        runStatus
+        (logCounter rType)
+
+    case eResult of
+      Left e -> pure e
+      Right x -> pure x
+  where
+    runStatus = Logger.withRegion @rType Linear $ \r -> forever $ do
       readPrintStatus r args.filePath
       CC.threadDelay period_ms
-  where
+
     period_ms = 1_000_000 * (fromMaybe 5 args.period)
 
 readPrintStatus ::
@@ -103,6 +114,33 @@ readStatus ::
 readStatus path = do
   contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile path
   pure $ parseStatus $ T.lines contents
+
+logCounter ::
+  forall r ->
+  forall es void.
+  ( Concurrent :> es,
+    HasCallStack,
+    RegionLogger r :> es
+  ) =>
+  Eff es void
+logCounter rType = do
+  CC.threadDelay 100_000
+  Logger.withRegion @rType Linear $ \r ->
+    State.evalState @Word 0 $
+      forever $
+        do
+          CC.threadDelay 1_000_000
+          State.modify @Word (\(!x) -> x + 1)
+          elapsed <- State.get
+          Logger.logRegion LogModeSet r (fmtTime elapsed)
+  where
+    fmtTime :: Word -> Text
+    fmtTime n =
+      mconcat
+        [ "\nRunning: ",
+          showt n,
+          " second(s)"
+        ]
 
 parseStatus :: [Text] -> Status
 parseStatus = foldMap' go
@@ -166,3 +204,6 @@ mkCompleted lib =
       building = mempty,
       completed = Set.singleton $ MkPackage lib
     }
+
+showt :: (Show a) => a -> Text
+showt = T.pack . show
