@@ -2,22 +2,22 @@
 
 module Main (main) where
 
+import Control.DeepSeq (NFData)
 import Data.Text (Text)
-import Effectful (Eff, IOE, runEff)
-import GHC.Stack (HasCallStack)
 import Data.Text qualified as T
+import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import FileSystem.OsPath (OsPath, ospPathSep)
 import FileSystem.UTF8 qualified as UTF8
 import GHC.Generics (Generic)
-import Control.DeepSeq (NFData)
+import GHC.Stack (HasCallStack)
 import Monitor (Status)
 import Monitor qualified
 import Test.Tasty.Bench
   ( Benchmark,
     bench,
-    env,
     defaultMain,
+    env,
     nf,
     nfIO,
   )
@@ -53,7 +53,7 @@ sampleLines = runBenchEff $ do
   contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile samplePath
   pure $ T.lines contents
 
-sampleStatus :: HasCallStack => IO Status
+sampleStatus :: (HasCallStack) => IO Status
 sampleStatus = runBenchEff $ do
   contents <- UTF8.decodeUtf8ThrowM =<< FR.readBinaryFile samplePath
   let txtLines = T.lines contents
