@@ -30,6 +30,7 @@ import Data.Set (Set)
 import Data.Set qualified as Set
 import Data.Text (Text)
 import Data.Text qualified as T
+import Data.Time.Relative qualified as Rel
 import Effectful (Eff, type (:>))
 import Effectful.Concurrent (Concurrent)
 import Effectful.Concurrent qualified as CC
@@ -42,6 +43,7 @@ import Effectful.State.Static.Local qualified as State
 import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
 import GHC.Generics (Generic)
+import GHC.Natural (Natural)
 import Monitor.Args (Args (filePath, period))
 import Monitor.Args qualified as Args
 import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
@@ -151,21 +153,22 @@ logCounter ::
 logCounter rType = do
   CC.threadDelay 100_000
   Logger.withRegion @rType Linear $ \r ->
-    State.evalState @Word 0 $
+    State.evalState @Natural 0 $
       forever $
         do
           CC.threadDelay 1_000_000
-          State.modify @Word (\(!x) -> x + 1)
+          State.modify @Natural (\(!x) -> x + 1)
           elapsed <- State.get
-          Logger.logRegion LogModeSet r (fmtTime elapsed)
+          Logger.logRegion
+            LogModeSet
+            r
+            (fmtTime elapsed)
   where
-    fmtTime :: Word -> Text
-    fmtTime n =
-      mconcat
-        [ "\nRunning: ",
-          showt n,
-          " second(s)"
-        ]
+    fmtTime s =
+      (\t -> "\nTimer: " <> t)
+        . T.pack
+        . Rel.formatSeconds Rel.defaultFormat
+        $ s
 
 parseStatus :: [ByteString] -> Status
 parseStatus = foldMap' go
@@ -228,6 +231,3 @@ mkCompleted lib =
       building = mempty,
       completed = Set.singleton $ MkPackage lib
     }
-
-showt :: (Show a) => a -> Text
-showt = T.pack . show

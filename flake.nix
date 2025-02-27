@@ -5,6 +5,20 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-hs-utils.url = "github:tbidne/nix-hs-utils";
 
+    algebra-simple = {
+      url = "github:tbidne/algebra-simple";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nix-hs-utils.follows = "nix-hs-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    bounds = {
+      url = "github:tbidne/bounds";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nix-hs-utils.follows = "nix-hs-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     effectful-libs = {
       url = "github:tbidne/effectful-libs";
       inputs.flake-parts.follows = "flake-parts";
@@ -24,6 +38,13 @@
 
     fs-utils = {
       url = "github:tbidne/fs-utils";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nix-hs-utils.follows = "nix-hs-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    relative-time = {
+      url = "github:tbidne/relative-time";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nix-hs-utils.follows = "nix-hs-utils";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,7 +73,10 @@
                 path = hlib.dontCheck prev.path_0_9_6;
               }
               // nix-hs-utils.mkLibs inputs final [
+                "algebra-simple"
+                "bounds"
                 "exception-utils"
+                "relative-time"
                 "fs-utils"
               ]
               // nix-hs-utils.mkRelLibs "${inputs.effectful-libs}/lib" final [
