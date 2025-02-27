@@ -188,21 +188,19 @@ formatStatus status =
         mconcat
           [ "Packages: " <> showtlb (length status.allLibs),
             "\nCompleted: " <> showtlb (length status.completed),
-            "\nBuilding " <> numBuilding <> ": " <> fmtBuilding (Set.toList building),
+            "\nBuilding " <> numBuildingStr <> ": " <> buildingStr,
             "\n"
           ]
   where
-    numBuilding = showtlb (length building)
-    building =
-      Set.filter
-        (\p -> not (p `Set.member` status.completed))
-        status.building
+    numBuildingStr = showtlb numBuilding
 
-    fmtBuilding :: [Package] -> Builder
-    fmtBuilding [] = ""
-    fmtBuilding xs =
-      mconcat $
-        fmap (\p -> "\n - " <> BSB.byteString p.unPackage) xs
+    (buildingStr, numBuilding) = Set.foldl' fmtBuilding ("", 0) status.building
+
+    fmtBuilding :: (Builder, Int) -> Package -> (Builder, Int)
+    fmtBuilding (acc, !n) p
+      | p `Set.notMember` status.completed =
+          (acc <> "\n - " <> BSB.byteString p.unPackage, n + 1)
+      | otherwise = (acc, n)
 
     showtlb :: Int -> Builder
     showtlb = BSB.intDec
