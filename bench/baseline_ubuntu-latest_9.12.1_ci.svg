@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="172" width="960.0" font-size="16" font-family="sans-serif" stroke-width="2">
+<g transform="translate(10.0 0)">
+<g fill="hsl(0, 100%, 40%)">
+<text y="22">parseStatus</text>
+<text y="22" x="590.2966580799513" text-anchor="end">797  μs</text>
+</g>
+<g>
+<title>797  μs ±  56 μs</title>
+<rect y="28" rx="5" height="22" width="590.2966580799513" fill="hsl(0, 100%, 80%)" stroke="hsl(0, 100%, 55%)" />
+<g stroke="hsl(0, 100%, 40%)"><line x1="548.9705750568515" x2="631.622741103051" y1="39" y2="39" />
+<line x1="548.9705750568515" x2="548.9705750568515" y1="33" y2="45" />
+<line x1="631.622741103051" x2="631.622741103051" y1="33" y2="45" />
+</g>
+</g>
+<text fill="hsl(120, 100%, 40%)" y="77">formatStatus 16.6 μs</text>
+<g>
+<title>16.6 μs ± 188 ns</title>
+<rect y="83" rx="5" height="22" width="12.259998554924382" fill="hsl(120, 100%, 80%)" stroke="hsl(120, 100%, 55%)" />
+<g stroke="hsl(120, 100%, 40%)"><line x1="12.12061075979737" x2="12.399386350051394" y1="94" y2="94" />
+<line x1="12.12061075979737" x2="12.12061075979737" y1="88" y2="100" />
+<line x1="12.399386350051394" x2="12.399386350051394" y1="88" y2="100" />
+</g>
+</g>
+<g fill="hsl(240, 100%, 40%)">
+<text y="132">readFormattedStatus</text>
+<text y="132" x="898.2324037879678" text-anchor="end">1.21 ms</text>
+</g>
+<g>
+<title>1.21 ms ±  56 μs</title>
+<rect y="138" rx="5" height="22" width="898.2324037879678" fill="hsl(240, 100%, 80%)" stroke="hsl(240, 100%, 55%)" />
+<g stroke="hsl(240, 100%, 40%)"><line x1="856.4648075759355" x2="940.0" y1="149" y2="149" />
+<line x1="856.4648075759355" x2="856.4648075759355" y1="143" y2="155" />
+<line x1="940.0" x2="940.0" y1="143" y2="155" />
+</g>
+</g>
+</g>
+</svg>

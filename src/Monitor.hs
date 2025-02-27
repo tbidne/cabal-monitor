@@ -3,10 +3,20 @@ module Monitor
     runMonitor,
 
     -- * Low level
+
+    -- ** Type
+    Status (..),
+    Package (..),
+
+    -- ** Functions
     monitorBuild,
+    readFormattedStatus,
+    parseStatus,
+    formatStatus,
   )
 where
 
+import Control.DeepSeq (NFData)
 import Control.Monad (forever)
 import Data.Foldable (foldMap')
 import Data.Maybe (fromMaybe)
@@ -28,6 +38,7 @@ import Effectful.Optparse.Static (Optparse)
 import Effectful.State.Static.Local qualified as State
 import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
+import GHC.Generics (Generic)
 import Monitor.Args (Args (filePath, period))
 import Monitor.Args qualified as Args
 import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
@@ -84,19 +95,30 @@ readPrintStatus ::
   OsPath ->
   Eff es ()
 readPrintStatus region path = do
-  status <- readStatus path
-  let formatted = fmtStatus status
+  formatted <- readFormattedStatus path
   Logger.logRegion LogModeSet region formatted
 
+readFormattedStatus ::
+  ( FileReader :> es,
+    HasCallStack
+  ) =>
+  OsPath ->
+  Eff es Text
+readFormattedStatus path = do
+  status <- readStatus path
+  pure $ formatStatus status
+
 newtype Package = MkPackage {unPackage :: Text}
-  deriving stock (Eq, Ord, Show)
+  deriving stock (Eq, Generic, Ord, Show)
+  deriving anyclass (NFData)
 
 data Status = MkStatus
   { allLibs :: Set Package,
     building :: Set Package,
     completed :: Set Package
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
+  deriving anyclass (NFData)
 
 instance Semigroup Status where
   MkStatus x1 x2 x3 <> MkStatus y1 y2 y3 =
@@ -155,8 +177,8 @@ parseStatus = foldMap' go
 
     takeSkipLeadingSpc = T.takeWhile (/= ' ') . T.dropWhile (== ' ')
 
-fmtStatus :: Status -> Text
-fmtStatus status =
+formatStatus :: Status -> Text
+formatStatus status =
   TL.toStrict $
     TLB.toLazyText $
       mconcat

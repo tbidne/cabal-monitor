@@ -87,7 +87,6 @@
 
           apps = {
             format = nix-hs-utils.format compilerPkgs;
-            lint = nix-hs-utils.lint compilerPkgs;
           };
         };
       systems = [

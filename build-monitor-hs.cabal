@@ -54,6 +54,7 @@ library
     , base                  >=4.14.0.0 && <4.22
     , concurrent-output     ^>=1.10.7
     , containers            >=0.6.3.1  && <0.8
+    , deepseq               >=1.4.6.0  && <1.6
     , effectful             ^>=2.5.0.0
     , effectful-utils       ^>=0.1
     , fs-effectful          ^>=0.1
@@ -96,3 +97,19 @@ test-suite functional
     , text
 
   hs-source-dirs: test/functional
+
+benchmark benchmarks
+  import:         common-lang
+  type:           exitcode-stdio-1.0
+  main-is:        Main.hs
+  build-depends:
+    , base
+    , build-monitor-hs
+    , deepseq
+    , effectful
+    , fs-effectful
+    , fs-utils
+    , tasty-bench       >=0.3 && <0.5
+    , text
+
+  hs-source-dirs: bench

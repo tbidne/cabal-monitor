@@ -1,0 +1,107 @@
+---
+name: ci
+
+on: # yamllint disable-line rule:truthy rule:comments
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  cabal:
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc:
+          - "9.10.1"
+          - "9.12.1"
+        os:
+          - "macos-latest"
+          - "ubuntu-latest"
+          - "windows-latest"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc.vers }}
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.x
+
+      - name: Configure
+        run: cabal configure --enable-tests --ghc-options -Werror
+
+      - name: Build
+        run: cabal build exe:build-monitor-hs
+
+
+      - name: Functional tests
+        run: cabal test functional
+
+      - name: Benchmarks
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        id: bench
+        run: |
+          cabal bench --benchmark-options '
+            +RTS -T -RTS
+            -t100
+            --csv bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
+            --svg bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.svg
+            --baseline bench/baseline_${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
+            --fail-if-slower 1
+            --fail-if-faster 1'
+
+      - uses: actions/upload-artifact@v4
+        name: Bench upload
+        if: ${{ failure() && steps.bench.conclusion == 'failure' }}
+        with:
+          name: bench_artifacts_${{ matrix.os }}_${{ matrix.ghc.vers }}
+          path: |
+            bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.csv
+            bench/${{ matrix.os }}_${{ matrix.ghc.vers }}_ci.svg
+
+  nix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - "macos-latest"
+          - "ubuntu-latest"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup nix
+        uses: cachix/install-nix-action@v30
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Compile & run tests
+        run: nix build -L
+
+  lint:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup nix
+        uses: cachix/install-nix-action@v30
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Formatting
+        run: |
+          nix run .#format
+          git diff --exit-code --color=always

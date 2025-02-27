@@ -1,0 +1,729 @@
+Resolving dependencies...
+Build profile: -w ghc-9.10.1 -O0
+In order, the following will be built (use -v for more details):
+ - Cabal-syntax-3.12.1.0 (lib) (requires download & build)
+ - HasBigDecimal-0.2.0.0 (lib) (requires download & build)
+ - List-0.6.2 (lib:List) (requires download & build)
+ - MonadRandom-0.6.1 (lib) (requires download & build)
+ - Only-0.1 (lib) (requires build)
+ - SHA-1.6.4.4 (lib) (requires download & build)
+ - autodocodec-nix-0.1.0.0 (lib) (requires download & build)
+ - autoexporter-2.0.0.13 (lib) (requires download & build)
+ - aws-xray-client-0.1.0.2 (lib) (requires download & build)
+ - backtracking-0.1.0 (lib) (requires download & build)
+ - bank-holiday-germany-1.3.0.0 (lib) (requires download & build)
+ - bank-holidays-england-0.2.0.11 (lib) (requires download & build)
+ - barbies-2.1.1.0 (lib) (requires download & build)
+ - base-compat-batteries-0.14.1 (lib) (requires download & build)
+ - base-prelude-1.6.1.1 (lib) (requires download & build)
+ - base-unicode-symbols-0.2.4.2 (lib:base-unicode-symbols) (requires download & build)
+ - base16-1.0 (lib) (requires download & build)
+ - base32string-0.9.1 (lib) (requires download & build)
+ - base58-bytestring-0.1.0 (lib) (requires download & build)
+ - base58string-0.10.0 (lib) (requires download & build)
+ - base64-1.0 (lib) (requires download & build)
+ - base64-string-0.2 (lib:base64-string) (requires download & build)
+ - basic-prelude-0.7.0 (lib) (requires download & build)
+ - bazel-runfiles-0.12 (lib) (requires download & build)
+ - bbdb-0.8 (lib) (requires download & build)
+ - benchpress-0.2.2.25 (lib) (requires download & build)
+ - bencode-0.6.1.1 (lib) (requires download & build)
+ - bencoding-0.4.5.6 (lib) (requires download & build)
+ - benri-hspec-0.1.0.3 (lib) (requires download & build)
+ - between-0.11.0.0 (lib) (requires download & build)
+ - bifunctor-classes-compat-0.1 (lib) (requires download & build)
+ - bimap-0.5.0 (lib) (requires download & build)
+ - binary-conduit-1.3.1 (lib) (requires download & build)
+ - binary-generic-combinators-0.4.4.0 (lib) (requires download & build)
+ - binary-ieee754-0.1.0.0 (lib) (requires download & build)
+ - binary-parser-0.5.7.7 (lib) (requires download & build)
+ - binary-search-2.0.0 (lib) (requires download & build)
+ - binary-shared-0.8.3 (lib:binary-shared) (requires download & build)
+ - binaryen-0.0.6.0 (lib:libbinaryen) (requires download & build)
+ - bindings-DSL-1.0.25 (lib) (requires download & build)
+ - bindings-uname-0.1 (lib:bindings-uname) (requires download & build)
+ - bitarray-0.0.1.1 (lib:bitarray) (requires download & build)
+ - bits-0.6 (lib) (requires download & build)
+ - bits-extra-0.0.2.3 (lib) (requires download & build)
+ - bitset-word8-0.1.1.2 (lib) (requires download & build)
+ - bitwise-1.0.0.1 (lib) (requires download & build)
+ - bitwise-enum-1.0.1.2 (lib) (requires download & build)
+ - blaze-bootstrap-0.1.0.1 (lib) (requires download & build)
+ - blaze-svg-0.3.7 (lib) (requires download & build)
+ - blaze-textual-0.2.3.1 (lib) (requires download & build)
+ - bloomfilter-2.0.1.2 (lib) (requires download & build)
+ - bluefin-internal-0.0.14.0 (lib) (requires download & build)
+ - bm-0.2.0.0 (lib) (requires download & build)
+ - bsb-http-chunked-0.0.0.4 (lib) (requires download & build)
+ - byteable-0.1.1 (lib) (requires download & build)
+ - cereal-text-0.1.0.2 (lib) (requires download & build)
+ - cereal-vector-0.2.0.1 (lib) (requires download & build)
+ - cmdargs-0.10.22 (lib) (requires download & build)
+ - colonnade-1.2.0.2 (lib) (requires download & build)
+ - combinatorial-0.1.1 (lib) (requires download & build)
+ - constraints-extras-0.4.0.2 (lib) (requires download & build)
+ - context-0.2.1.0 (lib) (requires download & build)
+ - crypto-pubkey-types-0.4.3 (lib:crypto-pubkey-types) (requires download & build)
+ - cryptohash-sha256-0.11.102.1 (lib) (requires download & build)
+ - cryptonite-0.30 (lib) (requires download & build)
+ - digest-0.0.2.1 (lib) (requires download & build)
+ - direct-sqlite-2.3.29 (lib) (requires download & build)
+ - enummapset-0.7.3.0 (lib) (requires download & build)
+ - envparse-0.6.0 (lib) (requires download & build)
+ - errors-2.3.0 (lib) (requires download & build)
+ - esqueleto-3.6.0.0 (lib) (requires download & build)
+ - extra-1.8 (lib) (requires build)
+ - generic-arbitrary-1.0.1 (lib) (requires download & build)
+ - haha-0.3.1.1 (lib:haha) (requires download & build)
+ - happy-meta-0.2.1.0 (lib) (requires download & build)
+ - html-1.0.1.2 (lib:html) (requires download & build)
+ - http-date-0.0.11 (lib) (requires download & build)
+ - indexed-profunctors-0.1.1.1 (lib) (requires build)
+ - iso639-0.1.0.3 (lib) (requires download & build)
+ - latex-0.1.0.4 (lib:latex) (requires download & build)
+ - modern-uri-0.3.6.1 (lib) (requires download & build)
+ - mtl-compat-0.2.2 (lib) (requires download & build)
+ - mutable-containers-0.3.4.1 (lib) (requires download & build)
+ - network-byte-order-0.1.7 (lib) (requires download & build)
+ - phantom-state-0.2.1.4 (lib) (requires download & build)
+ - psqueues-0.2.8.1 (lib) (requires download & build)
+ - raw-strings-qq-1.1 (lib) (requires download & build)
+ - recv-0.1.0 (lib) (requires download & build)
+ - regex-compat-0.95.2.1 (lib) (requires download & build)
+ - selective-0.7.0.1 (lib) (requires download & build)
+ - servant-foreign-0.16.1 (lib) (requires download & build)
+ - servant-multipart-api-0.12.1 (lib) (requires download & build)
+ - simple-affine-space-0.2.1 (lib) (requires download & build)
+ - simple-sendfile-0.2.32 (lib) (requires download & build)
+ - storable-complex-0.2.3.0 (lib:storable-complex) (requires download & build)
+ - storable-tuple-0.1 (lib) (requires download & build)
+ - string-conversions-0.4.0.1 (lib) (requires download & build)
+ - string-qq-0.0.6 (lib) (requires download & build)
+ - stringsearch-0.3.6.6 (lib:stringsearch) (requires download & build)
+ - temporary-1.3 (lib) (requires build)
+ - text-binary-0.2.1.1 (lib:text-binary) (requires download & build)
+ - time-manager-0.2.2 (lib) (requires download & build)
+ - universe-base-1.1.4 (lib) (requires download & build)
+ - validity-bytestring-0.4.1.1 (lib) (requires download & build)
+ - validity-text-0.3.1.3 (lib) (requires download & build)
+ - validity-unordered-containers-0.2.0.3 (lib) (requires download & build)
+ - validity-vector-0.2.0.3 (lib) (requires download & build)
+ - vector-binary-instances-0.2.5.2 (lib) (requires download & build)
+ - vector-th-unbox-0.2.2 (lib) (requires download & build)
+ - versions-6.0.8 (lib) (requires download & build)
+ - vinyl-0.14.3 (lib) (requires download & build)
+ - wai-3.2.4 (lib) (requires download & build)
+ - xdg-basedir-0.2.2 (lib:xdg-basedir) (requires download & build)
+ - zstd-0.1.3.0 (lib) (requires download & build)
+ - Cabal-3.12.1.0 (lib) (requires download & build)
+ - hexpat-0.20.13 (lib) (requires download & build)
+ - indexed-list-literals-0.2.1.3 (lib) (requires download & build)
+ - cassava-0.5.3.2 (lib) (requires build)
+ - aws-xray-client-persistent-0.1.0.5 (lib) (requires download & build)
+ - text-show-3.11.1 (lib) (requires download & build)
+ - binaryen-0.0.6.0 (lib) (requires download & build)
+ - bzlib-conduit-0.3.0.4 (lib) (requires download & build)
+ - bindings-GLFW-3.3.9.2 (lib) (requires download & build)
+ - bluefin-0.0.14.1 (lib) (requires download & build)
+ - blaze-colonnade-1.2.3.0 (lib) (requires download & build)
+ - dependent-sum-0.7.2.0 (lib) (requires download & build)
+ - monad-logger-aeson-0.4.1.3 (lib) (requires download & build)
+ - zip-stream-0.2.2.0 (lib) (requires download & build)
+ - zip-archive-0.4.3.2 (lib) (requires download & build)
+ - sqlite-simple-0.4.19.0 (lib) (requires download & build)
+ - aws-sns-verify-0.0.0.3 (lib) (requires download & build)
+ - bech32-1.1.8 (lib) (requires download & build)
+ - BNFC-meta-0.6.1 (lib:BNFC-meta) (requires download & build)
+ - optics-core-0.4.1.1 (lib) (requires build)
+ - bibtex-0.1.0.7 (lib) (requires download & build)
+ - retry-0.9.3.1 (lib) (requires download & build)
+ - xeno-0.6 (lib) (requires download & build)
+ - binary-list-1.1.1.2 (lib) (requires download & build)
+ - network-control-0.1.4 (lib) (requires download & build)
+ - automaton-1.5 (lib) (requires download & build)
+ - blas-hs-0.1.1.0 (lib) (requires download & build)
+ - BNFC-2.9.5 (lib) (requires download & build)
+ - multipart-0.2.1 (lib) (requires download & build)
+ - path-io-1.8.2 (lib) (requires download & build)
+ - http-semantics-0.3.0 (lib) (requires download & build)
+ - servant-docs-0.13.1 (lib) (requires download & build)
+ - fin-0.3.2 (lib) (requires download & build)
+ - safe-coloured-text-0.3.0.2 (lib) (requires download & build)
+ - validity-aeson-0.2.0.5 (lib) (requires download & build)
+ - bimaps-0.1.0.2 (lib) (requires download & build)
+ - ForestStructures-0.0.1.1 (lib) (requires download & build)
+ - backprop-0.2.6.5 (lib) (requires download & build)
+ - wai-logger-2.5.0 (lib) (requires download & build)
+ - aws-xray-client-wai-0.1.0.2 (lib) (requires download & build)
+ - conduit-zstd-0.0.2.0 (lib) (requires download & build)
+ - entropy-0.4.1.11 (lib:entropy) (requires build)
+ - cabal-doctest-1.0.11 (lib) (requires build)
+ - vector-sized-1.6.1 (lib) (requires download & build)
+ - dependent-map-0.4.0.0 (lib:dependent-map) (requires download & build)
+ - Blammo-2.1.2.0 (lib) (requires download & build)
+ - bech32-th-1.1.8 (lib) (requires download & build)
+ - bloodhound-0.23.0.0 (lib) (requires download & build)
+ - cgi-3001.5.1.0 (lib) (requires download & build)
+ - aws-lambda-haskell-runtime-4.3.2 (lib) (requires download & build)
+ - http2-5.3.9 (lib) (requires download & build)
+ - bin-0.1.4 (lib) (requires download & build)
+ - autodocodec-schema-0.2.0.1 (lib) (requires download & build)
+ - BiobaseNewick-0.0.0.2 (lib) (requires download & build)
+ - zip-2.1.0 (lib) (requires download & build)
+ - uuid-1.3.16 (lib) (requires build)
+ - crypto-api-0.13.3 (lib:crypto-api) (requires download & build)
+ - bytehash-0.1.1.2 (lib) (requires download & build)
+ - bcrypt-0.0.11 (lib:bcrypt) (requires download & build)
+ - xml-conduit-1.10.0.0 (lib:xml-conduit) (requires build)
+ - beam-core-0.10.3.1 (lib) (requires download & build)
+ - board-games-0.4 (lib) (requires download & build)
+ - aws-lambda-haskell-runtime-wai-2.0.2 (lib) (requires download & build)
+ - warp-3.4.7 (lib) (requires download & build)
+ - autodocodec-yaml-0.4.0.1 (lib) (requires download & build)
+ - avro-0.6.2.1 (lib) (requires download & build)
+ - RSA-2.4.1 (lib) (requires download & build)
+ - country-0.2.5.0 (lib) (requires download & build)
+ - xlsx-1.1.3 (lib) (requires download & build)
+ - aws-0.24.4 (lib) (requires download & build)
+ - beam-migrate-0.5.3.1 (lib) (requires download & build)
+ - wai-extra-3.1.16 (lib) (requires download & build)
+ - authenticate-oauth-1.7 (lib) (requires download & build)
+ - bcp47-0.2.0.6 (lib) (requires download & build)
+ - cointracking-imports-0.1.0.2 (lib) (requires download & build)
+ - beam-sqlite-0.5.4.0 (lib) (requires download & build)
+ - wai-app-static-3.1.9 (lib) (requires download & build)
+ - scotty-0.22 (lib) (requires download & build)
+ - req-3.13.4 (lib) (requires download & build)
+ - bcp47-orphans-0.1.0.6 (lib) (requires download & build)
+ - servant-server-0.20.2 (lib) (requires download & build)
+ - kansas-comet-0.4.3 (lib) (requires download & build)
+ - bnb-staking-csvs-0.2.2.0 (lib) (requires download & build)
+ - binance-exports-0.1.2.0 (lib) (requires download & build)
+ - servant-multipart-0.12.1 (lib) (requires download & build)
+ - blank-canvas-0.7.4 (lib) (requires download & build)
+ - autodocodec-servant-multipart-0.0.0.1 (lib) (requires download & build)
+ - generated-0.1.0.0 (lib) (configuration changed)
+Created semaphore called cabal_semaphore_q with 8 slots.
+Downloading  base-prelude-1.6.1.1
+Starting     Only-0.1 (lib)
+Downloaded   base-prelude-1.6.1.1
+Downloading  base-unicode-symbols-0.2.4.2
+Downloaded   base-unicode-symbols-0.2.4.2
+Downloading  base64-string-0.2
+Downloaded   base64-string-0.2
+Downloading  between-0.11.0.0
+Downloaded   between-0.11.0.0
+Downloading  binaryen-0.0.6.0
+Building     Only-0.1 (lib)
+Downloaded   binaryen-0.0.6.0
+Downloading  bindings-DSL-1.0.25
+Installing   Only-0.1 (lib)
+Downloaded   bindings-DSL-1.0.25
+Downloading  bindings-uname-0.1
+Downloaded   bindings-uname-0.1
+Downloading  html-1.0.1.2
+Downloaded   html-1.0.1.2
+Downloading  iso639-0.1.0.3
+Downloaded   iso639-0.1.0.3
+Downloading  storable-complex-0.2.3.0
+Downloaded   storable-complex-0.2.3.0
+Downloading  blas-hs-0.1.1.0
+Downloaded   blas-hs-0.1.1.0
+Downloading  mtl-compat-0.2.2
+Downloaded   mtl-compat-0.2.2
+Downloading  phantom-state-0.2.1.4
+Downloaded   phantom-state-0.2.1.4
+Downloading  selective-0.7.0.1
+Completed    Only-0.1 (lib)
+Downloaded   selective-0.7.0.1
+Downloading  backtracking-0.1.0
+Downloaded   backtracking-0.1.0
+Downloading  bitarray-0.0.1.1
+Downloaded   bitarray-0.0.1.1
+Downloading  base58-bytestring-0.1.0
+Downloaded   base58-bytestring-0.1.0
+Downloading  bitwise-1.0.0.1
+Downloaded   bitwise-1.0.0.1
+Downloading  bloomfilter-2.0.1.2
+Downloaded   bloomfilter-2.0.1.2
+Downloading  bsb-http-chunked-0.0.0.4
+Downloaded   bsb-http-chunked-0.0.0.4
+Downloading  byteable-0.1.1
+Downloaded   byteable-0.1.1
+Downloading  cryptohash-sha256-0.11.102.1
+Downloaded   cryptohash-sha256-0.11.102.1
+Downloading  digest-0.0.2.1
+Downloaded   digest-0.0.2.1
+Downloading  crypto-pubkey-types-0.4.3
+Downloaded   crypto-pubkey-types-0.4.3
+Downloading  cryptonite-0.30
+Downloaded   cryptonite-0.30
+Downloading  network-byte-order-0.1.7
+Downloaded   network-byte-order-0.1.7
+Downloading  validity-bytestring-0.4.1.1
+Downloaded   validity-bytestring-0.4.1.1
+Downloading  binary-ieee754-0.1.0.0
+Downloaded   binary-ieee754-0.1.0.0
+Downloading  binary-list-1.1.1.2
+Downloaded   binary-list-1.1.1.2
+Downloading  binary-search-2.0.0
+Downloaded   binary-search-2.0.0
+Downloading  binary-shared-0.8.3
+Downloaded   binary-shared-0.8.3
+Downloading  combinatorial-0.1.1
+Downloaded   combinatorial-0.1.1
+Downloading  envparse-0.6.0
+Downloaded   envparse-0.6.0
+Downloading  latex-0.1.0.4
+Downloaded   latex-0.1.0.4
+Downloading  raw-strings-qq-1.1
+Downloaded   raw-strings-qq-1.1
+Downloading  string-qq-0.0.6
+Downloaded   string-qq-0.0.6
+Downloading  simple-affine-space-0.2.1
+Downloaded   simple-affine-space-0.2.1
+Downloading  bifunctor-classes-compat-0.1
+Downloaded   bifunctor-classes-compat-0.1
+Downloading  barbies-2.1.1.0
+Downloaded   barbies-2.1.1.0
+Downloading  universe-base-1.1.4
+Downloaded   universe-base-1.1.4
+Downloading  bank-holiday-germany-1.3.0.0
+Downloaded   bank-holiday-germany-1.3.0.0
+Downloading  bank-holidays-england-0.2.0.11
+Downloaded   bank-holidays-england-0.2.0.11
+Downloading  benchpress-0.2.2.25
+Downloaded   benchpress-0.2.2.25
+Downloading  haha-0.3.1.1
+Downloaded   haha-0.3.1.1
+Downloading  bits-extra-0.0.2.3
+Downloaded   bits-extra-0.0.2.3
+Downloading  cereal-vector-0.2.0.1
+Downloaded   cereal-vector-0.2.0.1
+Downloading  vector-binary-instances-0.2.5.2
+Downloaded   vector-binary-instances-0.2.5.2
+Downloading  vector-th-unbox-0.2.2
+Downloaded   vector-th-unbox-0.2.2
+Downloading  zstd-0.1.3.0
+Downloaded   zstd-0.1.3.0
+Downloading  happy-meta-0.2.1.0
+Downloaded   happy-meta-0.2.1.0
+Downloading  bimap-0.5.0
+Downloaded   bimap-0.5.0
+Downloading  context-0.2.1.0
+Downloaded   context-0.2.1.0
+Downloading  base-compat-batteries-0.14.1
+Downloaded   base-compat-batteries-0.14.1
+Downloading  bazel-runfiles-0.12
+Downloaded   bazel-runfiles-0.12
+Downloading  xdg-basedir-0.2.2
+Downloaded   xdg-basedir-0.2.2
+Downloading  cmdargs-0.10.22
+Downloaded   cmdargs-0.10.22
+Downloading  bindings-GLFW-3.3.9.2
+Downloaded   bindings-GLFW-3.3.9.2
+Downloading  retry-0.9.3.1
+Downloaded   retry-0.9.3.1
+Downloading  recv-0.1.0
+Downloaded   recv-0.1.0
+Downloading  simple-sendfile-0.2.32
+Downloaded   simple-sendfile-0.2.32
+Downloading  time-manager-0.2.2
+Downloaded   time-manager-0.2.2
+Downloading  stringsearch-0.3.6.6
+Downloaded   stringsearch-0.3.6.6
+Downloading  bech32-1.1.8
+Downloaded   bech32-1.1.8
+Downloading  bech32-th-1.1.8
+Downloaded   bech32-th-1.1.8
+Downloading  binary-parser-0.5.7.7
+Downloaded   binary-parser-0.5.7.7
+Downloading  blaze-bootstrap-0.1.0.1
+Downloaded   blaze-bootstrap-0.1.0.1
+Downloading  blaze-svg-0.3.7
+Downloaded   blaze-svg-0.3.7
+Downloading  blaze-textual-0.2.3.1
+Downloaded   blaze-textual-0.2.3.1
+Downloading  cereal-text-0.1.0.2
+Downloaded   cereal-text-0.1.0.2
+Downloading  direct-sqlite-2.3.29
+Downloaded   direct-sqlite-2.3.29
+Downloading  errors-2.3.0
+Downloaded   errors-2.3.0
+Downloading  bluefin-internal-0.0.14.0
+Downloaded   bluefin-internal-0.0.14.0
+Downloading  bluefin-0.0.14.1
+Downloaded   bluefin-0.0.14.1
+Downloading  constraints-extras-0.4.0.2
+Downloaded   constraints-extras-0.4.0.2
+Downloading  dependent-sum-0.7.2.0
+Downloaded   dependent-sum-0.7.2.0
+Downloading  dependent-map-0.4.0.0
+Downloaded   dependent-map-0.4.0.0
+Downloading  psqueues-0.2.8.1
+Downloaded   psqueues-0.2.8.1
+Downloading  network-control-0.1.4
+Downloaded   network-control-0.1.4
+Downloading  basic-prelude-0.7.0
+Downloaded   basic-prelude-0.7.0
+Downloading  validity-unordered-containers-0.2.0.3
+Downloaded   validity-unordered-containers-0.2.0.3
+Downloading  validity-vector-0.2.0.3
+Downloaded   validity-vector-0.2.0.3
+Downloading  http-semantics-0.3.0
+Downloaded   http-semantics-0.3.0
+Downloading  binary-conduit-1.3.1
+Downloaded   binary-conduit-1.3.1
+Downloading  bzlib-conduit-0.3.0.4
+Downloaded   bzlib-conduit-0.3.0.4
+Downloading  conduit-zstd-0.0.2.0
+Downloaded   conduit-zstd-0.0.2.0
+Downloading  mutable-containers-0.3.4.1
+Downloaded   mutable-containers-0.3.4.1
+Downloading  bbdb-0.8
+Downloaded   bbdb-0.8
+Downloading  bencode-0.6.1.1
+Downloaded   bencode-0.6.1.1
+Downloading  bibtex-0.1.0.7
+Downloaded   bibtex-0.1.0.7
+Downloading  multipart-0.2.1
+Downloaded   multipart-0.2.1
+Downloading  cgi-3001.5.1.0
+Downloaded   cgi-3001.5.1.0
+Downloading  regex-compat-0.95.2.1
+Downloaded   regex-compat-0.95.2.1
+Downloading  bencoding-0.4.5.6
+Downloaded   bencoding-0.4.5.6
+Downloading  http-date-0.0.11
+Downloaded   http-date-0.0.11
+Downloading  bits-0.6
+Downloaded   bits-0.6
+Downloading  string-conversions-0.4.0.1
+Downloaded   string-conversions-0.4.0.1
+Downloading  text-binary-0.2.1.1
+Downloaded   text-binary-0.2.1.1
+Downloading  base16-1.0
+Downloaded   base16-1.0
+Downloading  base64-1.0
+Downloaded   base64-1.0
+Downloading  bitset-word8-0.1.1.2
+Downloaded   bitset-word8-0.1.1.2
+Downloading  validity-text-0.3.1.3
+Downloaded   validity-text-0.3.1.3
+Downloading  safe-coloured-text-0.3.0.2
+Downloaded   safe-coloured-text-0.3.0.2
+Downloading  versions-6.0.8
+Downloaded   versions-6.0.8
+Downloading  wai-3.2.4
+Downloaded   wai-3.2.4
+Downloading  wai-logger-2.5.0
+Downloaded   wai-logger-2.5.0
+Downloading  zip-2.1.0
+Downloaded   zip-2.1.0
+Downloading  zip-stream-0.2.2.0
+Downloaded   zip-stream-0.2.2.0
+Downloading  text-show-3.11.1
+Downloaded   text-show-3.11.1
+Downloading  vinyl-0.14.3
+Downloaded   vinyl-0.14.3
+Downloading  backprop-0.2.6.5
+Downloaded   backprop-0.2.6.5
+Downloading  xeno-0.6
+Downloaded   xeno-0.6
+Downloading  zip-archive-0.4.3.2
+Downloaded   zip-archive-0.4.3.2
+Downloading  http2-5.3.9
+Downloaded   http2-5.3.9
+Downloading  warp-3.4.7
+Downloaded   warp-3.4.7
+Downloading  colonnade-1.2.0.2
+Downloaded   colonnade-1.2.0.2
+Downloading  blaze-colonnade-1.2.3.0
+Downloaded   blaze-colonnade-1.2.3.0
+Downloading  SHA-1.6.4.4
+Downloaded   SHA-1.6.4.4
+Downloading  binary-generic-combinators-0.4.4.0
+Starting     SHA-1.6.4.4 (lib)
+Downloaded   binary-generic-combinators-0.4.4.0
+Downloading  fin-0.3.2
+Downloaded   fin-0.3.2
+Downloading  bin-0.1.4
+Downloaded   bin-0.1.4
+Downloading  generic-arbitrary-1.0.1
+Downloaded   generic-arbitrary-1.0.1
+Downloading  modern-uri-0.3.6.1
+Downloaded   modern-uri-0.3.6.1
+Downloading  storable-tuple-0.1
+Downloaded   storable-tuple-0.1
+Downloading  indexed-list-literals-0.2.1.3
+Downloaded   indexed-list-literals-0.2.1.3
+Downloading  vector-sized-1.6.1
+Building     SHA-1.6.4.4 (lib)
+Downloaded   vector-sized-1.6.1
+Downloading  sqlite-simple-0.4.19.0
+Downloaded   sqlite-simple-0.4.19.0
+Downloading  autodocodec-nix-0.1.0.0
+Downloaded   autodocodec-nix-0.1.0.0
+Downloading  aws-xray-client-0.1.0.2
+Starting     autodocodec-nix-0.1.0.0 (lib)
+Downloaded   aws-xray-client-0.1.0.2
+Downloading  aws-xray-client-wai-0.1.0.2
+Starting     aws-xray-client-0.1.0.2 (lib)
+Downloaded   aws-xray-client-wai-0.1.0.2
+Downloading  base32string-0.9.1
+Downloaded   base32string-0.9.1
+Downloading  base58string-0.10.0
+Downloaded   base58string-0.10.0
+Downloading  beam-core-0.10.3.1
+Downloaded   beam-core-0.10.3.1
+Downloading  beam-migrate-0.5.3.1
+Downloaded   beam-migrate-0.5.3.1
+Downloading  beam-sqlite-0.5.4.0
+Downloaded   beam-sqlite-0.5.4.0
+Downloading  bimaps-0.1.0.2
+Downloaded   bimaps-0.1.0.2
+Downloading  bitwise-enum-1.0.1.2
+Downloaded   bitwise-enum-1.0.1.2
+Downloading  bloodhound-0.23.0.0
+Downloaded   bloodhound-0.23.0.0
+Downloading  bm-0.2.0.0
+Downloaded   bm-0.2.0.0
+Downloading  enummapset-0.7.3.0
+Downloaded   enummapset-0.7.3.0
+Downloading  board-games-0.4
+Downloaded   board-games-0.4
+Downloading  aws-sns-verify-0.0.0.3
+Downloaded   aws-sns-verify-0.0.0.3
+Downloading  monad-logger-aeson-0.4.1.3
+Building     autodocodec-nix-0.1.0.0 (lib)
+Downloaded   monad-logger-aeson-0.4.1.3
+Downloading  path-io-1.8.2
+Downloaded   path-io-1.8.2
+Downloading  aws-lambda-haskell-runtime-4.3.2
+Building     aws-xray-client-0.1.0.2 (lib)
+Downloaded   aws-lambda-haskell-runtime-4.3.2
+Downloading  aws-lambda-haskell-runtime-wai-2.0.2
+Downloaded   aws-lambda-haskell-runtime-wai-2.0.2
+Downloading  aws-xray-client-persistent-0.1.0.5
+Downloaded   aws-xray-client-persistent-0.1.0.5
+Downloading  esqueleto-3.6.0.0
+Downloaded   esqueleto-3.6.0.0
+Downloading  servant-foreign-0.16.1
+Downloaded   servant-foreign-0.16.1
+Downloading  servant-multipart-api-0.12.1
+Downloaded   servant-multipart-api-0.12.1
+Downloading  servant-docs-0.13.1
+Downloaded   servant-docs-0.13.1
+Downloading  validity-aeson-0.2.0.5
+Downloaded   validity-aeson-0.2.0.5
+Downloading  autodocodec-schema-0.2.0.1
+Downloaded   autodocodec-schema-0.2.0.1
+Downloading  autodocodec-yaml-0.4.0.1
+Downloaded   autodocodec-yaml-0.4.0.1
+Downloading  MonadRandom-0.6.1
+Downloaded   MonadRandom-0.6.1
+Downloading  automaton-1.5
+Starting     MonadRandom-0.6.1 (lib)
+Downloaded   automaton-1.5
+Downloading  List-0.6.2
+Downloaded   List-0.6.2
+Downloading  hexpat-0.20.13
+Starting     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   hexpat-0.20.13
+Downloading  HasBigDecimal-0.2.0.0
+Downloaded   HasBigDecimal-0.2.0.0
+Downloading  benri-hspec-0.1.0.3
+Starting     HasBigDecimal-0.2.0.0 (lib)
+Downloaded   benri-hspec-0.1.0.3
+Downloading  wai-extra-3.1.16
+Downloaded   wai-extra-3.1.16
+Downloading  scotty-0.22
+Downloaded   scotty-0.22
+Downloading  kansas-comet-0.4.3
+Downloaded   kansas-comet-0.4.3
+Downloading  blank-canvas-0.7.4
+Downloaded   blank-canvas-0.7.4
+Downloading  wai-app-static-3.1.9
+Downloaded   wai-app-static-3.1.9
+Downloading  servant-server-0.20.2
+Downloaded   servant-server-0.20.2
+Downloading  servant-multipart-0.12.1
+Downloaded   servant-multipart-0.12.1
+Downloading  autodocodec-servant-multipart-0.0.0.1
+Installing   autodocodec-nix-0.1.0.0 (lib)
+Downloaded   autodocodec-servant-multipart-0.0.0.1
+Downloading  ForestStructures-0.0.1.1
+Downloaded   ForestStructures-0.0.1.1
+Downloading  Cabal-syntax-3.12.1.0
+Downloaded   Cabal-syntax-3.12.1.0
+Downloading  autoexporter-2.0.0.13
+Starting     Cabal-syntax-3.12.1.0 (lib)
+Downloaded   autoexporter-2.0.0.13
+Downloading  Cabal-3.12.1.0
+Starting     autoexporter-2.0.0.13 (lib)
+Downloaded   Cabal-3.12.1.0
+Downloading  bcrypt-0.0.11
+Downloaded   bcrypt-0.0.11
+Downloading  bytehash-0.1.1.2
+Downloaded   bytehash-0.1.1.2
+Downloading  country-0.2.5.0
+Downloaded   country-0.2.5.0
+Downloading  bcp47-0.2.0.6
+Downloaded   bcp47-0.2.0.6
+Downloading  bcp47-orphans-0.1.0.6
+Downloaded   bcp47-orphans-0.1.0.6
+Downloading  crypto-api-0.13.3
+Downloaded   crypto-api-0.13.3
+Downloading  RSA-2.4.1
+Building     MonadRandom-0.6.1 (lib)
+Downloaded   RSA-2.4.1
+Downloading  authenticate-oauth-1.7
+Downloaded   authenticate-oauth-1.7
+Downloading  req-3.13.4
+Downloaded   req-3.13.4
+Downloading  binance-exports-0.1.2.0
+Downloaded   binance-exports-0.1.2.0
+Downloading  avro-0.6.2.1
+Downloaded   avro-0.6.2.1
+Downloading  aws-0.24.4
+Building     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   aws-0.24.4
+Downloading  xlsx-1.1.3
+Downloaded   xlsx-1.1.3
+Downloading  cointracking-imports-0.1.0.2
+Building     HasBigDecimal-0.2.0.0 (lib)
+Downloaded   cointracking-imports-0.1.0.2
+Downloading  bnb-staking-csvs-0.2.2.0
+Downloaded   bnb-staking-csvs-0.2.2.0
+Downloading  Blammo-2.1.2.0
+Downloaded   Blammo-2.1.2.0
+Downloading  BiobaseNewick-0.0.0.2
+Downloaded   BiobaseNewick-0.0.0.2
+Downloading  BNFC-meta-0.6.1
+Downloaded   BNFC-meta-0.6.1
+Downloading  BNFC-2.9.5
+Downloaded   BNFC-2.9.5
+Installing   SHA-1.6.4.4 (lib)
+Completed    autodocodec-nix-0.1.0.0 (lib)
+Starting     backtracking-0.1.0 (lib)
+Installing   HasBigDecimal-0.2.0.0 (lib)
+Installing   List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     Cabal-syntax-3.12.1.0 (lib)
+Building     autoexporter-2.0.0.13 (lib)
+Installing   MonadRandom-0.6.1 (lib)
+Completed    SHA-1.6.4.4 (lib)
+Starting     bank-holiday-germany-1.3.0.0 (lib)
+Installing   autoexporter-2.0.0.13 (lib)
+Building     backtracking-0.1.0 (lib)
+Installing   backtracking-0.1.0 (lib)
+Completed    HasBigDecimal-0.2.0.0 (lib)
+Starting     bank-holidays-england-0.2.0.11 (lib)
+Installing   aws-xray-client-0.1.0.2 (lib)
+Building     bank-holiday-germany-1.3.0.0 (lib)
+Completed    List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     barbies-2.1.1.0 (lib)
+Installing   bank-holiday-germany-1.3.0.0 (lib)
+Building     bank-holidays-england-0.2.0.11 (lib)
+Installing   bank-holidays-england-0.2.0.11 (lib)
+Completed    MonadRandom-0.6.1 (lib)
+Starting     base-compat-batteries-0.14.1 (lib)
+Building     barbies-2.1.1.0 (lib)
+Completed    autoexporter-2.0.0.13 (lib)
+Building     base-compat-batteries-0.14.1 (lib)
+Completed    backtracking-0.1.0 (lib)
+Starting     base-prelude-1.6.1.1 (lib)
+Completed    aws-xray-client-0.1.0.2 (lib)
+Installing   base-compat-batteries-0.14.1 (lib)
+Building     base-prelude-1.6.1.1 (lib)
+Installing   base-prelude-1.6.1.1 (lib)
+Starting     base-unicode-symbols-0.2.4.2 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    bank-holiday-germany-1.3.0.0 (lib)
+Starting     base16-1.0 (lib)
+Installing   barbies-2.1.1.0 (lib)
+Completed    bank-holidays-england-0.2.0.11 (lib)
+Building     base-unicode-symbols-0.2.4.2 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    base-compat-batteries-0.14.1 (lib)
+Starting     base32string-0.9.1 (lib)
+Installing   base-unicode-symbols-0.2.4.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     base16-1.0 (lib)
+Completed    base-prelude-1.6.1.1 (lib)
+Building     base32string-0.9.1 (lib)
+Installing   base16-1.0 (lib)
+Completed    barbies-2.1.1.0 (lib)
+Starting     base58-bytestring-0.1.0 (lib)
+Installing   base32string-0.9.1 (lib)
+Completed    base-unicode-symbols-0.2.4.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     base58-bytestring-0.1.0 (lib)
+Installing   base58-bytestring-0.1.0 (lib)
+Completed    base16-1.0 (lib)
+Starting     base58string-0.10.0 (lib)
+Completed    base32string-0.9.1 (lib)
+Building     base58string-0.10.0 (lib)
+Completed    base58-bytestring-0.1.0 (lib)
+Starting     base64-1.0 (lib)
+Starting     base64-string-0.2 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     basic-prelude-0.7.0 (lib)
+Installing   base58string-0.10.0 (lib)
+Starting     bazel-runfiles-0.12 (lib)
+Starting     bbdb-0.8 (lib)
+Starting     benchpress-0.2.2.25 (lib)
+Building     base64-1.0 (lib)
+Building     base64-string-0.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     basic-prelude-0.7.0 (lib)
+Installing   base64-string-0.2 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    base58string-0.10.0 (lib)
+Installing   basic-prelude-0.7.0 (lib)
+Building     bazel-runfiles-0.12 (lib)
+Building     bbdb-0.8 (lib)
+Building     benchpress-0.2.2.25 (lib)
+Installing   bazel-runfiles-0.12 (lib)
+Installing   benchpress-0.2.2.25 (lib)
+Completed    base64-string-0.2 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     bencode-0.6.1.1 (lib)
+Installing   bbdb-0.8 (lib)
+Completed    basic-prelude-0.7.0 (lib)
+Installing   base64-1.0 (lib)
+Building     bencode-0.6.1.1 (lib)
+Completed    bazel-runfiles-0.12 (lib)
+Starting     bencoding-0.4.5.6 (lib)
+Installing   bencode-0.6.1.1 (lib)
+Completed    benchpress-0.2.2.25 (lib)
+Starting     benri-hspec-0.1.0.3 (lib)
+Starting     between-0.11.0.0 (lib)
+Building     bencoding-0.4.5.6 (lib)
+Completed    bbdb-0.8 (lib)
+Starting     bifunctor-classes-compat-0.1 (lib)
+Building     benri-hspec-0.1.0.3 (lib)
+Completed    base64-1.0 (lib)
+Installing   benri-hspec-0.1.0.3 (lib)
+Building     between-0.11.0.0 (lib)
+Installing   between-0.11.0.0 (lib)
+Building     bifunctor-classes-compat-0.1 (lib)
+Installing   bifunctor-classes-compat-0.1 (lib)
+Installing   bencoding-0.4.5.6 (lib)
+Completed    bencode-0.6.1.1 (lib)
+Starting     bimap-0.5.0 (lib)
+Starting     binary-conduit-1.3.1 (lib)
+Completed    benri-hspec-0.1.0.3 (lib)
+Building     bimap-0.5.0 (lib)
+Completed    between-0.11.0.0 (lib)
+Starting     binary-generic-combinators-0.4.4.0 (lib)
+Building     binary-conduit-1.3.1 (lib)
+Starting     binary-ieee754-0.1.0.0 (lib)
+Installing   bimap-0.5.0 (lib)
+Installing   binary-conduit-1.3.1 (lib)
+Completed    bifunctor-classes-compat-0.1 (lib)
+Starting     binary-parser-0.5.7.7 (lib)
+Starting     binary-search-2.0.0 (lib)
+Building     binary-generic-combinators-0.4.4.0 (lib)
+Completed    bencoding-0.4.5.6 (lib)
+Building     binary-ieee754-0.1.0.0 (lib)
+Starting     binary-shared-0.8.3 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   binary-ieee754-0.1.0.0 (lib)
+Building     binary-parser-0.5.7.7 (lib)
+Building     binary-search-2.0.0 (lib)
+Installing   binary-generic-combinators-0.4.4.0 (lib)
+Completed    bimap-0.5.0 (lib)
+Starting     binaryen-0.0.6.0 (lib:libbinaryen)
+Installing   binary-search-2.0.0 (lib)
+Installing   binary-parser-0.5.7.7 (lib)

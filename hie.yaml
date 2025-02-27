@@ -8,3 +8,6 @@ cradle:
 
     - path: "./test/functional"
       component: "build-monitor-hs:test:functional"
+
+    - path: "./bench/Main.hs"
+      component: "build-monitor-hs:bench:benchmarks"
