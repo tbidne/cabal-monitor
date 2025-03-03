@@ -37,6 +37,7 @@ source-repository-package
       lib/effectful-utils
       lib/fs-effectful
       lib/optparse-effectful
+      lib/terminal-effectful
 
 source-repository-package
     type: git

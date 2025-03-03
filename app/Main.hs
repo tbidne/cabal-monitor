@@ -4,6 +4,7 @@ import Effectful (runEff)
 import Effectful.Concurrent qualified as CC
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.Optparse.Static qualified as EOA
+import Effectful.Terminal.Dynamic qualified as Term
 import Monitor qualified
 import Monitor.Logger qualified as Logger
 import System.Console.Regions (ConsoleRegion)
@@ -18,5 +19,6 @@ main = runner (Monitor.runMonitor ConsoleRegion)
       runEff
         . CC.runConcurrent
         . Logger.runRegionLogger
+        . Term.runTerminal
         . FR.runFileReader
         . EOA.runOptparse

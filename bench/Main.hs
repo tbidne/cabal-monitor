@@ -7,6 +7,7 @@ import Data.ByteString (ByteString)
 import Data.ByteString.Char8 qualified as C8
 import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
 import Monitor (Status)
@@ -26,7 +27,9 @@ main = do
   defaultMain
     [ env (pure sampleLines) benchParseStatus,
       env (pure sampleStatus) benchFormatStatus,
-      benchReadFormatted samplePath
+      env (pure sampleStatus) benchFormatStatusCompact,
+      benchReadFormatted samplePath,
+      benchReadFormattedCompact samplePath
     ]
 
 benchParseStatus :: [ByteString] -> Benchmark
@@ -35,12 +38,21 @@ benchParseStatus txtLines =
 
 benchFormatStatus :: Status -> Benchmark
 benchFormatStatus status =
-  bench "formatStatus" $ nf Monitor.formatStatus status
+  bench "formatStatus" $ nf (Monitor.formatStatus Nothing) status
+
+benchFormatStatusCompact :: Status -> Benchmark
+benchFormatStatusCompact status =
+  bench "formatStatus_compact" $ nf (Monitor.formatStatus (Just 80)) status
 
 benchReadFormatted :: OsPath -> Benchmark
 benchReadFormatted path =
   bench "readFormattedStatus" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus $ path)
+    nfIO (runBenchEff . Monitor.readFormattedStatus Nothing $ path)
+
+benchReadFormattedCompact :: OsPath -> Benchmark
+benchReadFormattedCompact path =
+  bench "readFormattedStatus_compact" $
+    nfIO (runBenchEff . Monitor.readFormattedStatus (Just 80) $ path)
 
 samplePath :: OsPath
 samplePath = [ospPathSep|./bench/sample.txt|]
@@ -56,6 +68,6 @@ sampleStatus = Monitor.parseStatus sampleLines
 
 runBenchEff ::
   (HasCallStack) =>
-  Eff [FR.FileReader, IOE] a ->
+  Eff [FR.FileReader, Term.Terminal, IOE] a ->
   IO a
-runBenchEff = runEff . FR.runFileReader
+runBenchEff = runEff . Term.runTerminal . FR.runFileReader

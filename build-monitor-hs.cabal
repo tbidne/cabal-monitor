@@ -66,6 +66,7 @@ library
     , optparse-applicative  >=0.15     && <0.19
     , optparse-effectful    ^>=0.1
     , relative-time         ^>=0.1
+    , terminal-effectful    ^>=0.1
     , text                  >=1.2.3.2  && <2.2
 
   hs-source-dirs:  src
@@ -80,6 +81,7 @@ executable build-monitor-hs
     , effectful
     , fs-effectful
     , optparse-effectful
+    , terminal-effectful
 
   hs-source-dirs: app
   ghc-options:    -threaded -with-rtsopts=-N
@@ -93,12 +95,14 @@ test-suite functional
     , build-monitor-hs
     , containers
     , effectful
+    , effectful-utils
     , env-guard           ^>=0.2
     , fs-effectful
     , fs-utils
     , optparse-effectful
     , tasty               >=1.1.0.3 && <1.6
     , tasty-hunit         >=0.9     && <0.11
+    , terminal-effectful
     , text
 
   hs-source-dirs: test/functional
@@ -115,7 +119,8 @@ benchmark benchmarks
     , effectful
     , fs-effectful
     , fs-utils
-    , tasty-bench       >=0.3  && <0.5
-    , template-haskell  >=2.21 && <2.24
+    , tasty-bench         >=0.3  && <0.5
+    , template-haskell    >=2.21 && <2.24
+    , terminal-effectful
 
   hs-source-dirs: bench
