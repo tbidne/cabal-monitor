@@ -7,6 +7,7 @@ import Data.Foldable (for_)
 import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
 import Data.Set (Set)
 import Data.Set qualified as Set
+import Data.String (IsString (fromString))
 import Data.Text (Text)
 import Data.Text qualified as T
 import Effectful (Eff, IOE, MonadIO (liftIO), runEff, type (:>))
@@ -32,7 +33,16 @@ import FileSystem.OsPath
     ospPathSep,
     (</>),
   )
-import Monitor (runMonitor)
+import Monitor
+  ( FormatStyle
+      ( FormatInl,
+        FormatInlTrunc,
+        FormatNl,
+        FormatNlTrunc
+      ),
+    Status (MkStatus, allLibs, building, completed),
+  )
+import Monitor qualified
 import Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
 import System.Environment qualified as Env
 import System.Environment.Guard (ExpectEnv (ExpectEnvSet), guardOrElse')
@@ -43,7 +53,7 @@ import Test.Tasty
     testGroup,
     withResource,
   )
-import Test.Tasty.HUnit (HasCallStack, assertFailure, testCase)
+import Test.Tasty.HUnit (HasCallStack, assertFailure, testCase, (@=?))
 
 main :: IO ()
 main =
@@ -52,9 +62,17 @@ main =
     tests getTestArgs =
       testGroup
         "Functional"
-        [ testMonitor getTestArgs,
-          testMonitorShortWindow getTestArgs
+        [ monitorTests getTestArgs,
+          formatStatusTests
         ]
+
+monitorTests :: IO TestArgs -> TestTree
+monitorTests getTestArgs =
+  testGroup
+    "monitor"
+    [ testMonitor getTestArgs,
+      testMonitorShortWindow getTestArgs
+    ]
 
 testMonitor :: IO TestArgs -> TestTree
 testMonitor getTestArgs = testCase "Monitors build output" $ do
@@ -83,7 +101,7 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
     expected = [e1, e2, e3, e4, e5]
 
     e1 =
-      T.unlines
+      unlineStrip
         [ "To Build: 5",
           "  - bits-0.6",
           "  - byteable-0.1.1",
@@ -96,7 +114,7 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
           "Completed: 0"
         ]
     e2 =
-      T.unlines
+      unlineStrip
         [ "To Build: 2",
           "  - mtl-compat-0.2.2",
           "  - string-qq-0.0.6",
@@ -110,7 +128,7 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
         ]
 
     e3 =
-      T.unlines
+      unlineStrip
         [ "To Build: 1",
           "  - string-qq-0.0.6",
           "",
@@ -124,7 +142,7 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
         ]
 
     e4 =
-      T.unlines
+      unlineStrip
         [ "To Build: 1",
           "  - string-qq-0.0.6",
           "",
@@ -138,7 +156,7 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
         ]
 
     e5 =
-      T.unlines
+      unlineStrip
         [ "To Build: 0",
           "",
           "Building: 2",
@@ -161,7 +179,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
           { mWindow =
               Just
                 ( Window
-                    { height = 8,
+                    { height = 10,
                       width = 80
                     }
                 )
@@ -191,7 +209,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
     expected = [e1, e2, e3, e4, e5]
 
     e1 =
-      T.unlines
+      unlineStrip
         [ "To Build: 5",
           "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, mtl-compat-0.2.2",
           "  - string-qq-0.0.6",
@@ -201,7 +219,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
           "Completed: 0"
         ]
     e2 =
-      T.unlines
+      unlineStrip
         [ "To Build: 2",
           "  - mtl-compat-0.2.2, string-qq-0.0.6",
           "",
@@ -212,7 +230,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
         ]
 
     e3 =
-      T.unlines
+      unlineStrip
         [ "To Build: 1",
           "  - string-qq-0.0.6",
           "",
@@ -223,7 +241,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
         ]
 
     e4 =
-      T.unlines
+      unlineStrip
         [ "To Build: 1",
           "  - string-qq-0.0.6",
           "",
@@ -235,7 +253,7 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
         ]
 
     e5 =
-      T.unlines
+      unlineStrip
         [ "To Build: 0",
           "",
           "Building: 2",
@@ -244,6 +262,128 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
           "Completed: 3",
           "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1"
         ]
+
+formatStatusTests :: TestTree
+formatStatusTests =
+  testGroup
+    "formatStatus"
+    [ testFormatNl,
+      testFormatNlTrunc,
+      testFormatInl,
+      testFormatInlTrunc
+    ]
+
+testFormatNl :: TestTree
+testFormatNl = testCase desc $ do
+  expected @=? Monitor.formatStatus FormatNl exampleStatus
+  where
+    desc = "Formats with newlines"
+    expected =
+      unlineStrip
+        [ "To Build: 8",
+          "  - lib13",
+          "  - lib14",
+          "  - lib15",
+          "  - lib16",
+          "  - lib17",
+          "  - lib18",
+          "  - lib19",
+          "  - lib20",
+          "",
+          "Building: 7",
+          "  - lib10",
+          "  - lib11",
+          "  - lib12",
+          "  - lib6",
+          "  - lib7",
+          "  - lib8",
+          "  - lib9",
+          "",
+          "Completed: 5",
+          "  - lib1",
+          "  - lib2",
+          "  - lib3",
+          "  - lib4",
+          "  - lib5"
+        ]
+
+testFormatNlTrunc :: TestTree
+testFormatNlTrunc = testCase desc $ do
+  expected @=? Monitor.formatStatus (FormatNlTrunc 15) exampleStatus
+  where
+    desc = "Formats with newlines and truncation"
+    expected =
+      unlineStrip
+        [ "To Build: 8",
+          "  - lib13",
+          "  ...",
+          "",
+          "Building: 7",
+          "  - lib10",
+          "  - lib11",
+          "  - lib12",
+          "  - lib6",
+          "  - lib7",
+          "  - lib8",
+          "  - lib9",
+          "",
+          "Completed: 5",
+          "  - lib1",
+          "  ..."
+        ]
+
+testFormatInl :: TestTree
+testFormatInl = testCase desc $ do
+  expected @=? Monitor.formatStatus (FormatInl 25) exampleStatus
+  where
+    desc = "Formats with inline"
+    expected =
+      unlineStrip
+        [ "To Build: 8",
+          "  - lib13, lib14, lib15",
+          "  - lib16, lib17, lib18",
+          "  - lib19, lib20",
+          "",
+          "Building: 7",
+          "  - lib10, lib11, lib12",
+          "  - lib6, lib7, lib8",
+          "  - lib9",
+          "",
+          "Completed: 5",
+          "  - lib1, lib2, lib3",
+          "  - lib4, lib5"
+        ]
+
+testFormatInlTrunc :: TestTree
+testFormatInlTrunc = testCase desc $ do
+  expected @=? Monitor.formatStatus (FormatInlTrunc 11 25) exampleStatus
+  where
+    desc = "Formats with inline and truncation"
+    expected =
+      unlineStrip
+        [ "To Build: 8",
+          "  - lib13, lib14, lib15",
+          "  ...",
+          "",
+          "Building: 7",
+          "  - lib10, lib11, lib12",
+          "  - lib6, lib7, lib8",
+          "  - lib9",
+          "",
+          "Completed: 5",
+          "  - lib1, lib2, lib3",
+          "  - lib4, lib5"
+        ]
+
+exampleStatus :: Status
+exampleStatus =
+  MkStatus
+    { allLibs = Set.fromList allLibsL,
+      building = Set.fromList (take 12 allLibsL),
+      completed = Set.fromList (take 5 allLibsL)
+    }
+  where
+    allLibsL = (fromString . ("lib" <>) . show @Int) <$> [1 .. 20]
 
 type Unit = ()
 
@@ -356,3 +496,6 @@ runTestEff =
   runEff
     . PW.runPathWriter
     . PR.runPathReader
+
+unlineStrip :: [Text] -> Text
+unlineStrip = T.strip . T.unlines

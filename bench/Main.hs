@@ -10,7 +10,7 @@ import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
-import Monitor (Status)
+import Monitor (FormatStyle (FormatInlTrunc, FormatNl), Status)
 import Monitor qualified
 import TH qualified
 import Test.Tasty.Bench
@@ -38,21 +38,34 @@ benchParseStatus txtLines =
 
 benchFormatStatus :: Status -> Benchmark
 benchFormatStatus status =
-  bench "formatStatus" $ nf (Monitor.formatStatus Nothing) status
+  bench "formatStatus" $ nf (Monitor.formatStatus FormatNl) status
 
 benchFormatStatusCompact :: Status -> Benchmark
 benchFormatStatusCompact status =
-  bench "formatStatus_compact" $ nf (Monitor.formatStatus (Just 80)) status
+  bench "formatStatus_compact" $ nf (Monitor.formatStatus compactStyle) status
 
 benchReadFormatted :: OsPath -> Benchmark
 benchReadFormatted path =
   bench "readFormattedStatus" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus Nothing $ path)
+    nfIO (runBenchEff . Monitor.readFormattedStatus Nothing Nothing $ path)
 
 benchReadFormattedCompact :: OsPath -> Benchmark
 benchReadFormattedCompact path =
   bench "readFormattedStatus_compact" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus (Just 80) $ path)
+    nfIO
+      ( runBenchEff
+          . Monitor.readFormattedStatus (Just termHeight) (Just termWidth)
+          $ path
+      )
+
+compactStyle :: FormatStyle
+compactStyle = FormatInlTrunc termHeight termWidth
+
+termHeight :: Int
+termHeight = 25
+
+termWidth :: Int
+termWidth = 80
 
 samplePath :: OsPath
 samplePath = [ospPathSep|./bench/sample.txt|]

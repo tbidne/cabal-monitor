@@ -7,6 +7,7 @@ module Monitor
     -- ** Type
     Status (..),
     Package (..),
+    FormatStyle (..),
 
     -- ** Functions
     monitorBuild,
@@ -25,9 +26,11 @@ import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Char8 qualified as C8
 import Data.ByteString.Lazy qualified as BSL
 import Data.Foldable (foldMap')
+import Data.List qualified as L
 import Data.Maybe (fromMaybe)
 import Data.Set (Set, (\\))
 import Data.Set qualified as Set
+import Data.String (IsString)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Time.Relative qualified as Rel
@@ -47,7 +50,7 @@ import FileSystem.OsPath (OsPath)
 import FileSystem.UTF8 qualified as UTF8
 import GHC.Generics (Generic)
 import GHC.Natural (Natural)
-import Monitor.Args (Args (compact, filePath, period))
+import Monitor.Args (Args (filePath, height, period, width))
 import Monitor.Args qualified as Args
 import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
 import Monitor.Logger qualified as Logger
@@ -91,7 +94,7 @@ monitorBuild rType args =
       Right x -> pure x
   where
     runStatus = Logger.withRegion @rType Linear $ \r -> forever $ do
-      readPrintStatus r args.compact args.filePath
+      readPrintStatus r args.height args.width args.filePath
       CC.threadDelay period_ms
 
     period_ms = 1_000_000 * (fromMaybe 5 args.period)
@@ -104,10 +107,11 @@ readPrintStatus ::
   ) =>
   r ->
   Maybe Int ->
+  Maybe Int ->
   OsPath ->
   Eff es ()
-readPrintStatus region mLineLen path = do
-  formatted <- readFormattedStatus mLineLen path
+readPrintStatus region mHeight mWidth path = do
+  formatted <- readFormattedStatus mHeight mWidth path
   Logger.logRegion LogModeSet region formatted
 
 readFormattedStatus ::
@@ -116,41 +120,41 @@ readFormattedStatus ::
     Terminal :> es
   ) =>
   Maybe Int ->
+  Maybe Int ->
   OsPath ->
   Eff es Text
-readFormattedStatus mUserLineLen path = do
+readFormattedStatus mHeight mWidth path = do
   status <- readStatus path
 
-  mLineLen <- case mUserLineLen of
-    -- 1. User specified compact; use it.
-    Just lineLine -> pure (Just lineLine)
-    -- 2. User did not specify compact; use heuristics.
-    Nothing -> do
+  style <- case (mHeight, mWidth) of
+    (Just height, Just width) -> pure $ FormatInlTrunc height width
+    (Just height, Nothing) -> pure $ FormatNlTrunc height
+    (Nothing, Just width) -> pure $ FormatInl width
+    (Nothing, Nothing) -> do
       eResult <- Ex.trySync $ Term.getTerminalSize
       pure $ case eResult of
-        -- 2.1. Attempting to find the terminal size failed. Use the default
-        -- strategy.
-        Left _ -> Nothing
+        Left _ -> FormatNl
         Right sz -> do
-          -- Number of packages + 2 per 'stanza' (header and newline):
-          --  - To Build
-          --  - Building
-          --  - Completed
-          --  - Timer
-          let numDefLines = 8 + length status.allLibs
+          -- - 4 (To Build, Building, Completed, Timer) stanzas with a header
+          --   and trailing newline --> 4 * 2 == 8
+          --
+          --   --> 4 * 2 == 8
+          let availPkgLines = sz.height `monus` 8
+              neededLines = length status.allLibs
 
-          if numDefLines < sz.height
+          if neededLines < availPkgLines
             -- 2.2. Normal, non-compact format fits in the vertical space;
             --      use it.
-            then Nothing
+            then FormatNl
             -- 2.3. Does not fit in vertical space. Use compact, with length
             --      determined by terminal size.
-            else Just (sz.width - 1)
+            else FormatInlTrunc (sz.height - 1) (sz.width - 1)
 
-  pure $ formatStatus mLineLen status
+  pure $ formatStatus style status
 
 newtype Package = MkPackage {unPackage :: ByteString}
   deriving stock (Eq, Generic, Ord, Show)
+  deriving newtype (IsString)
   deriving anyclass (NFData)
 
 data Status = MkStatus
@@ -193,6 +197,8 @@ logCounter rType = do
       forever $
         do
           CC.threadDelay 1_000_000
+          -- IDEA: Could use shared state and detect a file change, in which
+          -- case we reset the timer?
           State.modify @Natural (\(!x) -> x + 1)
           elapsed <- State.get
           Logger.logRegion
@@ -219,56 +225,127 @@ parseStatus = foldMap' go
 
     takeSkipLeadingSpc = BS.takeWhile (/= 32) . BS.dropWhile (== 32)
 
-formatStatus :: Maybe Int -> Status -> Text
-formatStatus mLineLen status =
+data FormatStyle
+  = -- | Format each package on a newline.
+    FormatNl
+  | -- | Format each package on a newline, truncating lines exceeding the
+    -- given height.
+    FormatNlTrunc Int
+  | -- | Format packages inline, creating a newline once we exceed the
+    -- given width.
+    FormatInl Int
+  | -- | Given height and width, formats inline (width) and truncates
+    -- (height).
+    FormatInlTrunc Int Int
+
+formatStatus :: FormatStyle -> Status -> Text
+formatStatus style status =
   UTF8.unsafeDecodeUtf8 $
     BSL.toStrict $
       BSB.toLazyByteString $
-        mconcat
-          [ "To Build: " <> numToBuildStr <> toBuildStr,
-            "\n\nBuilding: " <> numBuildingStr <> buildingStr,
-            "\n\nCompleted: " <> numCompletedStr <> completedStr,
-            "\n"
-          ]
+        formatAll
+          style
+          toBuild
+          building
+          completed
   where
-    numCompletedStr = showtlb numCompleted
-    (completedStr, numCompleted) = fmtMCompact mLineLen status.completed
-
-    numBuildingStr = showtlb numBuilding
-    (buildingStr, numBuilding) =
-      fmtMCompact mLineLen (status.building \\ status.completed)
-
-    numToBuildStr = showtlb numToBuild
-    (toBuildStr, numToBuild) = fmtMCompact mLineLen toBuild
     toBuild =
       status.allLibs
         \\ (status.building `Set.union` status.completed)
+    building = status.building \\ status.completed
+    completed = status.completed
 
-    fmtMCompact :: Maybe Int -> Set Package -> (Builder, Int)
-    fmtMCompact Nothing = Set.foldl' fmtBuildDefault ("", 0)
-    fmtMCompact (Just lineLen) =
-      (\(x, _, y) -> (x, y))
-        -- HACK: Set the initial count to len + 1 so that we are guaranteed to
-        -- start with a newline.
-        . Set.foldl' fmtBuildCompact ("", lineLen + 1, 0)
-      where
-        fmtBuildCompact :: (Builder, Int, Int) -> Package -> (Builder, Int, Int)
-        fmtBuildCompact (acc, !currLen, !n) p =
-          let bs = p.unPackage
-              bsLen = BS.length bs
-              b = BSB.byteString bs
-              newLen = bsLen + currLen + newPkgIdent
-              newlineIdent = 4
-              newPkgIdent = 2
-           in if newLen + 1 > lineLen
-                then (acc <> "\n  - " <> b, bsLen + newlineIdent, n + 1)
-                else (acc <> ", " <> b, newLen, n + 1)
+formatAll ::
+  FormatStyle ->
+  Set Package ->
+  Set Package ->
+  Set Package ->
+  Builder
+formatAll style toBuildS buildingS completedS = final
+  where
+    final =
+      mconcat $
+        concatter
+          toBuildBuilders
+          buildingBuilders
+          completedBuilders
 
-    fmtBuildDefault :: (Builder, Int) -> Package -> (Builder, Int)
-    fmtBuildDefault (acc, !n) p = (acc <> "\n  - " <> BSB.byteString p.unPackage, n + 1)
+    (formatter, concatter) = case style of
+      FormatNl -> (formatNewlines, concatNewlines)
+      FormatNlTrunc height -> (formatNewlines, concatCompact height)
+      FormatInl width -> (formatCompact width, concatNewlines)
+      FormatInlTrunc height width -> (formatCompact width, concatCompact height)
 
-    showtlb :: Int -> Builder
-    showtlb = BSB.intDec
+    concatNewlines as bs cs =
+      mconcat
+        [ as,
+          ["\n", "\n"],
+          bs,
+          ["\n", "\n"],
+          cs
+        ]
+
+    concatCompact height as bs cs =
+      let (h1, bs') = takeCount height bs
+          hEach = h1 `div` 2
+          as' = takeTrunc hEach as
+          cs' = takeTrunc hEach cs
+       in mconcat
+            [ as',
+              ["\n", "\n"],
+              bs',
+              ["\n", "\n"],
+              cs'
+            ]
+
+    toBuildL = Set.toList toBuildS
+    toBuildBuilders =
+      let bs = formatter toBuildL
+       in "To Build: " <> (BSB.intDec $ Set.size toBuildS) : bs
+
+    buildingL = Set.toList buildingS
+    buildingBuilders =
+      let bs = formatter buildingL
+       in "Building: " <> (BSB.intDec $ Set.size buildingS) : bs
+
+    completedL = Set.toList completedS
+    completedBuilders =
+      let bs = formatter completedL
+       in "Completed: " <> (BSB.intDec $ Set.size completedS) : bs
+
+formatNewlines :: [Package] -> [Builder]
+formatNewlines = L.reverse . foldl' go []
+  where
+    go acc p = prependNewline (BSB.byteString p.unPackage) : acc
+
+formatCompact :: Int -> [Package] -> [Builder]
+formatCompact width = L.reverse . fmap fst . foldl' go []
+  where
+    go :: [(Builder, Int)] -> Package -> [(Builder, Int)]
+    go [] p =
+      let (newBuilder, newLen) = pkgToData p
+       in [(prependNewline newBuilder, newLen + newlineIdent)]
+    go ((currBuilder, currLen) : accs) p =
+      let (newBuilder, newLen) = pkgToData p
+          totalLen = newLen + currLen + newPkgIdent
+       in if totalLen + 1 > width
+            then
+              (prependNewline newBuilder, newLen + newlineIdent)
+                : (currBuilder, currLen)
+                : accs
+            else
+              (currBuilder <> ", " <> newBuilder, totalLen)
+                : accs
+
+    newlineIdent = 4
+    newPkgIdent = 2
+
+    pkgToData p =
+      let bs = p.unPackage
+       in (BSB.byteString bs, BS.length bs)
+
+prependNewline :: Builder -> Builder
+prependNewline b = "\n  - " <> b
 
 mkLib :: ByteString -> Status
 mkLib lib =
@@ -293,3 +370,27 @@ mkCompleted lib =
       building = mempty,
       completed = Set.singleton $ MkPackage lib
     }
+
+takeCount :: Int -> [a] -> (Int, [a])
+takeCount k = fmap L.reverse . go (k, [])
+  where
+    go acc [] = acc
+    go acc@(0, _) _ = acc
+    go (!cnt, zs) (x : xs) = go (cnt - 1, (x : zs)) xs
+
+takeTrunc :: Int -> [Builder] -> [Builder]
+-- 1. Cannot take anymore.
+takeTrunc 0 acc = acc
+-- 2. No more to take.
+takeTrunc _ [] = []
+-- 3. Can take 1 but more than one left: add ellipsis.
+takeTrunc 1 (_ : _ : _) = ["\n  ..."]
+-- 4. General case: take 1, recurse.
+takeTrunc !n (b : bs) = b : takeTrunc (n - 1) bs
+
+-- FIXME: Ints should be Word or something
+
+monus :: (Num a, Ord a) => a -> a -> a
+monus x y
+  | x < y = 0
+  | otherwise = x - y

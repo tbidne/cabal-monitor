@@ -37,9 +37,10 @@ import Paths_build_monitor_hs qualified as Paths
 
 -- | CLI args.
 data Args = MkArgs
-  { compact :: Maybe Int,
-    filePath :: OsPath,
-    period :: Maybe Int
+  { filePath :: OsPath,
+    height :: Maybe Int,
+    period :: Maybe Int,
+    width :: Maybe Int
   }
   deriving stock (Eq, Show)
 
@@ -71,27 +72,12 @@ parserInfo =
 argsParser :: Parser Args
 argsParser =
   MkArgs
-    <$> compactParser
-    <*> filePathParser
+    <$> filePathParser
+    <*> heightParser
     <*> periodParser
+    <*> widthParser
       <**> OA.helper
       <**> version
-
-compactParser :: Parser (Maybe Int)
-compactParser =
-  OA.optional
-    $ OA.option
-      OA.auto
-    $ mconcat
-      [ OA.long "compact",
-        OA.metavar "NAT",
-        mkHelp $
-          mconcat
-            [ "Compacts lines to save vertical space, with line length ",
-              "limited by the parameter. If not given, we attempt to choose ",
-              "compact vs. default based on available terminal space."
-            ]
-      ]
 
 filePathParser :: Parser OsPath
 filePathParser =
@@ -106,6 +92,18 @@ filePathParser =
   where
     readPath = OA.str >>= OsPath.encodeFail
 
+heightParser :: Parser (Maybe Int)
+heightParser =
+  OA.optional
+    $ OA.option
+      OA.auto
+    $ mconcat
+      [ OA.short 'h',
+        OA.long "height",
+        OA.metavar "NAT",
+        mkHelp "Maximum number of lines to display."
+      ]
+
 periodParser :: Parser (Maybe Int)
 periodParser =
   OA.optional
@@ -116,6 +114,18 @@ periodParser =
         OA.long "period",
         OA.metavar "NAT",
         mkHelp "Monitor refresh period, in seconds."
+      ]
+
+widthParser :: Parser (Maybe Int)
+widthParser =
+  OA.optional
+    $ OA.option
+      OA.auto
+    $ mconcat
+      [ OA.short 'w',
+        OA.long "width",
+        OA.metavar "NAT",
+        mkHelp "Maximum line length."
       ]
 
 version :: Parser (a -> a)
