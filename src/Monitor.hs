@@ -25,9 +25,10 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Char8 qualified as C8
 import Data.ByteString.Lazy qualified as BSL
-import Data.Foldable (foldMap')
-import Data.List qualified as L
+import Data.Foldable qualified as F
 import Data.Maybe (fromMaybe)
+import Data.Sequence (Seq (Empty, (:<|), (:|>)))
+import Data.Sequence qualified as Seq
 import Data.Set (Set, (\\))
 import Data.Set qualified as Set
 import Data.String (IsString)
@@ -213,7 +214,7 @@ logCounter rType = do
         $ s
 
 parseStatus :: [ByteString] -> Status
-parseStatus = foldMap' go
+parseStatus = F.foldMap' go
   where
     go txt = case BS.stripPrefix " - " txt of
       Just rest -> mkLib (BS.takeWhile (/= 32) rest)
@@ -264,7 +265,7 @@ formatAll ::
 formatAll style toBuildS buildingS completedS = final
   where
     final =
-      mconcat $
+      concatSeq $
         concatter
           toBuildBuilders
           buildingBuilders
@@ -276,66 +277,58 @@ formatAll style toBuildS buildingS completedS = final
       FormatInl width -> (formatCompact width, concatNewlines)
       FormatInlTrunc height width -> (formatCompact width, concatCompact height)
 
-    concatNewlines as bs cs =
-      mconcat
-        [ as,
-          ["\n", "\n"],
-          bs,
-          ["\n", "\n"],
-          cs
-        ]
+    concatSeq :: Seq Builder -> Builder
+    concatSeq = F.foldMap' id
 
+    concatNewlines :: Seq Builder -> Seq Builder -> Seq Builder -> Seq Builder
+    concatNewlines as bs cs =
+      as <> ("\n" :<| "\n" :<| Empty) <> bs <> ("\n" :<| "\n" :<| Empty) <> cs
+
+    concatCompact :: Int -> Seq Builder -> Seq Builder -> Seq Builder -> Seq Builder
     concatCompact height as bs cs =
       let (h1, bs') = takeCount height bs
           hEach = h1 `div` 2
           as' = takeTrunc hEach as
           cs' = takeTrunc hEach cs
-       in mconcat
-            [ as',
-              ["\n", "\n"],
-              bs',
-              ["\n", "\n"],
-              cs'
-            ]
+       in concatNewlines as' bs' cs'
 
-    toBuildL = Set.toList toBuildS
+    toBuildL = Seq.fromList $ Set.toList toBuildS
     toBuildBuilders =
       let bs = formatter toBuildL
-       in "To Build: " <> (BSB.intDec $ Set.size toBuildS) : bs
+       in "To Build: " <> (BSB.intDec $ Set.size toBuildS) :<| bs
 
-    buildingL = Set.toList buildingS
+    buildingL = Seq.fromList $ Set.toList buildingS
     buildingBuilders =
       let bs = formatter buildingL
-       in "Building: " <> (BSB.intDec $ Set.size buildingS) : bs
+       in "Building: " <> (BSB.intDec $ Set.size buildingS) :<| bs
 
-    completedL = Set.toList completedS
+    completedL = Seq.fromList $ Set.toList completedS
     completedBuilders =
       let bs = formatter completedL
-       in "Completed: " <> (BSB.intDec $ Set.size completedS) : bs
+       in "Completed: " <> (BSB.intDec $ Set.size completedS) :<| bs
 
-formatNewlines :: [Package] -> [Builder]
-formatNewlines = L.reverse . foldl' go []
+formatNewlines :: Seq Package -> Seq Builder
+formatNewlines = foldl' go Empty
   where
-    go acc p = prependNewline (BSB.byteString p.unPackage) : acc
+    go acc p = acc :|> prependNewline (BSB.byteString p.unPackage)
 
-formatCompact :: Int -> [Package] -> [Builder]
-formatCompact width = L.reverse . fmap fst . foldl' go []
+formatCompact :: Int -> Seq Package -> Seq Builder
+formatCompact width = fmap fst . foldl' go Empty
   where
-    go :: [(Builder, Int)] -> Package -> [(Builder, Int)]
-    go [] p =
+    go :: Seq (Builder, Int) -> Package -> Seq (Builder, Int)
+    go Empty p =
       let (newBuilder, newLen) = pkgToData p
-       in [(prependNewline newBuilder, newLen + newlineIdent)]
-    go ((currBuilder, currLen) : accs) p =
+       in Seq.singleton (prependNewline newBuilder, newLen + newlineIdent)
+    go (accs :|> (currBuilder, currLen)) p =
       let (newBuilder, newLen) = pkgToData p
           totalLen = newLen + currLen + newPkgIdent
        in if totalLen + 1 > width
             then
-              (prependNewline newBuilder, newLen + newlineIdent)
-                : (currBuilder, currLen)
-                : accs
+              accs
+                :|> (currBuilder, currLen)
+                :|> (prependNewline newBuilder, newLen + newlineIdent)
             else
-              (currBuilder <> ", " <> newBuilder, totalLen)
-                : accs
+              accs :|> (currBuilder <> ", " <> newBuilder, totalLen)
 
     newlineIdent = 4
     newPkgIdent = 2
@@ -371,22 +364,21 @@ mkCompleted lib =
       completed = Set.singleton $ MkPackage lib
     }
 
-takeCount :: Int -> [a] -> (Int, [a])
-takeCount k = fmap L.reverse . go (k, [])
+takeCount :: Int -> Seq a -> (Int, Seq a)
+takeCount k = go (k, Empty)
   where
-    go acc [] = acc
+    go acc Empty = acc
     go acc@(0, _) _ = acc
-    go (!cnt, zs) (x : xs) = go (cnt - 1, (x : zs)) xs
+    go (!cnt, zs) (x :<| xs) = go (cnt - 1, (zs :|> x)) xs
 
-takeTrunc :: Int -> [Builder] -> [Builder]
--- 1. Cannot take anymore.
+takeTrunc :: Int -> Seq Builder -> Seq Builder
 takeTrunc 0 acc = acc
 -- 2. No more to take.
-takeTrunc _ [] = []
+takeTrunc _ Empty = Empty
 -- 3. Can take 1 but more than one left: add ellipsis.
-takeTrunc 1 (_ : _ : _) = ["\n  ..."]
+takeTrunc 1 (_ :<| _ :<| _) = Seq.singleton $ "\n  ..."
 -- 4. General case: take 1, recurse.
-takeTrunc !n (b : bs) = b : takeTrunc (n - 1) bs
+takeTrunc !n (b :<| bs) = b :<| takeTrunc (n - 1) bs
 
 -- FIXME: Ints should be Word or something
 
