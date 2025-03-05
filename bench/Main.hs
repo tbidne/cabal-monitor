@@ -4,14 +4,14 @@
 module Main (main) where
 
 import Data.ByteString (ByteString)
-import Data.ByteString.Char8 qualified as C8
 import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
-import Monitor (FormatStyle (FormatInlTrunc, FormatNl), Status)
 import Monitor qualified
+import Monitor.Status (FormatStyle (FormatInlTrunc, FormatNl), Status)
+import Monitor.Status qualified as Status
 import Numeric.Natural (Natural)
 import TH qualified
 import Test.Tasty.Bench
@@ -26,24 +26,24 @@ import Test.Tasty.Bench
 main :: IO ()
 main = do
   defaultMain
-    [ env (pure sampleLines) benchParseStatus,
+    [ env (pure sampleBS) benchParseStatus,
       env (pure sampleStatus) benchFormatStatus,
       env (pure sampleStatus) benchFormatStatusCompact,
       benchReadFormatted samplePath,
       benchReadFormattedCompact samplePath
     ]
 
-benchParseStatus :: [ByteString] -> Benchmark
+benchParseStatus :: ByteString -> Benchmark
 benchParseStatus txtLines =
-  bench "parseStatus" $ nf Monitor.parseStatus txtLines
+  bench "parseStatus" $ nf Status.parseStatus txtLines
 
 benchFormatStatus :: Status -> Benchmark
 benchFormatStatus status =
-  bench "formatStatus" $ nf (Monitor.formatStatus FormatNl) status
+  bench "formatStatus" $ nf (Status.formatStatus FormatNl) status
 
 benchFormatStatusCompact :: Status -> Benchmark
 benchFormatStatusCompact status =
-  bench "formatStatus_compact" $ nf (Monitor.formatStatus compactStyle) status
+  bench "formatStatus_compact" $ nf (Status.formatStatus compactStyle) status
 
 benchReadFormatted :: OsPath -> Benchmark
 benchReadFormatted path =
@@ -74,11 +74,8 @@ samplePath = [ospPathSep|./bench/sample.txt|]
 sampleBS :: ByteString
 sampleBS = $$TH.readSampleTH
 
-sampleLines :: [ByteString]
-sampleLines = C8.lines sampleBS
-
 sampleStatus :: Status
-sampleStatus = Monitor.parseStatus sampleLines
+sampleStatus = Status.parseStatus sampleBS
 
 runBenchEff ::
   (HasCallStack) =>

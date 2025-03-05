@@ -52,6 +52,7 @@ library
     Monitor
     Monitor.Args
     Monitor.Logger
+    Monitor.Status
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22

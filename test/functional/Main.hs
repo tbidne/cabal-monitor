@@ -33,17 +33,18 @@ import FileSystem.OsPath
     ospPathSep,
     (</>),
   )
-import Monitor
+import Monitor qualified
+import Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
+import Monitor.Status
   ( FormatStyle
       ( FormatInl,
         FormatInlTrunc,
         FormatNl,
         FormatNlTrunc
       ),
-    Status (MkStatus, allLibs, building, completed),
+    Status (MkStatus, allPkgs, buildStarted, completed),
   )
-import Monitor qualified
-import Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
+import Monitor.Status qualified as Status
 import System.Environment qualified as Env
 import System.Environment.Guard (ExpectEnv (ExpectEnvSet), guardOrElse')
 import System.Timeout qualified as TO
@@ -275,7 +276,7 @@ formatStatusTests =
 
 testFormatNl :: TestTree
 testFormatNl = testCase desc $ do
-  expected @=? Monitor.formatStatus FormatNl exampleStatus
+  expected @=? Status.formatStatus FormatNl exampleStatus
   where
     desc = "Formats with newlines"
     expected =
@@ -309,7 +310,7 @@ testFormatNl = testCase desc $ do
 
 testFormatNlTrunc :: TestTree
 testFormatNlTrunc = testCase desc $ do
-  expected @=? Monitor.formatStatus (FormatNlTrunc 15) exampleStatus
+  expected @=? Status.formatStatus (FormatNlTrunc 15) exampleStatus
   where
     desc = "Formats with newlines and truncation"
     expected =
@@ -334,7 +335,7 @@ testFormatNlTrunc = testCase desc $ do
 
 testFormatInl :: TestTree
 testFormatInl = testCase desc $ do
-  expected @=? Monitor.formatStatus (FormatInl 25) exampleStatus
+  expected @=? Status.formatStatus (FormatInl 25) exampleStatus
   where
     desc = "Formats with inline"
     expected =
@@ -356,7 +357,7 @@ testFormatInl = testCase desc $ do
 
 testFormatInlTrunc :: TestTree
 testFormatInlTrunc = testCase desc $ do
-  expected @=? Monitor.formatStatus (FormatInlTrunc 11 25) exampleStatus
+  expected @=? Status.formatStatus (FormatInlTrunc 11 25) exampleStatus
   where
     desc = "Formats with inline and truncation"
     expected =
@@ -378,12 +379,12 @@ testFormatInlTrunc = testCase desc $ do
 exampleStatus :: Status
 exampleStatus =
   MkStatus
-    { allLibs = Set.fromList allLibsL,
-      building = Set.fromList (take 12 allLibsL),
-      completed = Set.fromList (take 5 allLibsL)
+    { allPkgs = Set.fromList allPkgsL,
+      buildStarted = Set.fromList (take 12 allPkgsL),
+      completed = Set.fromList (take 5 allPkgsL)
     }
   where
-    allLibsL = (fromString . ("lib" <>) . show @Int) <$> [1 .. 20]
+    allPkgsL = (fromString . ("lib" <>) . show @Int) <$> [1 .. 20]
 
 type Unit = ()
 
