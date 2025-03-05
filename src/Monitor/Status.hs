@@ -109,7 +109,7 @@ data FormatStyle
 -- | Formats the status.
 formatStatus :: FormatStyle -> Status -> Text
 formatStatus style status =
-  UTF8.unsafeDecodeUtf8 $
+  UTF8.decodeUtf8Lenient $
     BSL.toStrict $
       BSB.toLazyByteString $
         formatAll
