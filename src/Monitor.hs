@@ -97,7 +97,8 @@ monitorBuild rType args =
       readPrintStatus r args.height args.width args.filePath
       CC.threadDelay period_ms
 
-    period_ms = 1_000_000 * (fromMaybe 5 args.period)
+    -- TODO: We should use the sleepSecond which is in terms of Natural.
+    period_ms = 1_000_000 * (nat2Int $ fromMaybe 5 args.period)
 
 readPrintStatus ::
   ( FileReader :> es,
@@ -106,8 +107,10 @@ readPrintStatus ::
     Terminal :> es
   ) =>
   r ->
-  Maybe Int ->
-  Maybe Int ->
+  -- | Maybe terminal height
+  Maybe Natural ->
+  -- | Maybe terminal width
+  Maybe Natural ->
   OsPath ->
   Eff es ()
 readPrintStatus region mHeight mWidth path = do
@@ -119,8 +122,10 @@ readFormattedStatus ::
     HasCallStack,
     Terminal :> es
   ) =>
-  Maybe Int ->
-  Maybe Int ->
+  -- | Maybe terminal height
+  Maybe Natural ->
+  -- | Maybe terminal width
+  Maybe Natural ->
   OsPath ->
   Eff es Text
 readFormattedStatus mHeight mWidth path = do
@@ -140,7 +145,7 @@ readFormattedStatus mHeight mWidth path = do
           --
           --   --> 4 * 2 == 8
           let availPkgLines = sz.height `monus` 8
-              neededLines = length status.allLibs
+              neededLines = int2Nat $ length status.allLibs
 
           if neededLines < availPkgLines
             -- 2.2. Normal, non-compact format fits in the vertical space;
@@ -230,13 +235,13 @@ data FormatStyle
     FormatNl
   | -- | Format each package on a newline, truncating lines exceeding the
     -- given height.
-    FormatNlTrunc Int
+    FormatNlTrunc Natural
   | -- | Format packages inline, creating a newline once we exceed the
     -- given width.
-    FormatInl Int
+    FormatInl Natural
   | -- | Given height and width, formats inline (width) and truncates
     -- (height).
-    FormatInlTrunc Int Int
+    FormatInlTrunc Natural Natural
 
 formatStatus :: FormatStyle -> Status -> Text
 formatStatus style status =
@@ -318,10 +323,10 @@ formatNewlines = L.reverse . foldl' go []
   where
     go acc p = prependNewline (BSB.byteString p.unPackage) : acc
 
-formatCompact :: Int -> [Package] -> [Builder]
+formatCompact :: Natural -> [Package] -> [Builder]
 formatCompact width = L.reverse . fmap fst . foldl' go []
   where
-    go :: [(Builder, Int)] -> Package -> [(Builder, Int)]
+    go :: [(Builder, Natural)] -> Package -> [(Builder, Natural)]
     go [] p =
       let (newBuilder, newLen) = pkgToData p
        in [(prependNewline newBuilder, newLen + newlineIdent)]
@@ -342,7 +347,7 @@ formatCompact width = L.reverse . fmap fst . foldl' go []
 
     pkgToData p =
       let bs = p.unPackage
-       in (BSB.byteString bs, BS.length bs)
+       in (BSB.byteString bs, int2Nat $ BS.length bs)
 
 prependNewline :: Builder -> Builder
 prependNewline b = "\n  - " <> b
@@ -371,14 +376,14 @@ mkCompleted lib =
       completed = Set.singleton $ MkPackage lib
     }
 
-takeCount :: Int -> [a] -> (Int, [a])
+takeCount :: Natural -> [a] -> (Natural, [a])
 takeCount k = fmap L.reverse . go (k, [])
   where
     go acc [] = acc
     go acc@(0, _) _ = acc
     go (!cnt, zs) (x : xs) = go (cnt - 1, (x : zs)) xs
 
-takeTrunc :: Int -> [Builder] -> [Builder]
+takeTrunc :: Natural -> [Builder] -> [Builder]
 -- 1. Cannot take anymore.
 takeTrunc 0 acc = acc
 -- 2. No more to take.
@@ -388,9 +393,13 @@ takeTrunc 1 (_ : _ : _) = ["\n  ..."]
 -- 4. General case: take 1, recurse.
 takeTrunc !n (b : bs) = b : takeTrunc (n - 1) bs
 
--- FIXME: Ints should be Word or something
-
-monus :: (Num a, Ord a) => a -> a -> a
+monus :: Natural -> Natural -> Natural
 monus x y
   | x < y = 0
   | otherwise = x - y
+
+nat2Int :: Natural -> Int
+nat2Int = fromIntegral
+
+int2Nat :: Int -> Natural
+int2Nat = fromIntegral

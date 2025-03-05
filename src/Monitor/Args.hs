@@ -13,6 +13,7 @@ import Effectful.Optparse.Static (Optparse)
 import Effectful.Optparse.Static qualified as EOA
 import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
+import Numeric.Natural (Natural)
 import Options.Applicative
   ( Mod,
     Parser,
@@ -38,9 +39,9 @@ import Paths_build_monitor_hs qualified as Paths
 -- | CLI args.
 data Args = MkArgs
   { filePath :: OsPath,
-    height :: Maybe Int,
-    period :: Maybe Int,
-    width :: Maybe Int
+    height :: Maybe Natural,
+    period :: Maybe Natural,
+    width :: Maybe Natural
   }
   deriving stock (Eq, Show)
 
@@ -92,7 +93,7 @@ filePathParser =
   where
     readPath = OA.str >>= OsPath.encodeFail
 
-heightParser :: Parser (Maybe Int)
+heightParser :: Parser (Maybe Natural)
 heightParser =
   OA.optional
     $ OA.option
@@ -104,7 +105,7 @@ heightParser =
         mkHelp "Maximum number of lines to display."
       ]
 
-periodParser :: Parser (Maybe Int)
+periodParser :: Parser (Maybe Natural)
 periodParser =
   OA.optional
     $ OA.option
@@ -116,7 +117,7 @@ periodParser =
         mkHelp "Monitor refresh period, in seconds."
       ]
 
-widthParser :: Parser (Maybe Int)
+widthParser :: Parser (Maybe Natural)
 widthParser =
   OA.optional
     $ OA.option

@@ -12,6 +12,7 @@ import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
 import Monitor (FormatStyle (FormatInlTrunc, FormatNl), Status)
 import Monitor qualified
+import Numeric.Natural (Natural)
 import TH qualified
 import Test.Tasty.Bench
   ( Benchmark,
@@ -61,10 +62,10 @@ benchReadFormattedCompact path =
 compactStyle :: FormatStyle
 compactStyle = FormatInlTrunc termHeight termWidth
 
-termHeight :: Int
+termHeight :: Natural
 termHeight = 25
 
-termWidth :: Int
+termWidth :: Natural
 termWidth = 80
 
 samplePath :: OsPath
