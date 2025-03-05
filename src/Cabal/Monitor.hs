@@ -12,6 +12,7 @@ import Cabal.Monitor.Args (Args (filePath, height, period, width))
 import Cabal.Monitor.Args qualified as Args
 import Cabal.Monitor.Logger (LogMode (LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
+import Cabal.Monitor.Pretty qualified as Pretty
 import Cabal.Monitor.Status
   ( FormatStyle (FormatInl, FormatInlTrunc, FormatNl, FormatNlTrunc),
     Status (allPkgs),
@@ -179,7 +180,7 @@ logCounter rType = do
             (fmtTime elapsed)
   where
     fmtTime s =
-      (\t -> "\nTimer: " <> t)
+      (\t -> Pretty.color Pretty.Blue ("\nTimer: " <> t))
         . T.pack
         . Rel.formatSeconds Rel.defaultFormat
         $ s

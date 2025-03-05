@@ -4,6 +4,7 @@ module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
 import Cabal.Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
+import Cabal.Monitor.Pretty qualified as Pretty
 import Cabal.Monitor.Status
   ( FormatStyle
       ( FormatInl,
@@ -103,71 +104,71 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
 
     e1 =
       unlineStrip
-        [ "To Build: 5",
+        [ Pretty.magenta <> "To Build: 5",
           "  - bits-0.6",
           "  - byteable-0.1.1",
           "  - indexed-profunctors-0.1.1.1",
           "  - mtl-compat-0.2.2",
-          "  - string-qq-0.0.6",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 0",
+          Pretty.yellow <> "Building: 0" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
     e2 =
       unlineStrip
-        [ "To Build: 2",
+        [ Pretty.magenta <> "To Build: 2",
           "  - mtl-compat-0.2.2",
-          "  - string-qq-0.0.6",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 3",
+          Pretty.yellow <> "Building: 3",
           "  - bits-0.6",
           "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1",
+          "  - indexed-profunctors-0.1.1.1" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
 
     e3 =
       unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
+        [ Pretty.magenta <> "To Build: 1",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 4",
+          Pretty.yellow <> "Building: 4",
           "  - bits-0.6",
           "  - byteable-0.1.1",
           "  - indexed-profunctors-0.1.1.1",
-          "  - mtl-compat-0.2.2",
+          "  - mtl-compat-0.2.2" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
 
     e4 =
       unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
+        [ Pretty.magenta <> "To Build: 1",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 2",
+          Pretty.yellow <> "Building: 2",
           "  - indexed-profunctors-0.1.1.1",
-          "  - mtl-compat-0.2.2",
+          "  - mtl-compat-0.2.2" <> Pretty.endCode,
           "",
-          "Completed: 2",
+          Pretty.green <> "Completed: 2",
           "  - bits-0.6",
-          "  - byteable-0.1.1"
+          "  - byteable-0.1.1" <> Pretty.endCode
         ]
 
     e5 =
       unlineStrip
-        [ "To Build: 0",
+        [ Pretty.magenta <> "To Build: 0" <> Pretty.endCode,
           "",
-          "Building: 2",
+          Pretty.yellow <> "Building: 2",
           "  - mtl-compat-0.2.2",
-          "  - string-qq-0.0.6",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Completed: 3",
+          Pretty.green <> "Completed: 3",
           "  - bits-0.6",
           "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1"
+          "  - indexed-profunctors-0.1.1.1" <> Pretty.endCode
         ]
 
 testMonitorShortWindow :: IO TestArgs -> TestTree
@@ -211,57 +212,57 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
 
     e1 =
       unlineStrip
-        [ "To Build: 5",
+        [ Pretty.magenta <> "To Build: 5",
           "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, mtl-compat-0.2.2",
-          "  - string-qq-0.0.6",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 0",
+          Pretty.yellow <> "Building: 0" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
     e2 =
       unlineStrip
-        [ "To Build: 2",
-          "  - mtl-compat-0.2.2, string-qq-0.0.6",
+        [ Pretty.magenta <> "To Build: 2",
+          "  - mtl-compat-0.2.2, string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 3",
-          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1",
+          Pretty.yellow <> "Building: 3",
+          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
 
     e3 =
       unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
+        [ Pretty.magenta <> "To Build: 1",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 4",
-          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, mtl-compat-0.2.2",
+          Pretty.yellow <> "Building: 4",
+          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, mtl-compat-0.2.2" <> Pretty.endCode,
           "",
-          "Completed: 0"
+          Pretty.green <> "Completed: 0" <> Pretty.endCode
         ]
 
     e4 =
       unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
+        [ Pretty.magenta <> "To Build: 1",
+          "  - string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Building: 2",
-          "  - indexed-profunctors-0.1.1.1, mtl-compat-0.2.2",
+          Pretty.yellow <> "Building: 2",
+          "  - indexed-profunctors-0.1.1.1, mtl-compat-0.2.2" <> Pretty.endCode,
           "",
-          "Completed: 2",
-          "  - bits-0.6, byteable-0.1.1"
+          Pretty.green <> "Completed: 2",
+          "  - bits-0.6, byteable-0.1.1" <> Pretty.endCode
         ]
 
     e5 =
       unlineStrip
-        [ "To Build: 0",
+        [ Pretty.magenta <> "To Build: 0" <> Pretty.endCode,
           "",
-          "Building: 2",
-          "  - mtl-compat-0.2.2, string-qq-0.0.6",
+          Pretty.yellow <> "Building: 2",
+          "  - mtl-compat-0.2.2, string-qq-0.0.6" <> Pretty.endCode,
           "",
-          "Completed: 3",
-          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1"
+          Pretty.green <> "Completed: 3",
+          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1" <> Pretty.endCode
         ]
 
 formatStatusTests :: TestTree
@@ -281,7 +282,7 @@ testFormatNl = testCase desc $ do
     desc = "Formats with newlines"
     expected =
       unlineStrip
-        [ "To Build: 8",
+        [ Pretty.magenta <> "To Build: 8",
           "  - lib13",
           "  - lib14",
           "  - lib15",
@@ -289,23 +290,23 @@ testFormatNl = testCase desc $ do
           "  - lib17",
           "  - lib18",
           "  - lib19",
-          "  - lib20",
+          "  - lib20" <> Pretty.endCode,
           "",
-          "Building: 7",
+          Pretty.yellow <> "Building: 7",
           "  - lib10",
           "  - lib11",
           "  - lib12",
           "  - lib6",
           "  - lib7",
           "  - lib8",
-          "  - lib9",
+          "  - lib9" <> Pretty.endCode,
           "",
-          "Completed: 5",
+          Pretty.green <> "Completed: 5",
           "  - lib1",
           "  - lib2",
           "  - lib3",
           "  - lib4",
-          "  - lib5"
+          "  - lib5" <> Pretty.endCode
         ]
 
 testFormatNlTrunc :: TestTree
@@ -315,22 +316,22 @@ testFormatNlTrunc = testCase desc $ do
     desc = "Formats with newlines and truncation"
     expected =
       unlineStrip
-        [ "To Build: 8",
+        [ Pretty.magenta <> "To Build: 8",
           "  - lib13",
-          "  ...",
+          "  ..." <> Pretty.endCode,
           "",
-          "Building: 7",
+          Pretty.yellow <> "Building: 7",
           "  - lib10",
           "  - lib11",
           "  - lib12",
           "  - lib6",
           "  - lib7",
           "  - lib8",
-          "  - lib9",
+          "  - lib9" <> Pretty.endCode,
           "",
-          "Completed: 5",
+          Pretty.green <> "Completed: 5",
           "  - lib1",
-          "  ..."
+          "  ..." <> Pretty.endCode
         ]
 
 testFormatInl :: TestTree
@@ -340,19 +341,19 @@ testFormatInl = testCase desc $ do
     desc = "Formats with inline"
     expected =
       unlineStrip
-        [ "To Build: 8",
+        [ Pretty.magenta <> "To Build: 8",
           "  - lib13, lib14, lib15",
           "  - lib16, lib17, lib18",
-          "  - lib19, lib20",
+          "  - lib19, lib20" <> Pretty.endCode,
           "",
-          "Building: 7",
+          Pretty.yellow <> "Building: 7",
           "  - lib10, lib11, lib12",
           "  - lib6, lib7, lib8",
-          "  - lib9",
+          "  - lib9" <> Pretty.endCode,
           "",
-          "Completed: 5",
+          Pretty.green <> "Completed: 5",
           "  - lib1, lib2, lib3",
-          "  - lib4, lib5"
+          "  - lib4, lib5" <> Pretty.endCode
         ]
 
 testFormatInlTrunc :: TestTree
@@ -362,18 +363,18 @@ testFormatInlTrunc = testCase desc $ do
     desc = "Formats with inline and truncation"
     expected =
       unlineStrip
-        [ "To Build: 8",
+        [ Pretty.magenta <> "To Build: 8",
           "  - lib13, lib14, lib15",
-          "  ...",
+          "  ..." <> Pretty.endCode,
           "",
-          "Building: 7",
+          Pretty.yellow <> "Building: 7",
           "  - lib10, lib11, lib12",
           "  - lib6, lib7, lib8",
-          "  - lib9",
+          "  - lib9" <> Pretty.endCode,
           "",
-          "Completed: 5",
+          Pretty.green <> "Completed: 5",
           "  - lib1, lib2, lib3",
-          "  - lib4, lib5"
+          "  - lib4, lib5" <> Pretty.endCode
         ]
 
 exampleStatus :: Status
