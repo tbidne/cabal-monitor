@@ -1,4 +1,4 @@
-module Monitor.Logger
+module Cabal.Monitor.Logger
   ( -- * Effect
     RegionLogger (..),
     LogMode (..),

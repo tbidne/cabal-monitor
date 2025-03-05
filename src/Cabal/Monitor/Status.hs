@@ -1,4 +1,4 @@
-module Monitor.Status
+module Cabal.Monitor.Status
   ( -- * Types
     Status (..),
     Package (..),

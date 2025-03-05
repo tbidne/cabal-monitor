@@ -1,4 +1,4 @@
-module Monitor.Args
+module Cabal.Monitor.Args
   ( Args (..),
     getArgs,
   )
@@ -34,7 +34,7 @@ import Options.Applicative.Help (Chunk (Chunk))
 import Options.Applicative.Help.Chunk qualified as Chunk
 import Options.Applicative.Help.Pretty qualified as Pretty
 import Options.Applicative.Types (ArgPolicy (Intersperse))
-import Paths_build_monitor_hs qualified as Paths
+import Paths_cabal_monitor qualified as Paths
 
 -- | CLI args.
 data Args = MkArgs
@@ -61,12 +61,12 @@ parserInfo =
       infoPolicy = Intersperse
     }
   where
-    header = Just "Build-monitor: Monitors haskell builds"
+    header = Just "Cabal-monitor: Monitors cabal builds"
     footerTxt = Just $ fromString versNum
     desc =
       Chunk.paragraph $
         mconcat
-          [ "Build-monitor monitors a haskell output build file (e.g. cabal ",
+          [ "Cabal-monitor monitors a cabal output build file (e.g. cabal ",
             "build > out.txt) and reports basic progress information."
           ]
 

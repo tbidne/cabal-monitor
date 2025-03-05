@@ -2,6 +2,18 @@
 
 module Main (main) where
 
+import Cabal.Monitor qualified as Monitor
+import Cabal.Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
+import Cabal.Monitor.Status
+  ( FormatStyle
+      ( FormatInl,
+        FormatInlTrunc,
+        FormatNl,
+        FormatNlTrunc
+      ),
+    Status (MkStatus, allPkgs, buildStarted, completed),
+  )
+import Cabal.Monitor.Status qualified as Status
 import Control.Monad (unless, void)
 import Data.Foldable (for_)
 import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
@@ -33,18 +45,6 @@ import FileSystem.OsPath
     ospPathSep,
     (</>),
   )
-import Monitor qualified
-import Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
-import Monitor.Status
-  ( FormatStyle
-      ( FormatInl,
-        FormatInlTrunc,
-        FormatNl,
-        FormatNlTrunc
-      ),
-    Status (MkStatus, allPkgs, buildStarted, completed),
-  )
-import Monitor.Status qualified as Status
 import System.Environment qualified as Env
 import System.Environment.Guard (ExpectEnv (ExpectEnvSet), guardOrElse')
 import System.Timeout qualified as TO
@@ -469,7 +469,7 @@ data TestArgs = MkTestArgs
 
 setup :: (HasCallStack) => IO TestArgs
 setup = runTestEff $ do
-  tmpDir <- (</> [ospPathSep|build-monitor|]) <$> PR.getTemporaryDirectory
+  tmpDir <- (</> [ospPathSep|cabal-monitor|]) <$> PR.getTemporaryDirectory
 
   PW.removePathForciblyIfExists_ tmpDir
 

@@ -94,7 +94,7 @@
             returnShellEnv:
             nix-hs-utils.mkHaskellPkg {
               inherit compiler pkgs returnShellEnv;
-              name = "build-monitor-hs";
+              name = "cabal-monitor";
               root = ./.;
 
               devTools = [

@@ -1,4 +1,4 @@
-module Monitor
+module Cabal.Monitor
   ( -- * High level
     runMonitor,
 
@@ -8,6 +8,15 @@ module Monitor
   )
 where
 
+import Cabal.Monitor.Args (Args (filePath, height, period, width))
+import Cabal.Monitor.Args qualified as Args
+import Cabal.Monitor.Logger (LogMode (LogModeSet), RegionLogger)
+import Cabal.Monitor.Logger qualified as Logger
+import Cabal.Monitor.Status
+  ( FormatStyle (FormatInl, FormatInlTrunc, FormatNl, FormatNlTrunc),
+    Status (allPkgs),
+  )
+import Cabal.Monitor.Status qualified as Status
 import Control.Monad (forever)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
@@ -27,15 +36,6 @@ import Effectful.Terminal.Dynamic (Terminal)
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath)
 import GHC.Natural (Natural)
-import Monitor.Args (Args (filePath, height, period, width))
-import Monitor.Args qualified as Args
-import Monitor.Logger (LogMode (LogModeSet), RegionLogger)
-import Monitor.Logger qualified as Logger
-import Monitor.Status
-  ( FormatStyle (FormatInl, FormatInlTrunc, FormatNl, FormatNlTrunc),
-    Status (allPkgs),
-  )
-import Monitor.Status qualified as Status
 import System.Console.Regions (RegionLayout (Linear))
 
 -- | Parses CLI args and runs the monitor loop.

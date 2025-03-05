@@ -1,6 +1,6 @@
 packages: .
 
-package build-monitor-hs
+package cabal-monitor
   ghc-options:
     -Wall -Wcompat
     -Widentities

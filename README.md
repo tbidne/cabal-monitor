@@ -1,10 +1,12 @@
 <div align="center">
 
-# build-monitor-hs
+# cabal-monitor
 
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/tbidne/build-monitor-hs?include_prereleases&sort=semver)](https://github.com/tbidne/build-monitor-hs/releases/)
-[![ci](http://img.shields.io/github/actions/workflow/status/tbidne/build-monitor-hs/ci.yaml?branch=main)](https://github.com/tbidne/build-monitor-hs/actions/workflows/ci.yaml)
-[![MIT](https://img.shields.io/github/license/tbidne/build-monitor-hs?color=blue)](https://opensource.org/licenses/MIT)
+## Monitor cabal builds
+
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/tbidne/cabal-monitor?include_prereleases&sort=semver)](https://github.com/tbidne/cabal-monitor/releases/)
+[![ci](http://img.shields.io/github/actions/workflow/status/tbidne/cabal-monitor/ci.yaml?branch=main)](https://github.com/tbidne/cabal-monitor/actions/workflows/ci.yaml)
+[![MIT](https://img.shields.io/github/license/tbidne/cabal-monitor?color=blue)](https://opensource.org/licenses/MIT)
 
 </div>
 

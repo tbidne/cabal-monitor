@@ -1,13 +1,13 @@
 cradle:
   cabal:
     - path: "./src"
-      component: "lib:build-monitor-hs"
+      component: "lib:cabal-monitor"
 
     - path: "./app/Main.hs"
-      component: "build-monitor-hs:exe:build-monitor-hs"
+      component: "cabal-monitor:exe:cabal-monitor"
 
     - path: "./test/functional"
-      component: "build-monitor-hs:test:functional"
+      component: "cabal-monitor:test:functional"
 
     - path: "./bench/Main.hs"
-      component: "build-monitor-hs:bench:benchmarks"
+      component: "cabal-monitor:bench:benchmarks"

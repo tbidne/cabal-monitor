@@ -1,5 +1,5 @@
 cabal-version:      2.4
-name:               build-monitor-hs
+name:               cabal-monitor
 version:            0.1
 license:            MIT
 license-file:       LICENSE
@@ -7,8 +7,8 @@ tested-with:        GHC ==9.10.1 || ==9.12.1
 copyright:          2025 Thomas Bidne
 author:             Thomas Bidne
 maintainer:         tbidne@protonmail.com
-homepage:           https://github.com/tbidne/build-monitor-hs/
-bug-reports:        https://github.com/tbidne/build-monitor-hs/issues
+homepage:           https://github.com/tbidne/cabal-monitor/
+bug-reports:        https://github.com/tbidne/cabal-monitor/issues
 synopsis:           Template
 description:        A Template
 category:           Template
@@ -23,7 +23,7 @@ extra-doc-files:    CHANGELOG.md
 
 source-repository head
   type:     git
-  location: https://github.com/tbidne/build-monitor-hs
+  location: https://github.com/tbidne/cabal-monitor
 
 common common-lang
   default-extensions:
@@ -46,13 +46,13 @@ common common-lang
 
 library
   import:          common-lang
-  other-modules:   Paths_build_monitor_hs
-  autogen-modules: Paths_build_monitor_hs
+  other-modules:   Paths_cabal_monitor
+  autogen-modules: Paths_cabal_monitor
   exposed-modules:
-    Monitor
-    Monitor.Args
-    Monitor.Logger
-    Monitor.Status
+    Cabal.Monitor
+    Cabal.Monitor.Args
+    Cabal.Monitor.Logger
+    Cabal.Monitor.Status
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22
@@ -72,12 +72,12 @@ library
 
   hs-source-dirs:  src
 
-executable build-monitor-hs
+executable cabal-monitor
   import:         common-lang
   main-is:        Main.hs
   build-depends:
     , base
-    , build-monitor-hs
+    , cabal-monitor
     , concurrent-output
     , effectful
     , fs-effectful
@@ -93,7 +93,7 @@ test-suite functional
   main-is:        Main.hs
   build-depends:
     , base
-    , build-monitor-hs
+    , cabal-monitor
     , containers
     , effectful
     , effectful-utils
@@ -115,8 +115,8 @@ benchmark benchmarks
   other-modules:  TH
   build-depends:
     , base
-    , build-monitor-hs
     , bytestring
+    , cabal-monitor
     , effectful
     , fs-effectful
     , fs-utils

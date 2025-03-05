@@ -1,4 +1,4 @@
-# Revision history for build-monitor-hs
+# Revision history for cabal-monitor
 
 ## 0.1 -- YYYY-mm-dd
 

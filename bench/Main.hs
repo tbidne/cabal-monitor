@@ -3,15 +3,15 @@
 
 module Main (main) where
 
+import Cabal.Monitor qualified as Monitor
+import Cabal.Monitor.Status (FormatStyle (FormatInlTrunc, FormatNl), Status)
+import Cabal.Monitor.Status qualified as Status
 import Data.ByteString (ByteString)
 import Effectful (Eff, IOE, runEff)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
-import Monitor qualified
-import Monitor.Status (FormatStyle (FormatInlTrunc, FormatNl), Status)
-import Monitor.Status qualified as Status
 import Numeric.Natural (Natural)
 import TH qualified
 import Test.Tasty.Bench
