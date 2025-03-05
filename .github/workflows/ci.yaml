@@ -5,7 +5,7 @@ on: # yamllint disable-line rule:truthy rule:comments
   push:
     branches:
       - main
-      - format
+      - pretty
 
   pull_request:
     branches:

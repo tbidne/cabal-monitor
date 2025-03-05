@@ -52,6 +52,7 @@ library
     Cabal.Monitor
     Cabal.Monitor.Args
     Cabal.Monitor.Logger
+    Cabal.Monitor.Pretty
     Cabal.Monitor.Status
 
   build-depends:

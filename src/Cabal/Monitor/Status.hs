@@ -12,6 +12,7 @@ module Cabal.Monitor.Status
   )
 where
 
+import Cabal.Monitor.Pretty qualified as Pretty
 import Control.DeepSeq (NFData)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
@@ -145,27 +146,25 @@ formatAll style toBuildS buildingS completedS = final
       FormatInl width -> (formatCompact width, concatNewlines)
       FormatInlTrunc height width -> (formatCompact width, concatCompact height)
 
-    concatNewlines as bs cs =
-      mconcat
-        [ as,
-          ["\n", "\n"],
-          bs,
-          ["\n", "\n"],
-          cs
-        ]
-
     concatCompact height as bs cs =
       let (h1, bs') = takeCount height bs
           hEach = h1 `div` 2
           as' = takeTrunc hEach as
           cs' = takeTrunc hEach cs
-       in mconcat
-            [ as',
-              ["\n", "\n"],
-              bs',
-              ["\n", "\n"],
-              cs'
-            ]
+       in concatNewlines as' bs' cs'
+
+    -- NOTE: We do the coloring here since the "safe" way to color functions,
+    -- i.e. the color function, operates on a single string type, not a list.
+    concatNewlines as bs cs =
+      mconcat
+        [ [Pretty.magenta],
+          as,
+          [Pretty.endCode, "\n", "\n", Pretty.yellow],
+          bs,
+          [Pretty.endCode, "\n", "\n", Pretty.green],
+          cs,
+          [Pretty.endCode]
+        ]
 
     toBuildL = Set.toList toBuildS
     toBuildBuilders =
