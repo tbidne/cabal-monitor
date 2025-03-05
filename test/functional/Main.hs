@@ -3,18 +3,25 @@
 module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Logger (RegionLogger (DisplayRegions, LogRegion, WithRegion))
-import Cabal.Monitor.Pretty qualified as Pretty
-import Cabal.Monitor.Status
-  ( FormatStyle
+import Cabal.Monitor.BuildStatus
+  ( BuildStatus (MkBuildStatus, building, completed, toBuild),
+    BuildStatusInit,
+    FormatStyle
       ( FormatInl,
         FormatInlTrunc,
         FormatNl,
         FormatNlTrunc
       ),
-    Status (MkStatus, allPkgs, buildStarted, completed),
   )
-import Cabal.Monitor.Status qualified as Status
+import Cabal.Monitor.BuildStatus qualified as BuildStatus
+import Cabal.Monitor.Logger
+  ( RegionLogger
+      ( DisplayRegions,
+        LogRegion,
+        WithRegion
+      ),
+  )
+import Cabal.Monitor.Pretty qualified as Pretty
 import Control.Monad (unless, void)
 import Data.Foldable (for_)
 import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
@@ -78,11 +85,14 @@ monitorTests getTestArgs =
 
 testMonitor :: IO TestArgs -> TestTree
 testMonitor getTestArgs = testCase "Monitors build output" $ do
-  buildPath <- decodeThrowM =<< (.buildFile) <$> getTestArgs
-  logs <- runMonitorLogs getTestArgs (args buildPath)
+  testArgs <- getTestArgs
+  let buildOsPath = testArgs.tmpDir </> [ospPathSep|testMonitor.txt|]
+  buildFilePath <- decodeThrowM buildOsPath
+
+  logs <- runMonitorLogs getTestArgs buildOsPath (args buildFilePath)
 
   for_ expected $ \e -> do
-    unless (e `Set.member` logs) $ do
+    unless (containsLog e logs) $ do
       let msg =
             T.unpack $
               mconcat
@@ -100,7 +110,16 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
         "1"
       ]
 
-    expected = [e1, e2, e3, e4, e5]
+    expected = [e0, e1, e2, e3, e4, e5, t0, t1]
+
+    t0 = "Waiting to start:"
+
+    t1 = "Building: 1 second"
+
+    -- NOTE: No "Finished in" log because its presence is non-deterministic
+    -- (based on timing).
+
+    e0 = "Build file does not exist at path:"
 
     e1 =
       unlineStrip
@@ -174,7 +193,8 @@ testMonitor getTestArgs = testCase "Monitors build output" $ do
 testMonitorShortWindow :: IO TestArgs -> TestTree
 testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
   testArgs <- getTestArgs
-  buildPath <- decodeThrowM testArgs.buildFile
+  let buildOsPath = testArgs.tmpDir </> [ospPathSep|testMonitorShortWindow.txt|]
+  buildFilePath <- decodeThrowM buildOsPath
 
   let testArgs' =
         testArgs
@@ -187,10 +207,10 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
                 )
           }
 
-  logs <- runMonitorLogs (pure testArgs') (args buildPath)
+  logs <- runMonitorLogs (pure testArgs') buildOsPath (args buildFilePath)
 
   for_ expected $ \e -> do
-    unless (e `Set.member` logs) $ do
+    unless (containsLog e logs) $ do
       let msg =
             T.unpack $
               mconcat
@@ -208,7 +228,13 @@ testMonitorShortWindow getTestArgs = testCase "Monitors with short window" $ do
         "1"
       ]
 
-    expected = [e1, e2, e3, e4, e5]
+    expected = [e0, e1, e2, e3, e4, e5, t0, t1]
+
+    t0 = "Waiting to start:"
+
+    t1 = "Building: 1 second"
+
+    e0 = "Build file does not exist at path:"
 
     e1 =
       unlineStrip
@@ -277,7 +303,7 @@ formatStatusTests =
 
 testFormatNl :: TestTree
 testFormatNl = testCase desc $ do
-  expected @=? Status.formatStatus FormatNl exampleStatus
+  expected @=? BuildStatus.formatStatusInit FormatNl exampleStatus
   where
     desc = "Formats with newlines"
     expected =
@@ -311,7 +337,7 @@ testFormatNl = testCase desc $ do
 
 testFormatNlTrunc :: TestTree
 testFormatNlTrunc = testCase desc $ do
-  expected @=? Status.formatStatus (FormatNlTrunc 15) exampleStatus
+  expected @=? BuildStatus.formatStatusInit (FormatNlTrunc 15) exampleStatus
   where
     desc = "Formats with newlines and truncation"
     expected =
@@ -336,7 +362,7 @@ testFormatNlTrunc = testCase desc $ do
 
 testFormatInl :: TestTree
 testFormatInl = testCase desc $ do
-  expected @=? Status.formatStatus (FormatInl 25) exampleStatus
+  expected @=? BuildStatus.formatStatusInit (FormatInl 25) exampleStatus
   where
     desc = "Formats with inline"
     expected =
@@ -358,7 +384,7 @@ testFormatInl = testCase desc $ do
 
 testFormatInlTrunc :: TestTree
 testFormatInlTrunc = testCase desc $ do
-  expected @=? Status.formatStatus (FormatInlTrunc 11 25) exampleStatus
+  expected @=? BuildStatus.formatStatusInit (FormatInlTrunc 11 25) exampleStatus
   where
     desc = "Formats with inline and truncation"
     expected =
@@ -377,11 +403,11 @@ testFormatInlTrunc = testCase desc $ do
           "  - lib4, lib5" <> Pretty.endCode
         ]
 
-exampleStatus :: Status
+exampleStatus :: BuildStatusInit
 exampleStatus =
-  MkStatus
-    { allPkgs = Set.fromList allPkgsL,
-      buildStarted = Set.fromList (take 12 allPkgsL),
+  MkBuildStatus
+    { toBuild = Set.fromList allPkgsL,
+      building = Set.fromList (take 12 allPkgsL),
       completed = Set.fromList (take 5 allPkgsL)
     }
   where
@@ -389,14 +415,16 @@ exampleStatus =
 
 type Unit = ()
 
-runMonitorLogs :: (HasCallStack) => IO TestArgs -> [String] -> IO (Set Text)
-runMonitorLogs getTestArgs cliArgs = do
+runMonitorLogs ::
+  (HasCallStack) =>
+  IO TestArgs -> OsPath -> [String] -> IO (Set Text)
+runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
   testArgs <- getTestArgs
   logsRef <- newIORef mempty
   _ <-
-    TO.timeout 10_000_000 $
+    TO.timeout 13_000_000 $
       ( Env.withArgs cliArgs $ runner logsRef testArgs.mWindow $ do
-          (runBuildScript getTestArgs)
+          (runBuildScript buildFileOsPath)
             `EAsync.concurrently`
             -- start this second so build file exists.
             (ECC.threadDelay 500_000 *> Monitor.runMonitor Unit)
@@ -445,26 +473,22 @@ runTerminalMock mWindow = interpret_ $ \case
   other -> error $ showEffectCons other
 
 runBuildScript ::
-  ( IOE :> es,
-    HasCallStack,
+  ( HasCallStack,
     PathReader :> es,
     Process :> es
   ) =>
-  IO TestArgs ->
+  OsPath ->
   Eff es ()
-runBuildScript getTestArgs = do
-  testArgs <- liftIO $ getTestArgs
-
+runBuildScript buildFileOsPath = do
   pwd <- PR.getCurrentDirectory
   scriptPath <- decodeThrowM (pwd </> [ospPathSep|test/functional/build.sh|])
 
-  outPath <- decodeThrowM testArgs.buildFile
+  outPath <- decodeThrowM buildFileOsPath
 
   void $ EProcess.createProcess $ EProcess.proc scriptPath [outPath]
 
 data TestArgs = MkTestArgs
   { tmpDir :: OsPath,
-    buildFile :: OsPath,
     mWindow :: Maybe (Window Int)
   }
 
@@ -476,9 +500,7 @@ setup = runTestEff $ do
 
   PW.createDirectoryIfMissing True tmpDir
 
-  let buildFile = tmpDir </> [ospPathSep|build.txt|]
-
-  pure $ MkTestArgs tmpDir buildFile Nothing
+  pure $ MkTestArgs tmpDir Nothing
 
 teardown :: (HasCallStack) => TestArgs -> IO ()
 teardown testArgs = do
@@ -501,3 +523,10 @@ runTestEff =
 
 unlineStrip :: [Text] -> Text
 unlineStrip = T.strip . T.unlines
+
+containsLog :: Text -> Set Text -> Bool
+containsLog l logs =
+  if l `Set.member` logs
+    then True
+    -- O(n) fallback for inexact match.
+    else any (T.isInfixOf l) logs

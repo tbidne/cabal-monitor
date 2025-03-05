@@ -51,9 +51,10 @@ library
   exposed-modules:
     Cabal.Monitor
     Cabal.Monitor.Args
+    Cabal.Monitor.BuildState
+    Cabal.Monitor.BuildStatus
     Cabal.Monitor.Logger
     Cabal.Monitor.Pretty
-    Cabal.Monitor.Status
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22

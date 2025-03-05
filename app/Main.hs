@@ -5,6 +5,7 @@ import Cabal.Monitor.Logger qualified as Logger
 import Effectful (runEff)
 import Effectful.Concurrent qualified as CC
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.PathReader.Static qualified as PR
 import Effectful.Optparse.Static qualified as EOA
 import Effectful.Terminal.Dynamic qualified as Term
 import System.Console.Regions (ConsoleRegion)
@@ -20,5 +21,6 @@ main = runner (Monitor.runMonitor ConsoleRegion)
         . CC.runConcurrent
         . Logger.runRegionLogger
         . Term.runTerminal
+        . PR.runPathReader
         . FR.runFileReader
         . EOA.runOptparse

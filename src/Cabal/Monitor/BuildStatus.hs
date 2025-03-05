@@ -1,14 +1,24 @@
-module Cabal.Monitor.Status
+module Cabal.Monitor.BuildStatus
   ( -- * Types
-    Status (..),
+    BuildStatus (..),
     Package (..),
+
+    -- ** Phases
+    BuildStatusInit,
+    BuildStatusFinal,
+    BuildStatusPhase (..),
+    advancePhase,
 
     -- * Construction
     parseStatus,
 
     -- * Elimination
     FormatStyle (..),
-    formatStatus,
+    formatStatusInit,
+    formatStatusFinal,
+
+    -- * Functions
+    numAllPkgs,
   )
 where
 
@@ -21,6 +31,7 @@ import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Char8 qualified as C8
 import Data.ByteString.Lazy qualified as BSL
 import Data.Foldable qualified as F
+import Data.Kind (Type)
 import Data.List qualified as L
 import Data.Set (Set, (\\))
 import Data.Set qualified as Set
@@ -36,61 +47,81 @@ newtype Package = MkPackage {unPackage :: ByteString}
   deriving newtype (IsString)
   deriving anyclass (NFData)
 
+-- | Describes the possible 'phasess' for the status.
+data BuildStatusPhase
+  = -- | Phase right after the file is read.
+    BuildStatusPhaseInit
+  | -- | Phase after the file is processed.
+    BuildStatusPhaseFinal
+  deriving stock (Eq, Show)
+
 -- | Build status.
-data Status = MkStatus
-  { -- | All packages in the output.
-    allPkgs :: Set Package,
-    -- | Packages that have started building. This will generally include
-    -- packages that have completed building as well.
-    buildStarted :: Set Package,
-    -- | Packages that have completed building.
+type BuildStatus :: BuildStatusPhase -> Type
+data BuildStatus p = MkBuildStatus
+  { -- | During the 'BuildStatusPhaseInit' phase, this includes all packages
+    -- that will be built. In the 'BuildStatusPhaseFinal' phase, this is only
+    -- the packages that have yet to be built.
+    toBuild :: Set Package,
+    -- | During the 'BuildStatusPhaseInit' phase, this includes all packages
+    -- that have started building i.e. will include those whose builds have
+    -- also completed. In the 'BuildStatusPhaseFinal' phase, this is only the
+    -- packages currently building.
+    building :: Set Package,
+    -- | Packages that have completed building. Same for both phases.
     completed :: Set Package
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData)
 
-instance Semigroup Status where
-  MkStatus x1 x2 x3 <> MkStatus y1 y2 y3 =
-    MkStatus (x1 <> y1) (x2 <> y2) (x3 <> y3)
+instance Semigroup (BuildStatus p) where
+  MkBuildStatus x1 x2 x3 <> MkBuildStatus y1 y2 y3 =
+    MkBuildStatus (x1 <> y1) (x2 <> y2) (x3 <> y3)
 
-instance Monoid Status where
-  mempty = MkStatus mempty mempty mempty
+instance Monoid (BuildStatus p) where
+  mempty = MkBuildStatus mempty mempty mempty
+
+type BuildStatusInit = BuildStatus BuildStatusPhaseInit
+
+type BuildStatusFinal = BuildStatus BuildStatusPhaseFinal
 
 -- | Parses a status.
-parseStatus :: ByteString -> Status
+parseStatus :: ByteString -> BuildStatusInit
 parseStatus = F.foldMap' go . C8.lines
   where
     go txt = case BS.stripPrefix " - " txt of
-      Just rest -> mkPkg (BS.takeWhile (/= 32) rest)
-      Nothing -> case BS.stripPrefix "Building" txt of
+      Just rest -> mkPkg (BS.takeWhile (/= spaceChr) rest)
+      -- "Starting" rather than "Building" as the former includes other steps
+      -- we care about e.g. downloading, configuring.
+      Nothing -> case BS.stripPrefix "Starting" txt of
         Just rest -> mkBuilding (takeSkipLeadingSpc rest)
         Nothing -> case BS.stripPrefix "Completed" txt of
           Just rest -> mkCompleted (takeSkipLeadingSpc rest)
           Nothing -> mempty
 
-    takeSkipLeadingSpc = BS.takeWhile (/= 32) . BS.dropWhile (== 32)
+    spaceChr = 32
+    takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 
-mkPkg :: ByteString -> Status
+mkPkg :: ByteString -> BuildStatusInit
 mkPkg lib =
-  MkStatus
-    { allPkgs = Set.singleton $ MkPackage lib,
-      buildStarted = mempty,
+  MkBuildStatus
+    { toBuild = Set.singleton $ MkPackage lib,
+      building = mempty,
       completed = mempty
     }
 
-mkBuilding :: ByteString -> Status
+mkBuilding :: ByteString -> BuildStatusInit
 mkBuilding lib =
-  MkStatus
-    { allPkgs = mempty,
-      buildStarted = Set.singleton $ MkPackage lib,
+  MkBuildStatus
+    { toBuild = mempty,
+      building = Set.singleton $ MkPackage lib,
       completed = mempty
     }
 
-mkCompleted :: ByteString -> Status
+mkCompleted :: ByteString -> BuildStatusInit
 mkCompleted lib =
-  MkStatus
-    { allPkgs = mempty,
-      buildStarted = mempty,
+  MkBuildStatus
+    { toBuild = mempty,
+      building = mempty,
       completed = Set.singleton $ MkPackage lib
     }
 
@@ -107,23 +138,36 @@ data FormatStyle
     -- (height).
     FormatInlTrunc Natural Natural
 
+-- | Advances the phase.
+advancePhase :: BuildStatusInit -> BuildStatusFinal
+advancePhase status =
+  MkBuildStatus
+    { toBuild,
+      building,
+      completed = status.completed
+    }
+  where
+    toBuild =
+      status.toBuild
+        \\ (status.building `Set.union` status.completed)
+
+    building = status.building \\ status.completed
+
+-- | Advances and formats the status.
+formatStatusInit :: FormatStyle -> BuildStatusInit -> Text
+formatStatusInit style = formatStatusFinal style . advancePhase
+
 -- | Formats the status.
-formatStatus :: FormatStyle -> Status -> Text
-formatStatus style status =
+formatStatusFinal :: FormatStyle -> BuildStatusFinal -> Text
+formatStatusFinal style status =
   UTF8.decodeUtf8Lenient $
     BSL.toStrict $
       BSB.toLazyByteString $
         formatAll
           style
-          toBuild
-          building
-          completed
-  where
-    toBuild =
-      status.allPkgs
-        \\ (status.buildStarted `Set.union` status.completed)
-    building = status.buildStarted \\ status.completed
-    completed = status.completed
+          status.toBuild
+          status.building
+          status.completed
 
 formatAll ::
   FormatStyle ->
@@ -142,11 +186,11 @@ formatAll style toBuildS buildingS completedS = final
 
     (formatter, concatter) = case style of
       FormatNl -> (formatNewlines, concatNewlines)
-      FormatNlTrunc height -> (formatNewlines, concatCompact height)
-      FormatInl width -> (formatCompact width, concatNewlines)
-      FormatInlTrunc height width -> (formatCompact width, concatCompact height)
+      FormatNlTrunc height -> (formatNewlines, concatTruncate height)
+      FormatInl width -> (formatInline width, concatNewlines)
+      FormatInlTrunc height width -> (formatInline width, concatTruncate height)
 
-    concatCompact height as bs cs =
+    concatTruncate height as bs cs =
       let (h1, bs') = takeCount height bs
           hEach = h1 `div` 2
           as' = takeTrunc hEach as
@@ -186,8 +230,8 @@ formatNewlines = L.reverse . foldl' go []
   where
     go acc p = prependNewline (BSB.byteString p.unPackage) : acc
 
-formatCompact :: Natural -> [Package] -> [Builder]
-formatCompact width = L.reverse . fmap fst . foldl' go []
+formatInline :: Natural -> [Package] -> [Builder]
+formatInline width = L.reverse . fmap fst . foldl' go []
   where
     go :: [(Builder, Natural)] -> Package -> [(Builder, Natural)]
     go [] p =
@@ -234,3 +278,7 @@ takeTrunc !n (b : bs) = b : takeTrunc (n - 1) bs
 
 int2Nat :: Int -> Natural
 int2Nat = fromIntegral
+
+-- | Returns the size of all packages we want to build.
+numAllPkgs :: BuildStatusInit -> Int
+numAllPkgs status = Set.size status.toBuild

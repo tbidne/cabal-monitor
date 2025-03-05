@@ -3,12 +3,21 @@
 
 module Main (main) where
 
+import Cabal.Monitor (BuildState (Building))
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Status (FormatStyle (FormatInlTrunc, FormatNl), Status)
-import Cabal.Monitor.Status qualified as Status
+import Cabal.Monitor.BuildStatus
+  ( BuildStatusInit,
+    FormatStyle (FormatInlTrunc, FormatNl),
+  )
+import Cabal.Monitor.BuildStatus qualified as Status
 import Data.ByteString (ByteString)
 import Effectful (Eff, IOE, runEff)
+import Effectful.Concurrent (Concurrent, runConcurrent)
+import Effectful.Concurrent.MVar.Strict (MVar')
+import Effectful.Concurrent.MVar.Strict qualified as MVar
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.PathReader.Static qualified as PR
+import Effectful.Reader.Static (Reader, runReader)
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
@@ -37,13 +46,13 @@ benchParseStatus :: ByteString -> Benchmark
 benchParseStatus txtLines =
   bench "parseStatus" $ nf Status.parseStatus txtLines
 
-benchFormatStatus :: Status -> Benchmark
+benchFormatStatus :: BuildStatusInit -> Benchmark
 benchFormatStatus status =
-  bench "formatStatus" $ nf (Status.formatStatus FormatNl) status
+  bench "formatStatus" $ nf (Status.formatStatusInit FormatNl) status
 
-benchFormatStatusCompact :: Status -> Benchmark
+benchFormatStatusCompact :: BuildStatusInit -> Benchmark
 benchFormatStatusCompact status =
-  bench "formatStatus_compact" $ nf (Status.formatStatus compactStyle) status
+  bench "formatStatus_compact" $ nf (Status.formatStatusInit compactStyle) status
 
 benchReadFormatted :: OsPath -> Benchmark
 benchReadFormatted path =
@@ -74,11 +83,27 @@ samplePath = [ospPathSep|./bench/sample.txt|]
 sampleBS :: ByteString
 sampleBS = $$TH.readSampleTH
 
-sampleStatus :: Status
+sampleStatus :: BuildStatusInit
 sampleStatus = Status.parseStatus sampleBS
 
 runBenchEff ::
   (HasCallStack) =>
-  Eff [FR.FileReader, Term.Terminal, IOE] a ->
+  Eff
+    [ FR.FileReader,
+      PR.PathReader,
+      Term.Terminal,
+      Reader (MVar' (BuildState, Bool)),
+      Concurrent,
+      IOE
+    ]
+    a ->
   IO a
-runBenchEff = runEff . Term.runTerminal . FR.runFileReader
+runBenchEff m = runner
+  where
+    runner = runEff $ runConcurrent $ do
+      var <- MVar.newMVar' (Building, False)
+      runReader var
+        . Term.runTerminal
+        . PR.runPathReader
+        . FR.runFileReader
+        $ m
