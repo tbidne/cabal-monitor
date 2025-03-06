@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+# NOTE: Apparently, the shebang line causes the nixos tests to die. It seems
+# that the shebang is picking up the passed parameter (file path), which
+# causes it to choke.
+#
+# Bizarrely, this only happens for NixOS ubuntu (CI and local). OSX works
+# fine (on CI). Since we don't actually need it, it is removed.
 
 set -e
 
