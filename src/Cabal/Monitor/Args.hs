@@ -99,8 +99,7 @@ heightParser =
     $ OA.option
       OA.auto
     $ mconcat
-      [ OA.short 'h',
-        OA.long "height",
+      [ OA.long "height",
         OA.metavar "NAT",
         mkHelp "Maximum number of lines to display."
       ]
@@ -123,8 +122,7 @@ widthParser =
     $ OA.option
       OA.auto
     $ mconcat
-      [ OA.short 'w',
-        OA.long "width",
+      [ OA.long "width",
         OA.metavar "NAT",
         mkHelp "Maximum line length."
       ]
