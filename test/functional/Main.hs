@@ -485,7 +485,9 @@ runBuildScript buildFileOsPath = do
 
   outPath <- decodeThrowM buildFileOsPath
 
-  void $ EProcess.createProcess $ EProcess.proc scriptPath [outPath]
+  -- It seems we need shell and not proc, to run an actual script not on
+  -- the PATH.
+  void $ EProcess.createProcess $ EProcess.shell $ scriptPath <> " " <> outPath
 
 data TestArgs = MkTestArgs
   { tmpDir :: OsPath,
