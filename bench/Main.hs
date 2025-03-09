@@ -13,11 +13,9 @@ import Cabal.Monitor.BuildStatus qualified as Status
 import Data.ByteString (ByteString)
 import Effectful (Eff, IOE, runEff)
 import Effectful.Concurrent (Concurrent, runConcurrent)
-import Effectful.Concurrent.MVar.Strict (MVar')
-import Effectful.Concurrent.MVar.Strict qualified as MVar
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.PathReader.Static qualified as PR
-import Effectful.Reader.Static (Reader, runReader)
+import Effectful.State.Static.Shared qualified as SState
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath, ospPathSep)
 import GHC.Stack (HasCallStack)
@@ -92,7 +90,7 @@ runBenchEff ::
     [ FR.FileReader,
       PR.PathReader,
       Term.Terminal,
-      Reader (MVar' (BuildState, Bool)),
+      SState.State ((BuildState, Bool)),
       Concurrent,
       IOE
     ]
@@ -101,8 +99,7 @@ runBenchEff ::
 runBenchEff m = runner
   where
     runner = runEff $ runConcurrent $ do
-      var <- MVar.newMVar' (Building, False)
-      runReader var
+      SState.evalState (Building, False)
         . Term.runTerminal
         . PR.runPathReader
         . FR.runFileReader

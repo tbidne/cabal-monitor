@@ -37,8 +37,6 @@ import Effectful (Eff, type (:>))
 import Effectful.Concurrent (Concurrent)
 import Effectful.Concurrent qualified as CC
 import Effectful.Concurrent.Async qualified as Async
-import Effectful.Concurrent.MVar.Strict (MVar')
-import Effectful.Concurrent.MVar.Strict qualified as MVar
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Exception qualified as Ex
 import Effectful.FileSystem.FileReader.Static (FileReader)
@@ -46,8 +44,8 @@ import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.PathReader.Static (PathReader)
 import Effectful.FileSystem.PathReader.Static qualified as PR
 import Effectful.Optparse.Static (Optparse)
-import Effectful.Reader.Static (Reader, ask, runReader)
 import Effectful.State.Static.Local qualified as State
+import Effectful.State.Static.Shared qualified as SState
 import Effectful.Terminal.Dynamic (Terminal)
 import Effectful.Terminal.Dynamic qualified as Term
 import FileSystem.OsPath (OsPath)
@@ -88,8 +86,7 @@ monitorBuild ::
   Eff es void
 monitorBuild rType args =
   Logger.displayRegions rType $ do
-    buildStateVar <- MVar.newMVar' (BuildWaiting, False)
-    runReader buildStateVar $ do
+    SState.evalState (BuildWaiting, False) $ do
       eResult <-
         Async.race
           runStatus
@@ -106,13 +103,14 @@ monitorBuild rType args =
     -- TODO: We should use the sleepSecond which is in terms of Natural.
     period_ms = 1_000_000 * (nat2Int $ fromMaybe 5 args.period)
 
+type SharedState s = SState.State s
+
 -- | Reads the build file and prints the formatted status.
 readPrintStatus ::
-  ( Concurrent :> es,
-    FileReader :> es,
+  ( FileReader :> es,
     HasCallStack,
     PathReader :> es,
-    Reader (MVar' (BuildState, Bool)) :> es,
+    SharedState (BuildState, Bool) :> es,
     RegionLogger r :> es,
     Terminal :> es
   ) =>
@@ -139,11 +137,10 @@ readPrintStatus region mHeight mWidth path = do
 
 -- | Reads the build file and formats the textual output.
 readFormattedStatus ::
-  ( Concurrent :> es,
-    FileReader :> es,
+  ( FileReader :> es,
     HasCallStack,
     PathReader :> es,
-    Reader (MVar' (BuildState, Bool)) :> es,
+    SharedState (BuildState, Bool) :> es,
     Terminal :> es
   ) =>
   -- | Maybe terminal height
@@ -159,11 +156,9 @@ readFormattedStatus mHeight mWidth path = do
       let statusFinal = Status.advancePhase statusInit
 
       -- Update build state.
-      buildStateVar <- ask @(MVar' (BuildState, Bool))
-      MVar.modifyMVar'_
-        buildStateVar
+      SState.modify
         ( \(prevState, _) ->
-            pure $ BuildState.mkNewBuildState prevState statusFinal
+            BuildState.mkNewBuildState prevState statusFinal
         )
 
       style <- case (mHeight, mWidth) of
@@ -216,7 +211,7 @@ logCounter ::
   forall es void.
   ( Concurrent :> es,
     HasCallStack,
-    Reader (MVar' (BuildState, Bool)) :> es,
+    SharedState (BuildState, Bool) :> es,
     RegionLogger r :> es
   ) =>
   Eff es void
@@ -229,8 +224,7 @@ logCounter rType = do
           CC.threadDelay 1_000_000
 
           -- In general, we reset the timer when the state has changed.
-          buildStateVar <- ask @(MVar' (BuildState, Bool))
-          (buildState, stateChanged) <- MVar.readMVar' buildStateVar
+          (buildState, stateChanged) <- SState.get @(BuildState, Bool)
 
           case buildState of
             Building -> do
