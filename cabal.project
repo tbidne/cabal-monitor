@@ -34,6 +34,7 @@ source-repository-package
     location: https://github.com/tbidne/effectful-libs.git
     tag: 9697330f9fc02b31aead5924997e54511992a796
     subdir:
+      lib/concurrent-effectful
       lib/effectful-utils
       lib/fs-effectful
       lib/optparse-effectful

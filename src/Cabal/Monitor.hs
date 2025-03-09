@@ -37,6 +37,7 @@ import Effectful (Eff, type (:>))
 import Effectful.Concurrent (Concurrent)
 import Effectful.Concurrent qualified as CC
 import Effectful.Concurrent.Async qualified as Async
+import Effectful.Concurrent.Static qualified as CCS
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Exception qualified as Ex
 import Effectful.FileSystem.FileReader.Static (FileReader)
@@ -96,12 +97,11 @@ monitorBuild rType args =
         Left e -> pure e
         Right x -> pure x
   where
-    runStatus = Logger.withRegion @rType Linear $ \r -> forever $ do
-      readPrintStatus r args.height args.width args.filePath
-      CC.threadDelay period_ms
-
-    -- TODO: We should use the sleepSecond which is in terms of Natural.
-    period_ms = 1_000_000 * (nat2Int $ fromMaybe 5 args.period)
+    runStatus = do
+      let sleepSeconds = fromMaybe 5 args.period
+      Logger.withRegion @rType Linear $ \r -> forever $ do
+        readPrintStatus r args.height args.width args.filePath
+        CCS.sleep sleepSeconds
 
 type SharedState s = SState.State s
 
@@ -269,9 +269,6 @@ monus :: Natural -> Natural -> Natural
 monus x y
   | x < y = 0
   | otherwise = x - y
-
-nat2Int :: Natural -> Int
-nat2Int = fromIntegral
 
 int2Nat :: Int -> Natural
 int2Nat = fromIntegral
