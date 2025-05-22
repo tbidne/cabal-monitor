@@ -25,6 +25,8 @@
       inputs.nix-hs-utils.follows = "nix-hs-utils";
       inputs.nixpkgs.follows = "nixpkgs";
 
+      inputs.algebra-simple.follows = "algebra-simple";
+      inputs.bounds.follows = "bounds";
       inputs.exception-utils.follows = "exception-utils";
       inputs.fs-utils.follows = "fs-utils";
     };
@@ -48,6 +50,9 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.nix-hs-utils.follows = "nix-hs-utils";
       inputs.nixpkgs.follows = "nixpkgs";
+
+      inputs.algebra-simple.follows = "algebra-simple";
+      inputs.bounds.follows = "bounds";
     };
   };
   outputs =
@@ -68,9 +73,15 @@
             overrides =
               final: prev:
               {
-                effectful-core = prev.effectful-core_2_5_1_0;
-                effectful = prev.effectful_2_5_1_0;
                 path = hlib.dontCheck prev.path_0_9_6;
+
+                gitrev-typed = (
+                  final.callHackageDirect {
+                    pkg = "gitrev-typed";
+                    ver = "0.1";
+                    sha256 = "sha256-s7LEekR7NLe3CNhD/8uChnh50eGfaArrrtc5hoCtJ1A=";
+                  } { }
+                );
               }
               // nix-hs-utils.mkLibs inputs final [
                 "algebra-simple"
@@ -97,6 +108,14 @@
               inherit compiler pkgs returnShellEnv;
               name = "cabal-monitor";
               root = ./.;
+
+              modifier =
+                drv:
+                drv.overrideAttrs (oldAttrs: {
+                  CABAL_MONITOR_HASH = "${self.rev or self.dirtyRev}";
+                  CABAL_MONITOR_MODIFIED = "${builtins.toString self.lastModified}";
+                  CABAL_MONITOR_SHORT_HASH = "${self.shortRev or self.dirtyShortRev}";
+                });
 
               devTools = [
                 (hlib.dontCheck compiler.cabal-fmt)

@@ -1,18 +1,23 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Cabal.Monitor.Args
   ( Args (..),
     getArgs,
   )
 where
 
+import Cabal.Monitor.Args.TH qualified as TH
 import Data.List qualified as L
 import Data.String (IsString (fromString))
-import Data.Version (Version (versionBranch))
+import Data.Version (showVersion)
 import Effectful (Eff, (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Optparse.Static (Optparse)
 import Effectful.Optparse.Static qualified as EOA
 import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
+import FileSystem.OsString (OsString)
+import FileSystem.OsString qualified as OsString
 import Numeric.Natural (Natural)
 import Options.Applicative
   ( Mod,
@@ -35,6 +40,7 @@ import Options.Applicative.Help.Chunk qualified as Chunk
 import Options.Applicative.Help.Pretty qualified as Pretty
 import Options.Applicative.Types (ArgPolicy (Intersperse))
 import Paths_cabal_monitor qualified as Paths
+import System.Info qualified as Info
 
 -- | CLI args.
 data Args = MkArgs
@@ -62,7 +68,7 @@ parserInfo =
     }
   where
     header = Just "Cabal-monitor: Monitors cabal builds"
-    footerTxt = Just $ fromString versNum
+    footerTxt = Just $ fromString versShort
     desc =
       Chunk.paragraph $
         mconcat
@@ -128,10 +134,45 @@ widthParser =
       ]
 
 version :: Parser (a -> a)
-version = OA.infoOption versNum (OA.long "version" <> OA.short 'v' <> OA.hidden)
+version = OA.infoOption versLong (OA.long "version" <> OA.short 'v' <> OA.hidden)
 
-versNum :: String
-versNum = "Version: " <> L.intercalate "." (show <$> versionBranch Paths.version)
+versShort :: String
+versShort =
+  mconcat
+    [ "Version: ",
+      showVersion Paths.version,
+      " (",
+      OsString.decodeLenient versionInfo.gitShortHash,
+      ")"
+    ]
+
+versLong :: String
+versLong =
+  L.intercalate
+    "\n"
+    [ "Cabal-monitor: " <> showVersion Paths.version,
+      " - Git revision: " <> OsString.decodeLenient versionInfo.gitHash,
+      " - Commit date:  " <> OsString.decodeLenient versionInfo.gitCommitDate,
+      " - GHC version:  " <> versionInfo.ghc
+    ]
+
+data VersionInfo = MkVersionInfo
+  { gitCommitDate :: OsString,
+    ghc :: String,
+    gitHash :: OsString,
+    gitShortHash :: OsString
+  }
+
+versionInfo :: VersionInfo
+versionInfo =
+  MkVersionInfo
+    { gitCommitDate = d,
+      ghc = showVersion Info.compilerVersion,
+      gitHash = h,
+      gitShortHash = sh
+    }
+  where
+    (d, h, sh) = $$TH.gitData
 
 mkHelp :: String -> Mod f a
 mkHelp s = mkMultiHelp [s]

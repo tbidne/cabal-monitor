@@ -51,6 +51,7 @@ library
   exposed-modules:
     Cabal.Monitor
     Cabal.Monitor.Args
+    Cabal.Monitor.Args.TH
     Cabal.Monitor.BuildState
     Cabal.Monitor.BuildStatus
     Cabal.Monitor.Logger
@@ -61,17 +62,21 @@ library
     , bytestring            >=0.10.12  && <0.13
     , concurrent-effectful  ^>=0.1
     , concurrent-output     ^>=1.10.7
-    , containers            >=0.6.3.1  && <0.8
+    , containers            >=0.6.3.1  && <0.9
     , deepseq               >=1.4.6.0  && <1.6
     , effectful             ^>=2.5.0.0
     , effectful-utils       ^>=0.1
     , fs-effectful          ^>=0.1
     , fs-utils              ^>=0.1
+    , gitrev-typed          ^>=0.1
     , optparse-applicative  >=0.15     && <0.19
     , optparse-effectful    ^>=0.1
+    , os-string             ^>=2.0.0
     , relative-time         ^>=0.1
+    , template-haskell      >=2.17.0.0 && <2.24
     , terminal-effectful    ^>=0.1
     , text                  >=1.2.3.2  && <2.2
+    , time                  >=1.9.3    && <1.15
 
   hs-source-dirs:  src
 
