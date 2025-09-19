@@ -183,7 +183,7 @@ readFormattedStatus mHeight mWidth path = do
                 then FormatNl
                 -- 2.3. Does not fit in vertical space. Use compact, with length
                 --      determined by terminal size.
-                else FormatInlTrunc (sz.height - 1) (sz.width - 1)
+                else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
 
       pure $ Right $ Status.formatStatusFinal style statusFinal
 

@@ -1,0 +1,1209 @@
+Resolving dependencies...
+Build profile: -w ghc-9.12.2 -O0
+In order, the following will be built (use -v for more details):
+ - Boolean-0.2.4 (lib:Boolean) (requires download & build)
+ - BoundedChan-1.0.3.0 (lib:BoundedChan) (requires download & build)
+ - Decimal-0.5.2 (lib) (requires download & build)
+ - Diff-1.0.2 (lib) (requires download & build)
+ - FailT-0.1.2.0 (lib) (requires download & build)
+ - FindBin-0.0.5 (lib:FindBin) (requires download & build)
+ - FloatingHex-0.5 (lib) (requires download & build)
+ - GenericPretty-1.2.2 (lib:GenericPretty) (requires download & build)
+ - HSlippyMap-3.0.1 (lib) (requires download & build)
+ - HSvm-1.0.3.35 (lib) (requires download & build)
+ - HasBigDecimal-0.2.0.0 (lib) (requires build)
+ - HsYAML-0.2.1.5 (lib) (requires download & build)
+ - IfElse-0.85 (lib:IfElse) (requires download & build)
+ - IntervalMap-0.6.2.1 (lib) (requires download & build)
+ - LPFP-core-1.1.5 (lib) (requires download & build)
+ - LetsBeRational-1.0.0.0 (lib) (requires download & build)
+ - List-0.6.2 (lib:List) (requires download & build)
+ - Mantissa-0.1.0.0 (lib) (requires download & build)
+ - MonadPrompt-1.0.0.5 (lib:MonadPrompt) (requires download & build)
+ - NoHoed-0.1.1 (lib) (requires download & build)
+ - NumInstances-1.4 (lib) (requires download & build)
+ - ObjectName-1.1.0.2 (lib) (requires build)
+ - OneTuple-0.4.2 (lib) (requires build)
+ - Only-0.1 (lib) (requires build)
+ - PSQueue-1.2.2 (lib) (requires download & build)
+ - ParsecTools-0.0.2.0 (lib:ParsecTools) (requires download & build)
+ - PyF-0.11.4.0 (lib) (requires download & build)
+ - RoundingFiasco-0.1.0.0 (lib) (requires download & build)
+ - SHA-1.6.4.4 (lib) (requires build)
+ - STMonadTrans-0.4.8.1 (lib) (requires build)
+ - SafeSemaphore-0.10.1 (lib) (requires download & build)
+ - StateVar-1.2.2 (lib) (requires build)
+ - alex-3.5.4.0 (exe:alex) (requires build)
+ - appar-0.1.8 (lib:appar) (requires build)
+ - assoc-1.1.1 (lib) (requires build)
+ - attoparsec-0.14.4 (lib:attoparsec-internal) (requires build)
+ - auto-update-0.2.6 (lib) (requires build)
+ - base-orphans-0.9.3 (lib) (requires build)
+ - base16-bytestring-1.0.2.0 (lib) (requires build)
+ - base64-bytestring-1.2.1.0 (lib) (requires build)
+ - basement-0.0.16 (lib) (requires build)
+ - binary-orphans-1.0.5 (lib) (requires build)
+ - bindings-DSL-1.0.25 (lib) (requires build)
+ - blaze-builder-0.4.4.1 (lib) (requires build)
+ - bmp-1.2.6.4 (lib) (requires build)
+ - byteorder-1.0.4 (lib:byteorder) (requires build)
+ - bytestring-lexing-0.5.0.15 (lib) (requires build)
+ - c-enum-0.1.1.3 (lib) (requires download & build)
+ - cabal-doctest-1.0.11 (lib) (requires build)
+ - call-stack-0.4.0 (lib) (requires build)
+ - cereal-0.5.8.3 (lib) (requires build)
+ - character-ps-0.1 (lib) (requires build)
+ - clock-0.8.4 (lib) (requires build)
+ - colour-2.3.6 (lib) (requires build)
+ - context-0.2.1.1 (lib) (requires build)
+ - cryptohash-md5-0.11.101.0 (lib) (requires build)
+ - data-accessor-0.2.3.1 (lib) (requires build)
+ - data-default-0.8.0.1 (lib) (requires build)
+ - data-lens-light-0.1.2.4 (lib) (requires download & build)
+ - diagrams-solve-0.1.3.1 (lib) (requires download & build)
+ - dlist-1.0 (lib) (requires build)
+ - easy-file-0.2.5 (lib) (requires build)
+ - entropy-0.4.1.11 (lib:entropy) (requires build)
+ - envparse-0.6.0 (lib) (requires build)
+ - fail-4.9.0.0 (lib) (requires build)
+ - fgl-5.8.3.0 (lib) (requires build)
+ - file-embed-0.0.16.0 (lib) (requires build)
+ - fingertree-0.1.6.2 (lib) (requires download & build)
+ - fixed-0.3 (lib) (requires build)
+ - fmlist-0.9.4 (lib) (requires build)
+ - generically-0.1.1 (lib) (requires build)
+ - groups-0.5.3 (lib) (requires download & build)
+ - half-0.3.3 (lib) (requires build)
+ - happy-lib-2.1.7 (lib:grammar) (requires build)
+ - hashable-1.5.0.0 (lib) (requires build)
+ - haskell-lexer-1.2.1 (lib) (requires build)
+ - hourglass-0.2.12 (lib) (requires build)
+ - hsc2hs-0.68.10 (exe:hsc2hs) (requires build)
+ - hspec-discover-2.11.13 (lib) (requires build)
+ - hxt-charproperties-9.5.0.0 (lib) (requires download & build)
+ - indexed-traversable-0.1.4 (lib) (requires build)
+ - integer-logarithms-1.0.4 (lib) (requires build)
+ - logict-0.8.2.0 (lib) (requires build)
+ - loop-0.3.0 (lib) (requires build)
+ - mime-types-0.1.2.0 (lib) (requires build)
+ - monad-loops-0.4.3 (lib) (requires build)
+ - network-byte-order-0.1.7 (lib) (requires build)
+ - network-info-0.2.1 (lib) (requires build)
+ - newtype-generics-0.6.2 (lib) (requires build)
+ - old-locale-1.0.0.7 (lib) (requires build)
+ - operational-0.2.4.2 (lib) (requires download & build)
+ - parallel-3.2.2.0 (lib) (requires build)
+ - polyparse-1.13.1 (lib) (requires download & build)
+ - prettyprinter-1.7.1 (lib) (requires build)
+ - primitive-0.9.1.0 (lib) (requires build)
+ - reflection-2.1.9 (lib) (requires build)
+ - regex-base-0.94.0.3 (lib) (requires build)
+ - safe-0.3.21 (lib) (requires build)
+ - safe-exceptions-0.1.7.4 (lib) (requires build)
+ - semigroups-0.20 (lib) (requires build)
+ - split-0.2.5 (lib) (requires build)
+ - splitmix-0.1.3.1 (lib) (requires build)
+ - statestack-0.3.1.1 (lib) (requires download & build)
+ - stm-chans-3.0.0.9 (lib) (requires build)
+ - string-qq-0.0.6 (lib) (requires download & build)
+ - stringsearch-0.3.6.6 (lib:stringsearch) (requires download & build)
+ - syb-0.7.3 (lib) (requires build)
+ - tagged-0.8.9 (lib) (requires build)
+ - text-binary-0.2.1.1 (lib:text-binary) (requires build)
+ - th-abstraction-0.7.1.0 (lib) (requires build)
+ - th-compat-0.1.6 (lib) (requires build)
+ - time-locale-compat-0.1.1.5 (lib) (requires download & build)
+ - transformers-compat-0.7.2 (lib) (requires build)
+ - unicode-data-0.6.0 (lib) (requires download & build)
+ - unix-compat-0.7.4.1 (lib) (requires build)
+ - unliftio-core-0.2.1.0 (lib) (requires build)
+ - utf8-string-1.0.2 (lib) (requires build)
+ - utility-ht-0.0.17.2 (lib) (requires build)
+ - vector-stream-0.1.0.1 (lib) (requires build)
+ - void-0.7.3 (lib) (requires build)
+ - xml-1.3.14 (lib:xml) (requires build)
+ - xml-types-0.3.8 (lib) (requires build)
+ - ListTree-0.2.3 (lib:ListTree) (requires download & build)
+ - contravariant-1.5.5 (lib) (requires build)
+ - memory-0.18.0 (lib) (requires build)
+ - xmlgen-0.6.2.2 (lib) (requires download & build)
+ - blaze-markup-0.8.3.0 (lib) (requires build)
+ - HUnit-1.6.2.0 (lib) (requires build)
+ - cereal-text-0.1.0.2 (lib) (requires build)
+ - extra-1.8 (lib) (requires build)
+ - ansi-terminal-types-1.1.3 (lib) (requires build)
+ - data-accessor-transformers-0.2.1.8 (lib) (requires download & build)
+ - data-default-class-0.2.0.0 (lib) (requires build)
+ - scanner-0.3.1 (lib) (requires download & build)
+ - OpenGLRaw-3.3.4.1 (lib) (requires build)
+ - happy-lib-2.1.7 (lib:tabular) (requires build)
+ - happy-lib-2.1.7 (lib:frontend) (requires build)
+ - unordered-containers-0.2.20 (lib) (requires build)
+ - time-compat-1.9.8 (lib) (requires build)
+ - these-1.2.1 (lib) (requires build)
+ - text-short-0.1.6 (lib) (requires build)
+ - data-fix-0.3.4 (lib) (requires build)
+ - case-insensitive-1.2.1.0 (lib) (requires build)
+ - async-2.2.5 (lib) (requires build)
+ - zlib-0.7.1.1 (lib) (requires build)
+ - network-3.2.8.0 (lib:network) (requires build)
+ - bindings-GLFW-3.3.9.2 (lib) (requires build)
+ - hxt-unicode-9.0.2.4 (lib:hxt-unicode) (requires download & build)
+ - hxt-regex-xmlschema-9.2.0.7 (lib) (requires download & build)
+ - smallcheck-1.2.1.1 (lib) (requires build)
+ - ech-config-0.0.1 (lib) (requires build)
+ - MemoTrie-0.6.11 (lib) (requires download & build)
+ - old-time-1.1.0.4 (lib:old-time) (requires build)
+ - cpphs-1.20.10 (lib) (requires download & build)
+ - cpphs-1.20.10 (exe:cpphs) (requires download & build)
+ - scientific-0.3.8.0 (lib) (requires build)
+ - resource-pool-0.5.0.0 (lib) (requires build)
+ - integer-conversion-0.1.1 (lib) (requires build)
+ - cborg-0.2.10.0 (lib) (requires build)
+ - cairo-image-0.1.0.5 (lib) (requires download & build)
+ - regex-tdfa-1.3.2.4 (lib) (requires build)
+ - regex-posix-0.96.0.2 (lib) (requires build)
+ - random-1.3.1 (lib) (requires build)
+ - distributive-0.6.2.1 (lib) (requires build)
+ - crypto-api-0.13.3 (lib:crypto-api) (requires build)
+ - th-lift-0.8.6 (lib) (requires build)
+ - th-expand-syns-0.4.12.0 (lib) (requires build)
+ - network-uri-2.6.4.2 (lib) (requires build)
+ - transformers-base-0.4.6 (lib) (requires build)
+ - mmorph-1.2.1 (lib) (requires build)
+ - errors-2.3.0 (lib) (requires build)
+ - Glob-0.10.2 (lib) (requires download & build)
+ - unicode-transforms-0.4.0.1 (lib) (requires download & build)
+ - resourcet-1.3.0 (lib) (requires build)
+ - latex-0.1.0.4 (lib:latex) (requires build)
+ - vector-0.13.2.0 (lib) (requires build)
+ - HStringTemplate-0.8.8 (lib) (requires download & build)
+ - pem-0.2.4 (lib) (requires build)
+ - crypton-1.0.4 (lib) (requires build)
+ - asn1-types-0.3.4 (lib:asn1-types) (requires build)
+ - blaze-svg-0.3.7 (lib) (requires build)
+ - blaze-html-0.9.2.0 (lib) (requires build)
+ - hspec-expectations-0.8.4 (lib) (requires build)
+ - MultipletCombiner-0.0.7 (lib) (requires download & build)
+ - HUnit-approx-1.1.1.1 (lib) (requires download & build)
+ - ansi-terminal-1.1.3 (lib) (requires build)
+ - cookie-0.5.1 (lib) (requires build)
+ - GLURaw-2.0.0.5 (lib) (requires build)
+ - happy-lib-2.1.7 (lib:backend-lalr) (requires build)
+ - happy-lib-2.1.7 (lib:backend-glr) (requires build)
+ - svg-builder-0.1.1 (lib) (requires download & build)
+ - semirings-0.7 (lib) (requires build)
+ - strict-0.5.1 (lib) (requires build)
+ - base64-1.0 (lib) (requires build)
+ - http-types-0.12.4 (lib) (requires build)
+ - unliftio-0.2.25.1 (lib) (requires build)
+ - typed-process-0.2.13.0 (lib) (requires build)
+ - hyphenation-0.8.3 (lib) (requires build)
+ - network-bsd-2.8.1.0 (lib) (requires build)
+ - iproute-1.7.15 (lib) (requires build)
+ - crypton-socks-0.6.2 (lib) (requires build)
+ - GLFW-b-3.3.9.1 (lib) (requires download & build)
+ - unix-time-0.4.17 (lib:unix-time) (requires build)
+ - bytes-0.17.4 (lib) (requires build)
+ - attoparsec-0.14.4 (lib) (requires build)
+ - text-iso8601-0.1.1 (lib) (requires build)
+ - Plural-0.0.2 (lib:Plural) (requires download & build)
+ - regex-compat-0.95.2.2 (lib) (requires build)
+ - uuid-types-1.0.6 (lib) (requires build)
+ - tf-random-0.5 (lib) (requires build)
+ - temporary-1.3 (lib) (requires build)
+ - streaming-commons-0.2.3.0 (lib) (requires build)
+ - mime-mail-0.5.1 (lib) (requires download & build)
+ - QuickCheck-2.16.0.0 (lib) (requires build)
+ - MonadRandom-0.6.2 (lib) (requires download & build)
+ - HaXml-1.25.14 (lib) (requires download & build)
+ - intervals-0.9.3 (lib) (requires download & build)
+ - comonad-5.0.9 (lib) (requires build)
+ - th-reify-many-0.1.10 (lib) (requires build)
+ - hxt-9.3.1.22 (lib) (requires download & build)
+ - HTTP-4000.4.1 (lib) (requires download & build)
+ - monad-control-1.0.3.1 (lib) (requires build)
+ - streaming-0.2.4.0 (lib) (requires download & build)
+ - pipes-4.3.16 (lib) (requires download & build)
+ - bibtex-0.1.0.7 (lib) (requires build)
+ - vector-th-unbox-0.2.2 (lib) (requires build)
+ - vector-binary-instances-0.2.5.2 (lib) (requires build)
+ - th-lift-instances-0.1.20 (lib) (requires build)
+ - matrix-0.3.6.4 (lib) (requires build)
+ - math-functions-0.3.4.4 (lib) (requires download & build)
+ - indexed-traversable-instances-0.1.2 (lib) (requires build)
+ - hashtables-1.4.2 (lib) (requires download & build)
+ - cereal-vector-0.2.0.1 (lib) (requires build)
+ - bitvec-1.1.5.0 (lib) (requires build)
+ - ListLike-4.7.8.4 (lib) (requires build)
+ - JuicyPixels-3.3.9 (lib) (requires download & build)
+ - FontyFruity-0.5.3.5 (lib) (requires download & build)
+ - ENIG-0.0.1.0 (lib) (requires download & build)
+ - Color-0.4.0 (lib) (requires download & build)
+ - ClustalParser-1.3.0 (lib) (requires download & build)
+ - hpke-0.0.0 (lib) (requires build)
+ - asn1-encoding-0.9.6 (lib) (requires build)
+ - hspec-expectations-lifted-0.10.0 (lib) (requires download & build)
+ - prettyprinter-ansi-terminal-1.1.3 (lib) (requires build)
+ - OpenGL-3.0.3.0 (lib) (requires build)
+ - happy-lib-2.1.7 (lib) (requires build)
+ - serialise-0.2.6.1 (lib) (requires build)
+ - Hclip-3.0.0.4 (lib) (requires download & build)
+ - HPDF-1.8 (lib) (requires download & build)
+ - hslogger-1.3.2.0 (lib) (requires download & build)
+ - fast-logger-3.2.6 (lib) (requires build)
+ - gnuplot-0.5.7 (lib) (requires download & build)
+ - http-client-0.7.19 (lib) (requires build)
+ - HaskellNet-0.6.2 (lib) (requires download & build)
+ - quickcheck-transformer-0.3.1.2 (lib) (requires download & build)
+ - quickcheck-io-0.2.0 (lib) (requires build)
+ - Ranged-sets-0.5.0 (lib) (requires download & build)
+ - ListZipper-1.2.0.2 (lib:ListZipper) (requires download & build)
+ - HCodecs-0.5.2 (lib) (requires download & build)
+ - FenwickTree-0.1.2.1 (lib) (requires download & build)
+ - ChasingBottoms-1.3.1.16 (lib) (requires download & build)
+ - bifunctors-5.6.2 (lib) (requires build)
+ - th-orphans-0.13.16 (lib) (requires build)
+ - hxt-http-9.1.5.2 (lib:hxt-http) (requires download & build)
+ - lifted-base-0.2.3.12 (lib) (requires build)
+ - streaming-bytestring-0.3.4 (lib) (requires download & build)
+ - pipes-parse-3.0.9 (lib) (requires download & build)
+ - HaTeX-3.23.0.1 (lib) (requires download & build)
+ - mwc-random-0.15.2.0 (lib) (requires download & build)
+ - witherable-0.5 (lib) (requires build)
+ - RefSerialize-0.4.0 (lib:RefSerialize) (requires download & build)
+ - HSet-0.0.2 (lib) (requires download & build)
+ - vector-algorithms-0.9.1.0 (lib) (requires build)
+ - Earley-0.13.0.1 (lib) (requires download & build)
+ - JuicyPixels-extra-0.6.0 (lib) (requires download & build)
+ - JuicyCairo-0.1.0.1 (lib) (requires download & build)
+ - crypto-pubkey-types-0.4.3 (lib:crypto-pubkey-types) (requires build)
+ - asn1-parse-0.9.5 (lib:asn1-parse) (requires build)
+ - optparse-applicative-0.19.0.0 (lib) (requires build)
+ - OpenAL-1.7.0.5 (lib) (requires download & build)
+ - GLUT-2.7.0.16 (lib) (requires build)
+ - happy-2.1.7 (exe:happy) (requires build)
+ - MissingH-1.6.0.2 (lib) (requires download & build)
+ - hspec-core-2.11.13 (lib) (requires build)
+ - semigroupoids-6.0.1 (lib) (requires build)
+ - profunctors-5.6.3 (lib) (requires build)
+ - HandsomeSoup-0.4.2 (lib) (requires download & build)
+ - mono-traversable-1.0.21.0 (lib) (requires build)
+ - RSA-2.4.1 (lib) (requires build)
+ - crypton-x509-1.7.7 (lib) (requires build)
+ - gloss-rendering-1.13.2.1 (lib) (requires build)
+ - haskell-src-exts-1.23.1 (lib) (requires build)
+ - haskell-src-1.0.4.2 (lib) (requires download & build)
+ - gtk2hs-buildtools-0.13.12.0 (lib) (requires download & build)
+ - Sit-0.2023.8.3 (lib) (requires download & build)
+ - BNFC-2.9.6.1 (lib) (requires download & build)
+ - hspec-2.11.13 (lib) (requires build)
+ - semialign-1.3.1 (lib) (requires build)
+ - monoid-extras-0.7 (lib) (requires download & build)
+ - log-domain-0.13.2 (lib) (requires build)
+ - invariant-0.6.4 (lib) (requires build)
+ - free-5.2 (lib) (requires build)
+ - conduit-1.3.6.1 (lib) (requires build)
+ - crypton-x509-store-1.6.11 (lib) (requires build)
+ - gloss-1.13.2.2 (lib) (requires build)
+ - haskell-src-meta-0.8.15 (lib) (requires build)
+ - glib-0.13.12.0 (lib:glib) (requires download & build)
+ - cairo-0.13.12.0 (lib:cairo) (requires download & build)
+ - ImpSpec-0.1.0.0 (lib) (requires download & build)
+ - aeson-2.2.3.0 (lib) (requires build)
+ - dual-tree-0.2.3.1 (lib) (requires download & build)
+ - pipes-group-1.0.12 (lib) (requires download & build)
+ - adjunctions-4.4.3 (lib) (requires build)
+ - Rasterific-0.7.5.4 (lib) (requires download & build)
+ - ChannelT-0.0.0.7 (lib) (requires download & build)
+ - conduit-extra-1.3.8 (lib) (requires build)
+ - crypton-x509-validation-1.6.14 (lib) (requires build)
+ - crypton-x509-system-1.6.7 (lib) (requires build)
+ - happy-meta-0.2.1.0 (lib) (requires download & build)
+ - alex-meta-0.3.0.13 (lib) (requires build)
+ - QuasiText-0.1.2.6 (lib) (requires download & build)
+ - Interpolation-0.3.0 (lib:Interpolation) (requires download & build)
+ - pango-0.13.12.0 (lib:pango) (requires download & build)
+ - shakespeare-2.1.0.1 (lib) (requires download & build)
+ - attoparsec-aeson-2.2.2.0 (lib) (requires build)
+ - ShellCheck-0.11.0 (lib) (requires download & build)
+ - NanoID-3.4.1.1 (lib) (requires download & build)
+ - IPv6Addr-2.0.6.1 (lib) (requires download & build)
+ - HsYAML-aeson-0.2.0.2 (lib) (requires download & build)
+ - HTF-0.15.0.2 (lib) (requires download & build)
+ - pipes-bytestring-2.1.7 (lib) (requires download & build)
+ - kan-extensions-5.2.7 (lib) (requires build)
+ - xml-conduit-1.10.0.1 (lib:xml-conduit) (requires build)
+ - monad-logger-0.3.42 (lib) (requires build)
+ - tls-2.1.11 (lib) (requires build)
+ - BNFC-meta-0.6.1 (lib:BNFC-meta) (requires download & build)
+ - lens-5.3.5 (lib) (requires build)
+ - xml-hamlet-0.5.0.2 (lib) (requires download & build)
+ - monad-logger-aeson-0.4.1.4 (lib) (requires build)
+ - hedis-0.15.2 (lib) (requires download & build)
+ - crypton-connection-0.4.5 (lib) (requires build)
+ - linear-1.23.2 (lib) (requires build)
+ - ForestStructures-0.0.1.1 (lib) (requires build)
+ - DPutils-0.1.1.0 (lib) (requires download & build)
+ - Chart-1.9.5 (lib) (requires download & build)
+ - Blammo-2.1.3.0 (lib) (requires build)
+ - IPv6DB-0.3.3.4 (lib) (requires download & build)
+ - http-client-tls-0.3.6.4 (lib) (requires build)
+ - HaskellNet-SSL-0.4.0.2 (lib) (requires download & build)
+ - diagrams-core-1.5.1.1 (lib) (requires download & build)
+ - active-0.2.1 (lib) (requires build)
+ - Vis-1.0.0 (lib) (requires download & build)
+ - BiobaseNewick-0.0.0.2 (lib) (requires build)
+ - SciBaseTypes-0.1.1.0 (lib) (requires download & build)
+ - Chart-cairo-1.9.4.1 (lib) (requires download & build)
+ - http-conduit-2.3.9.1 (lib) (requires build)
+ - DAV-1.3.4 (lib) (requires download & build)
+ - diagrams-lib-1.5.0.1 (lib) (requires download & build)
+ - MusicBrainz-0.4.1 (lib) (requires download & build)
+ - diagrams-svg-1.5 (lib) (requires download & build)
+ - diagrams-postscript-1.5.3 (lib) (requires download & build)
+ - diagrams-cairo-1.5 (lib) (requires download & build)
+ - SVGFonts-1.8.1 (lib) (requires download & build)
+ - LPFP-1.1.5 (lib) (requires download & build)
+ - Chart-diagrams-1.9.5.1 (lib) (requires download & build)
+ - generated-0.1.0.0 (lib) (configuration changed)
+Created semaphore called cabal_semaphore_k with 8 slots.
+Downloading  diagrams-solve-0.1.3.1
+Downloaded   diagrams-solve-0.1.3.1
+Downloading  fingertree-0.1.6.2
+Downloaded   fingertree-0.1.6.2
+Downloading  groups-0.5.3
+Downloaded   groups-0.5.3
+Downloading  hxt-charproperties-9.5.0.0
+Downloaded   hxt-charproperties-9.5.0.0
+Downloading  hxt-unicode-9.0.2.4
+Downloaded   hxt-unicode-9.0.2.4
+Downloading  scanner-0.3.1
+Downloaded   scanner-0.3.1
+Downloading  c-enum-0.1.1.3
+Downloaded   c-enum-0.1.1.3
+Downloading  string-qq-0.0.6
+Downloaded   string-qq-0.0.6
+Downloading  time-locale-compat-0.1.1.5
+Downloaded   time-locale-compat-0.1.1.5
+Downloading  data-lens-light-0.1.2.4
+Downloaded   data-lens-light-0.1.2.4
+Downloading  operational-0.2.4.2
+Downloaded   operational-0.2.4.2
+Downloading  cairo-image-0.1.0.5
+Downloaded   cairo-image-0.1.0.5
+Downloading  statestack-0.3.1.1
+Downloaded   statestack-0.3.1.1
+Downloading  unicode-data-0.6.0
+Downloaded   unicode-data-0.6.0
+Downloading  math-functions-0.3.4.4
+Downloaded   math-functions-0.3.4.4
+Downloading  mwc-random-0.15.2.0
+Downloaded   mwc-random-0.15.2.0
+Downloading  data-accessor-transformers-0.2.1.8
+Downloaded   data-accessor-transformers-0.2.1.8
+Downloading  haskell-src-1.0.4.2
+Downloaded   haskell-src-1.0.4.2
+Downloading  happy-meta-0.2.1.0
+Downloaded   happy-meta-0.2.1.0
+Downloading  intervals-0.9.3
+Downloaded   intervals-0.9.3
+Downloading  pipes-4.3.16
+Downloaded   pipes-4.3.16
+Downloading  pipes-parse-3.0.9
+Downloaded   pipes-parse-3.0.9
+Downloading  gnuplot-0.5.7
+Downloaded   gnuplot-0.5.7
+Downloading  hslogger-1.3.2.0
+Downloaded   hslogger-1.3.2.0
+Downloading  streaming-0.2.4.0
+Downloaded   streaming-0.2.4.0
+Downloading  streaming-bytestring-0.3.4
+Downloaded   streaming-bytestring-0.3.4
+Downloading  stringsearch-0.3.6.6
+Downloaded   stringsearch-0.3.6.6
+Downloading  hashtables-1.4.2
+Downloaded   hashtables-1.4.2
+Downloading  mime-mail-0.5.1
+Downloaded   mime-mail-0.5.1
+Downloading  hxt-regex-xmlschema-9.2.0.7
+Downloaded   hxt-regex-xmlschema-9.2.0.7
+Downloading  hxt-9.3.1.22
+Downloaded   hxt-9.3.1.22
+Downloading  polyparse-1.13.1
+Downloaded   polyparse-1.13.1
+Downloading  cpphs-1.20.10
+Downloaded   cpphs-1.20.10
+Downloading  svg-builder-0.1.1
+Downloaded   svg-builder-0.1.1
+Downloading  unicode-transforms-0.4.0.1
+Downloaded   unicode-transforms-0.4.0.1
+Downloading  xmlgen-0.6.2.2
+Downloaded   xmlgen-0.6.2.2
+Downloading  pipes-group-1.0.12
+Downloaded   pipes-group-1.0.12
+Downloading  pipes-bytestring-2.1.7
+Downloaded   pipes-bytestring-2.1.7
+Downloading  monoid-extras-0.7
+Downloaded   monoid-extras-0.7
+Downloading  dual-tree-0.2.3.1
+Downloaded   dual-tree-0.2.3.1
+Downloading  Sit-0.2023.8.3
+Downloaded   Sit-0.2023.8.3
+Downloading  SafeSemaphore-0.10.1
+Downloaded   SafeSemaphore-0.10.1
+Downloading  RoundingFiasco-0.1.0.0
+Downloaded   RoundingFiasco-0.1.0.0
+Downloading  RefSerialize-0.4.0
+Downloaded   RefSerialize-0.4.0
+Downloading  Ranged-sets-0.5.0
+Downloaded   Ranged-sets-0.5.0
+Downloading  quickcheck-transformer-0.3.1.2
+Downloaded   quickcheck-transformer-0.3.1.2
+Downloading  QuasiText-0.1.2.6
+Downloaded   QuasiText-0.1.2.6
+Downloading  PyF-0.11.4.0
+Downloaded   PyF-0.11.4.0
+Downloading  Plural-0.0.2
+Downloaded   Plural-0.0.2
+Downloading  ParsecTools-0.0.2.0
+Downloaded   ParsecTools-0.0.2.0
+Downloading  PSQueue-1.2.2
+Downloaded   PSQueue-1.2.2
+Downloading  diagrams-core-1.5.1.1
+Downloaded   diagrams-core-1.5.1.1
+Downloading  shakespeare-2.1.0.1
+Downloaded   shakespeare-2.1.0.1
+Downloading  NumInstances-1.4
+Downloaded   NumInstances-1.4
+Downloading  NoHoed-0.1.1
+Downloaded   NoHoed-0.1.1
+Downloading  NanoID-3.4.1.1
+Downloaded   NanoID-3.4.1.1
+Downloading  MonadRandom-0.6.2
+Downloaded   MonadRandom-0.6.2
+Downloading  MonadPrompt-1.0.0.5
+Downloaded   MonadPrompt-1.0.0.5
+Downloading  MissingH-1.6.0.2
+Downloaded   MissingH-1.6.0.2
+Downloading  MemoTrie-0.6.11
+Downloaded   MemoTrie-0.6.11
+Downloading  Mantissa-0.1.0.0
+Downloaded   Mantissa-0.1.0.0
+Downloading  ListZipper-1.2.0.2
+Downloaded   ListZipper-1.2.0.2
+Downloading  List-0.6.2
+Downloaded   List-0.6.2
+Downloading  ListTree-0.2.3
+Downloaded   ListTree-0.2.3
+Downloading  LetsBeRational-1.0.0.0
+Downloaded   LetsBeRational-1.0.0.0
+Downloading  LPFP-core-1.1.5
+Downloaded   LPFP-core-1.1.5
+Downloading  JuicyPixels-3.3.9
+Downloaded   JuicyPixels-3.3.9
+Downloading  JuicyPixels-extra-0.6.0
+Downloaded   JuicyPixels-extra-0.6.0
+Downloading  diagrams-lib-1.5.0.1
+Downloaded   diagrams-lib-1.5.0.1
+Downloading  SVGFonts-1.8.1
+Downloaded   SVGFonts-1.8.1
+Downloading  diagrams-postscript-1.5.3
+Downloaded   diagrams-postscript-1.5.3
+Downloading  diagrams-svg-1.5
+Downloaded   diagrams-svg-1.5
+Downloading  JuicyCairo-0.1.0.1
+Downloaded   JuicyCairo-0.1.0.1
+Downloading  IntervalMap-0.6.2.1
+Downloaded   IntervalMap-0.6.2.1
+Downloading  Interpolation-0.3.0
+Downloaded   Interpolation-0.3.0
+Downloading  IfElse-0.85
+Downloaded   IfElse-0.85
+Downloading  IPv6Addr-2.0.6.1
+Downloaded   IPv6Addr-2.0.6.1
+Downloading  HsYAML-0.2.1.5
+Downloaded   HsYAML-0.2.1.5
+Downloading  HsYAML-aeson-0.2.0.2
+Downloaded   HsYAML-aeson-0.2.0.2
+Downloading  Hclip-3.0.0.4
+Downloaded   Hclip-3.0.0.4
+Downloading  HaskellNet-0.6.2
+Downloaded   HaskellNet-0.6.2
+Downloading  HaskellNet-SSL-0.4.0.2
+Downloaded   HaskellNet-SSL-0.4.0.2
+Downloading  HaXml-1.25.14
+Downloaded   HaXml-1.25.14
+Downloading  HaTeX-3.23.0.1
+Downloaded   HaTeX-3.23.0.1
+Downloading  HUnit-approx-1.1.1.1
+Downloaded   HUnit-approx-1.1.1.1
+Downloading  MultipletCombiner-0.0.7
+Downloaded   MultipletCombiner-0.0.7
+Downloading  hspec-expectations-lifted-0.10.0
+Downloaded   hspec-expectations-lifted-0.10.0
+Downloading  ImpSpec-0.1.0.0
+Downloaded   ImpSpec-0.1.0.0
+Downloading  HTTP-4000.4.1
+Downloaded   HTTP-4000.4.1
+Downloading  hedis-0.15.2
+Downloaded   hedis-0.15.2
+Downloading  IPv6DB-0.3.3.4
+Downloaded   IPv6DB-0.3.3.4
+Downloading  hxt-http-9.1.5.2
+Downloaded   hxt-http-9.1.5.2
+Downloading  HandsomeSoup-0.4.2
+Downloaded   HandsomeSoup-0.4.2
+Downloading  HSvm-1.0.3.35
+Downloaded   HSvm-1.0.3.35
+Downloading  HStringTemplate-0.8.8
+Downloaded   HStringTemplate-0.8.8
+Downloading  HSlippyMap-3.0.1
+Downloaded   HSlippyMap-3.0.1
+Downloading  HSet-0.0.2
+Downloaded   HSet-0.0.2
+Downloading  HPDF-1.8
+Downloaded   HPDF-1.8
+Downloading  HCodecs-0.5.2
+Downloaded   HCodecs-0.5.2
+Downloading  Glob-0.10.2
+Downloaded   Glob-0.10.2
+Downloading  GenericPretty-1.2.2
+Downloaded   GenericPretty-1.2.2
+Downloading  OpenAL-1.7.0.5
+Starting     GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   OpenAL-1.7.0.5
+Downloading  Vis-1.0.0
+Downloaded   Vis-1.0.0
+Downloading  GLFW-b-3.3.9.1
+Building     GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   GLFW-b-3.3.9.1
+Downloading  FontyFruity-0.5.3.5
+Downloaded   FontyFruity-0.5.3.5
+Downloading  Rasterific-0.7.5.4
+Downloaded   Rasterific-0.7.5.4
+Downloading  FloatingHex-0.5
+Downloaded   FloatingHex-0.5
+Downloading  FindBin-0.0.5
+Starting     FloatingHex-0.5 (lib)
+Downloaded   FindBin-0.0.5
+Downloading  FenwickTree-0.1.2.1
+Starting     FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   FenwickTree-0.1.2.1
+Downloading  FailT-0.1.2.0
+Building     FloatingHex-0.5 (lib)
+Installing   GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   FailT-0.1.2.0
+Downloading  Earley-0.13.0.1
+Starting     FailT-0.1.2.0 (lib)
+Building     FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     HSlippyMap-3.0.1 (lib)
+Downloaded   Earley-0.13.0.1
+Downloading  ENIG-0.0.1.0
+Downloaded   ENIG-0.0.1.0
+Downloading  Diff-1.0.2
+Downloaded   Diff-1.0.2
+Downloading  HTF-0.15.0.2
+Starting     Diff-1.0.2 (lib)
+Building     FailT-0.1.2.0 (lib)
+Downloaded   HTF-0.15.0.2
+Downloading  ShellCheck-0.11.0
+Installing   FloatingHex-0.5 (lib)
+Downloaded   ShellCheck-0.11.0
+Downloading  Decimal-0.5.2
+Downloaded   Decimal-0.5.2
+Downloading  DPutils-0.1.1.0
+Starting     Decimal-0.5.2 (lib)
+Downloaded   DPutils-0.1.1.0
+Downloading  SciBaseTypes-0.1.1.0
+Building     HSlippyMap-3.0.1 (lib)
+Installing   FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   SciBaseTypes-0.1.1.0
+Downloading  Color-0.4.0
+Downloaded   Color-0.4.0
+Downloading  ClustalParser-1.3.0
+Downloaded   ClustalParser-1.3.0
+Downloading  ChasingBottoms-1.3.1.16
+Completed    FloatingHex-0.5 (lib)
+Starting     HSvm-1.0.3.35 (lib)
+Downloaded   ChasingBottoms-1.3.1.16
+Downloading  Chart-1.9.5
+Downloaded   Chart-1.9.5
+Downloading  Chart-diagrams-1.9.5.1
+Building     Diff-1.0.2 (lib)
+Completed    FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     HasBigDecimal-0.2.0.0 (lib)
+Downloaded   Chart-diagrams-1.9.5.1
+Downloading  ChannelT-0.0.0.7
+Installing   HSlippyMap-3.0.1 (lib)
+Downloaded   ChannelT-0.0.0.7
+Downloading  gtk2hs-buildtools-0.13.12.0
+Building     Decimal-0.5.2 (lib)
+Downloaded   gtk2hs-buildtools-0.13.12.0
+Downloading  cairo-0.13.12.0
+Downloaded   cairo-0.13.12.0
+Downloading  Chart-cairo-1.9.4.1
+Downloaded   Chart-cairo-1.9.4.1
+Downloading  glib-0.13.12.0
+Downloaded   glib-0.13.12.0
+Downloading  pango-0.13.12.0
+Building     HSvm-1.0.3.35 (lib)
+Completed    HSlippyMap-3.0.1 (lib)
+Starting     HsYAML-0.2.1.5 (lib)
+Downloaded   pango-0.13.12.0
+Downloading  diagrams-cairo-1.5
+Downloaded   diagrams-cairo-1.5
+Downloading  LPFP-1.1.5
+Downloaded   LPFP-1.1.5
+Downloading  MusicBrainz-0.4.1
+Building     HasBigDecimal-0.2.0.0 (lib)
+Downloaded   MusicBrainz-0.4.1
+Downloading  xml-hamlet-0.5.0.2
+Downloaded   xml-hamlet-0.5.0.2
+Downloading  DAV-1.3.4
+Downloaded   DAV-1.3.4
+Downloading  BoundedChan-1.0.3.0
+Downloaded   BoundedChan-1.0.3.0
+Downloading  Boolean-0.2.4
+Starting     BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   Boolean-0.2.4
+Downloading  BNFC-meta-0.6.1
+Starting     Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+Downloaded   BNFC-meta-0.6.1
+Downloading  BNFC-2.9.6.1
+Building     HsYAML-0.2.1.5 (lib)
+Downloaded   BNFC-2.9.6.1
+Building     BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+Building     Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   Decimal-0.5.2 (lib)
+Installing   HasBigDecimal-0.2.0.0 (lib)
+Installing   Diff-1.0.2 (lib)
+Installing   BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    Decimal-0.5.2 (lib)
+Starting     IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    HasBigDecimal-0.2.0.0 (lib)
+Starting     IntervalMap-0.6.2.1 (lib)
+Installing   FailT-0.1.2.0 (lib)
+Completed    BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     LPFP-core-1.1.5 (lib)
+Building     IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    Diff-1.0.2 (lib)
+Completed    FailT-0.1.2.0 (lib)
+Starting     LetsBeRational-1.0.0.0 (lib)
+Building     IntervalMap-0.6.2.1 (lib)
+Installing   HSvm-1.0.3.35 (lib)
+Building     LPFP-core-1.1.5 (lib)
+Installing   Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    HSvm-1.0.3.35 (lib)
+Starting     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     LetsBeRational-1.0.0.0 (lib)
+Completed    Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     Mantissa-0.1.0.0 (lib)
+Completed    IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Building     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     Mantissa-0.1.0.0 (lib)
+Building     MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   LetsBeRational-1.0.0.0 (lib)
+Installing   Mantissa-0.1.0.0 (lib)
+Completed    LetsBeRational-1.0.0.0 (lib)
+Starting     NoHoed-0.1.1 (lib)
+Installing   MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    Mantissa-0.1.0.0 (lib)
+Starting     NumInstances-1.4 (lib)
+Building     NoHoed-0.1.1 (lib)
+Completed    MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     ObjectName-1.1.0.2 (lib)
+Installing   NoHoed-0.1.1 (lib)
+Building     NumInstances-1.4 (lib)
+Installing   List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Building     ObjectName-1.1.0.2 (lib)
+Completed    NoHoed-0.1.1 (lib)
+Starting     OneTuple-0.4.2 (lib)
+Installing   ObjectName-1.1.0.2 (lib)
+Completed    List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    ObjectName-1.1.0.2 (lib)
+Starting     Only-0.1 (lib)
+Building     OneTuple-0.4.2 (lib)
+Installing   OneTuple-0.4.2 (lib)
+Building     Only-0.1 (lib)
+Completed    OneTuple-0.4.2 (lib)
+Starting     PSQueue-1.2.2 (lib)
+Starting     ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+Building     PSQueue-1.2.2 (lib)
+Installing   Only-0.1 (lib)
+Starting     PyF-0.11.4.0 (lib)
+Completed    Only-0.1 (lib)
+Starting     RoundingFiasco-0.1.0.0 (lib)
+Building     ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+Building     PyF-0.11.4.0 (lib)
+Building     RoundingFiasco-0.1.0.0 (lib)
+Installing   ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     SHA-1.6.4.4 (lib)
+Building     SHA-1.6.4.4 (lib)
+Installing   NumInstances-1.4 (lib)
+Installing   PSQueue-1.2.2 (lib)
+Completed    NumInstances-1.4 (lib)
+Installing   RoundingFiasco-0.1.0.0 (lib)
+Installing   IntervalMap-0.6.2.1 (lib)
+Completed    PSQueue-1.2.2 (lib)
+Starting     STMonadTrans-0.4.8.1 (lib)
+Starting     SafeSemaphore-0.10.1 (lib)
+Completed    RoundingFiasco-0.1.0.0 (lib)
+Completed    IntervalMap-0.6.2.1 (lib)
+Starting     StateVar-1.2.2 (lib)
+Building     STMonadTrans-0.4.8.1 (lib)
+Starting     alex-3.5.4.0 (exe:alex)
+Building     SafeSemaphore-0.10.1 (lib)
+Building     StateVar-1.2.2 (lib)
+Building     alex-3.5.4.0 (exe:alex)
+Installing   StateVar-1.2.2 (lib)
+Installing   LPFP-core-1.1.5 (lib)
+Completed    StateVar-1.2.2 (lib)
+Starting     appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    LPFP-core-1.1.5 (lib)
+Building     appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   STMonadTrans-0.4.8.1 (lib)
+Installing   appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    STMonadTrans-0.4.8.1 (lib)
+Starting     assoc-1.1.1 (lib)
+Completed    appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     attoparsec-0.14.4 (lib:attoparsec-internal)
+Building     assoc-1.1.1 (lib)
+Starting     auto-update-0.2.6 (lib)
+Installing   assoc-1.1.1 (lib)
+Building     attoparsec-0.14.4 (lib:attoparsec-internal)
+Installing   SafeSemaphore-0.10.1 (lib)
+Building     auto-update-0.2.6 (lib)
+Completed    assoc-1.1.1 (lib)
+Starting     base-orphans-0.9.3 (lib)
+Completed    SafeSemaphore-0.10.1 (lib)
+Building     base-orphans-0.9.3 (lib)
+Installing   base-orphans-0.9.3 (lib)
+Completed    base-orphans-0.9.3 (lib)
+Starting     base16-bytestring-1.0.2.0 (lib)
+Installing   auto-update-0.2.6 (lib)
+Installing   PyF-0.11.4.0 (lib)
+Installing   attoparsec-0.14.4 (lib:attoparsec-internal)
+Completed    auto-update-0.2.6 (lib)
+Building     base16-bytestring-1.0.2.0 (lib)
+Completed    PyF-0.11.4.0 (lib)
+Starting     base64-bytestring-1.2.1.0 (lib)
+Installing   SHA-1.6.4.4 (lib)
+Completed    attoparsec-0.14.4 (lib:attoparsec-internal)
+Completed    SHA-1.6.4.4 (lib)
+Starting     basement-0.0.16 (lib)
+Starting     binary-orphans-1.0.5 (lib)
+Building     base64-bytestring-1.2.1.0 (lib)
+Installing   base16-bytestring-1.0.2.0 (lib)
+Starting     bindings-DSL-1.0.25 (lib)
+Starting     blaze-builder-0.4.4.1 (lib)
+Completed    base16-bytestring-1.0.2.0 (lib)
+Starting     bmp-1.2.6.4 (lib)
+Building     basement-0.0.16 (lib)
+Building     binary-orphans-1.0.5 (lib)
+Building     bindings-DSL-1.0.25 (lib)
+Building     blaze-builder-0.4.4.1 (lib)
+Installing   bindings-DSL-1.0.25 (lib)
+Building     bmp-1.2.6.4 (lib)
+Installing   binary-orphans-1.0.5 (lib)
+Completed    bindings-DSL-1.0.25 (lib)
+Starting     byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    binary-orphans-1.0.5 (lib)
+Starting     bytestring-lexing-0.5.0.15 (lib)
+Installing   base64-bytestring-1.2.1.0 (lib)
+Building     byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    base64-bytestring-1.2.1.0 (lib)
+Starting     c-enum-0.1.1.3 (lib)
+Building     bytestring-lexing-0.5.0.15 (lib)
+Installing   byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+Building     c-enum-0.1.1.3 (lib)
+Installing   HsYAML-0.2.1.5 (lib)
+Completed    byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     cabal-doctest-1.0.11 (lib)
+Installing   blaze-builder-0.4.4.1 (lib)
+Completed    HsYAML-0.2.1.5 (lib)
+Completed    blaze-builder-0.4.4.1 (lib)
+Building     cabal-doctest-1.0.11 (lib)
+Starting     call-stack-0.4.0 (lib)
+Installing   c-enum-0.1.1.3 (lib)
+Installing   bmp-1.2.6.4 (lib)
+Completed    c-enum-0.1.1.3 (lib)
+Building     call-stack-0.4.0 (lib)
+Completed    bmp-1.2.6.4 (lib)
+Starting     cereal-0.5.8.3 (lib)
+Installing   call-stack-0.4.0 (lib)
+Starting     character-ps-0.1 (lib)
+Building     cereal-0.5.8.3 (lib)
+Completed    call-stack-0.4.0 (lib)
+Starting     clock-0.8.4 (lib)
+Installing   cabal-doctest-1.0.11 (lib)
+Starting     colour-2.3.6 (lib)
+Building     character-ps-0.1 (lib)
+Completed    cabal-doctest-1.0.11 (lib)
+Building     clock-0.8.4 (lib)
+Building     colour-2.3.6 (lib)
+Installing   alex-3.5.4.0 (exe:alex)
+Completed    alex-3.5.4.0 (exe:alex)
+Starting     context-0.2.1.1 (lib)
+Building     context-0.2.1.1 (lib)
+Starting     cryptohash-md5-0.11.101.0 (lib)
+Installing   character-ps-0.1 (lib)
+Installing   clock-0.8.4 (lib)
+Building     cryptohash-md5-0.11.101.0 (lib)
+Installing   context-0.2.1.1 (lib)
+Completed    character-ps-0.1 (lib)
+Starting     data-accessor-0.2.3.1 (lib)
+Completed    clock-0.8.4 (lib)
+Starting     data-default-0.8.0.1 (lib)
+Completed    context-0.2.1.1 (lib)
+Installing   cryptohash-md5-0.11.101.0 (lib)
+Building     data-accessor-0.2.3.1 (lib)
+Building     data-default-0.8.0.1 (lib)
+Completed    cryptohash-md5-0.11.101.0 (lib)
+Starting     data-lens-light-0.1.2.4 (lib)
+Building     data-lens-light-0.1.2.4 (lib)
+Installing   data-accessor-0.2.3.1 (lib)
+Installing   data-default-0.8.0.1 (lib)
+Installing   data-lens-light-0.1.2.4 (lib)
+Completed    data-accessor-0.2.3.1 (lib)
+Starting     diagrams-solve-0.1.3.1 (lib)
+Completed    data-default-0.8.0.1 (lib)
+Completed    data-lens-light-0.1.2.4 (lib)
+Starting     dlist-1.0 (lib)
+Building     diagrams-solve-0.1.3.1 (lib)
+Building     dlist-1.0 (lib)
+Installing   colour-2.3.6 (lib)
+Completed    colour-2.3.6 (lib)
+Installing   dlist-1.0 (lib)
+Installing   diagrams-solve-0.1.3.1 (lib)
+Completed    dlist-1.0 (lib)
+Starting     easy-file-0.2.5 (lib)
+Starting     entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+Completed    diagrams-solve-0.1.3.1 (lib)
+Starting     envparse-0.6.0 (lib)
+Installing   bytestring-lexing-0.5.0.15 (lib)
+Starting     fail-4.9.0.0 (lib)
+Building     easy-file-0.2.5 (lib)
+Completed    bytestring-lexing-0.5.0.15 (lib)
+Starting     fgl-5.8.3.0 (lib)
+Building     envparse-0.6.0 (lib)
+Building     fail-4.9.0.0 (lib)
+Installing   fail-4.9.0.0 (lib)
+Completed    fail-4.9.0.0 (lib)
+Building     fgl-5.8.3.0 (lib)
+Starting     file-embed-0.0.16.0 (lib)
+Installing   easy-file-0.2.5 (lib)
+Starting     fingertree-0.1.6.2 (lib)
+Completed    easy-file-0.2.5 (lib)
+Building     file-embed-0.0.16.0 (lib)
+Building     fingertree-0.1.6.2 (lib)
+Installing   file-embed-0.0.16.0 (lib)
+Starting     fixed-0.3 (lib)
+Building     entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+Installing   envparse-0.6.0 (lib)
+Completed    file-embed-0.0.16.0 (lib)
+Building     fixed-0.3 (lib)
+Completed    envparse-0.6.0 (lib)
+Starting     fmlist-0.9.4 (lib)
+Installing   fixed-0.3 (lib)
+Building     fmlist-0.9.4 (lib)
+Completed    fixed-0.3 (lib)
+Starting     generically-0.1.1 (lib)
+Installing   fmlist-0.9.4 (lib)
+Building     generically-0.1.1 (lib)
+Installing   generically-0.1.1 (lib)
+Installing   entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+Completed    fmlist-0.9.4 (lib)
+Completed    generically-0.1.1 (lib)
+Starting     groups-0.5.3 (lib)
+Building     groups-0.5.3 (lib)
+Installing   cereal-0.5.8.3 (lib)
+Completed    entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+Starting     half-0.3.3 (lib)
+Installing   groups-0.5.3 (lib)
+Completed    cereal-0.5.8.3 (lib)
+Starting     happy-lib-2.1.7 (lib:grammar)
+Starting     hashable-1.5.0.0 (lib)
+Installing   fgl-5.8.3.0 (lib)
+Completed    groups-0.5.3 (lib)
+Starting     haskell-lexer-1.2.1 (lib)
+Building     half-0.3.3 (lib)
+Building     happy-lib-2.1.7 (lib:grammar)
+Completed    fgl-5.8.3.0 (lib)
+Starting     hourglass-0.2.12 (lib)
+Building     hashable-1.5.0.0 (lib)
+Building     haskell-lexer-1.2.1 (lib)
+Building     hourglass-0.2.12 (lib)
+Installing   happy-lib-2.1.7 (lib:grammar)
+Installing   fingertree-0.1.6.2 (lib)
+Starting     hsc2hs-0.68.10 (exe:hsc2hs)
+Completed    happy-lib-2.1.7 (lib:grammar)
+Installing   half-0.3.3 (lib)
+Completed    fingertree-0.1.6.2 (lib)
+Starting     hspec-discover-2.11.13 (lib)
+Building     hsc2hs-0.68.10 (exe:hsc2hs)
+Starting     hxt-charproperties-9.5.0.0 (lib)
+Completed    half-0.3.3 (lib)
+Starting     indexed-traversable-0.1.4 (lib)
+Building     hspec-discover-2.11.13 (lib)
+Building     hxt-charproperties-9.5.0.0 (lib)
+Building     indexed-traversable-0.1.4 (lib)
+Installing   hashable-1.5.0.0 (lib)
+Installing   hspec-discover-2.11.13 (lib)
+Completed    hashable-1.5.0.0 (lib)
+Starting     integer-logarithms-1.0.4 (lib)
+Completed    hspec-discover-2.11.13 (lib)
+Building     integer-logarithms-1.0.4 (lib)
+Installing   integer-logarithms-1.0.4 (lib)
+Starting     logict-0.8.2.0 (lib)
+Completed    integer-logarithms-1.0.4 (lib)
+Building     logict-0.8.2.0 (lib)
+Installing   indexed-traversable-0.1.4 (lib)
+Completed    indexed-traversable-0.1.4 (lib)
+Starting     loop-0.3.0 (lib)
+Building     loop-0.3.0 (lib)
+Installing   loop-0.3.0 (lib)
+Completed    loop-0.3.0 (lib)
+Starting     mime-types-0.1.2.0 (lib)
+Building     mime-types-0.1.2.0 (lib)
+Installing   logict-0.8.2.0 (lib)
+Starting     monad-loops-0.4.3 (lib)
+Installing   hsc2hs-0.68.10 (exe:hsc2hs)
+Completed    hsc2hs-0.68.10 (exe:hsc2hs)
+Starting     network-byte-order-0.1.7 (lib)
+Completed    logict-0.8.2.0 (lib)
+Starting     network-info-0.2.1 (lib)
+Installing   hourglass-0.2.12 (lib)
+Building     monad-loops-0.4.3 (lib)
+Completed    hourglass-0.2.12 (lib)
+Starting     newtype-generics-0.6.2 (lib)
+Building     network-byte-order-0.1.7 (lib)
+Building     network-info-0.2.1 (lib)
+Building     newtype-generics-0.6.2 (lib)
+Installing   monad-loops-0.4.3 (lib)
+Installing   newtype-generics-0.6.2 (lib)
+Completed    monad-loops-0.4.3 (lib)
+Starting     old-locale-1.0.0.7 (lib)
+Installing   network-info-0.2.1 (lib)
+Completed    newtype-generics-0.6.2 (lib)
+Starting     operational-0.2.4.2 (lib)
+Completed    network-info-0.2.1 (lib)
+Starting     parallel-3.2.2.0 (lib)
+Building     old-locale-1.0.0.7 (lib)
+Installing   network-byte-order-0.1.7 (lib)
+Building     operational-0.2.4.2 (lib)
+Installing   old-locale-1.0.0.7 (lib)
+Building     parallel-3.2.2.0 (lib)
+Completed    network-byte-order-0.1.7 (lib)
+Starting     polyparse-1.13.1 (lib)
+Installing   operational-0.2.4.2 (lib)
+Completed    old-locale-1.0.0.7 (lib)
+Starting     prettyprinter-1.7.1 (lib)
+Completed    operational-0.2.4.2 (lib)
+Starting     primitive-0.9.1.0 (lib)
+Building     polyparse-1.13.1 (lib)
+Installing   parallel-3.2.2.0 (lib)
+Building     prettyprinter-1.7.1 (lib)
+Building     primitive-0.9.1.0 (lib)
+Completed    parallel-3.2.2.0 (lib)
+Starting     reflection-2.1.9 (lib)
+Installing   mime-types-0.1.2.0 (lib)
+Building     reflection-2.1.9 (lib)
+Completed    mime-types-0.1.2.0 (lib)
+Starting     regex-base-0.94.0.3 (lib)
+Building     regex-base-0.94.0.3 (lib)
+Installing   regex-base-0.94.0.3 (lib)
+Installing   hxt-charproperties-9.5.0.0 (lib)
+Completed    regex-base-0.94.0.3 (lib)
+Starting     safe-0.3.21 (lib)
+Completed    hxt-charproperties-9.5.0.0 (lib)
+Installing   basement-0.0.16 (lib)
+Building     safe-0.3.21 (lib)
+Completed    basement-0.0.16 (lib)
+Installing   reflection-2.1.9 (lib)
+Installing   prettyprinter-1.7.1 (lib)
+Installing   safe-0.3.21 (lib)
+Completed    reflection-2.1.9 (lib)
+Starting     safe-exceptions-0.1.7.4 (lib)
+Completed    prettyprinter-1.7.1 (lib)
+Starting     semigroups-0.20 (lib)
+Completed    safe-0.3.21 (lib)
+Building     safe-exceptions-0.1.7.4 (lib)
+Starting     split-0.2.5 (lib)
+Building     semigroups-0.20 (lib)
+Building     split-0.2.5 (lib)
+Installing   semigroups-0.20 (lib)
+Installing   polyparse-1.13.1 (lib)
+Starting     splitmix-0.1.3.1 (lib)
+Installing   safe-exceptions-0.1.7.4 (lib)
+Completed    semigroups-0.20 (lib)
+Starting     statestack-0.3.1.1 (lib)
+Completed    polyparse-1.13.1 (lib)
+Starting     stm-chans-3.0.0.9 (lib)
+Installing   split-0.2.5 (lib)
+Building     splitmix-0.1.3.1 (lib)
+Completed    safe-exceptions-0.1.7.4 (lib)
+Starting     string-qq-0.0.6 (lib)
+Building     statestack-0.3.1.1 (lib)
+Starting     stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    split-0.2.5 (lib)
+Building     stm-chans-3.0.0.9 (lib)
+Building     string-qq-0.0.6 (lib)
+Installing   haskell-lexer-1.2.1 (lib)
+Installing   statestack-0.3.1.1 (lib)
+Building     stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     syb-0.7.3 (lib)
+Installing   string-qq-0.0.6 (lib)
+Installing   splitmix-0.1.3.1 (lib)
+Completed    haskell-lexer-1.2.1 (lib)
+Completed    statestack-0.3.1.1 (lib)
+Starting     tagged-0.8.9 (lib)
+Installing   stm-chans-3.0.0.9 (lib)
+Building     syb-0.7.3 (lib)
+Completed    string-qq-0.0.6 (lib)
+Starting     text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    splitmix-0.1.3.1 (lib)
+Building     tagged-0.8.9 (lib)
+Starting     th-abstraction-0.7.1.0 (lib)
+Completed    stm-chans-3.0.0.9 (lib)
+Starting     th-compat-0.1.6 (lib)
+Building     text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+Building     th-abstraction-0.7.1.0 (lib)
+Building     th-compat-0.1.6 (lib)
+Completed    text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   primitive-0.9.1.0 (lib)
+Starting     time-locale-compat-0.1.1.5 (lib)
+Installing   th-compat-0.1.6 (lib)
+Installing   syb-0.7.3 (lib)
+Completed    primitive-0.9.1.0 (lib)
+Starting     transformers-compat-0.7.2 (lib)
+Installing   tagged-0.8.9 (lib)
+Completed    th-compat-0.1.6 (lib)
+Building     time-locale-compat-0.1.1.5 (lib)
+Starting     unicode-data-0.6.0 (lib)
+Installing   time-locale-compat-0.1.1.5 (lib)
+Completed    syb-0.7.3 (lib)
+Starting     unix-compat-0.7.4.1 (lib)
+Building     transformers-compat-0.7.2 (lib)
+Completed    tagged-0.8.9 (lib)
+Starting     unliftio-core-0.2.1.0 (lib)
+Building     unicode-data-0.6.0 (lib)
+Completed    time-locale-compat-0.1.1.5 (lib)
+Building     unix-compat-0.7.4.1 (lib)
+Starting     utf8-string-1.0.2 (lib)
+Building     unliftio-core-0.2.1.0 (lib)
+Installing   unix-compat-0.7.4.1 (lib)
+Building     utf8-string-1.0.2 (lib)
+Installing   unliftio-core-0.2.1.0 (lib)
+Completed    unix-compat-0.7.4.1 (lib)
+Starting     utility-ht-0.0.17.2 (lib)
+Installing   stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    unliftio-core-0.2.1.0 (lib)
+Starting     vector-stream-0.1.0.1 (lib)
+Completed    stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+Starting     void-0.7.3 (lib)
+Building     utility-ht-0.0.17.2 (lib)
+Installing   transformers-compat-0.7.2 (lib)
+Building     vector-stream-0.1.0.1 (lib)
+Installing   th-abstraction-0.7.1.0 (lib)
+Building     void-0.7.3 (lib)
+Completed    transformers-compat-0.7.2 (lib)
+Starting     xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   void-0.7.3 (lib)
+Completed    th-abstraction-0.7.1.0 (lib)
+Completed    void-0.7.3 (lib)
+Starting     xml-types-0.3.8 (lib)
+Building     xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   utf8-string-1.0.2 (lib)
+Building     xml-types-0.3.8 (lib)
+Completed    utf8-string-1.0.2 (lib)
+Installing   utility-ht-0.0.17.2 (lib)
+Completed    utility-ht-0.0.17.2 (lib)
+Starting     ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+Building     ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   vector-stream-0.1.0.1 (lib)
+Installing   xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+Completed    vector-stream-0.1.0.1 (lib)
+Starting     contravariant-1.5.5 (lib)
+Completed    xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+Installing   xml-types-0.3.8 (lib)
+Building     contravariant-1.5.5 (lib)
+Completed    xml-types-0.3.8 (lib)
+Starting     xmlgen-0.6.2.2 (lib)
+Building     xmlgen-0.6.2.2 (lib)
+Installing   contravariant-1.5.5 (lib)
+Completed    contravariant-1.5.5 (lib)
+Installing   xmlgen-0.6.2.2 (lib)
+Starting     blaze-markup-0.8.3.0 (lib)
+Starting     HUnit-1.6.2.0 (lib)
+Starting     extra-1.8 (lib)
+Completed    xmlgen-0.6.2.2 (lib)
+Starting     data-accessor-transformers-0.2.1.8 (lib)
+Building     blaze-markup-0.8.3.0 (lib)
+Building     HUnit-1.6.2.0 (lib)
+Building     extra-1.8 (lib)
+Building     data-accessor-transformers-0.2.1.8 (lib)
+Installing   data-accessor-transformers-0.2.1.8 (lib)
+Completed    data-accessor-transformers-0.2.1.8 (lib)
+Starting     data-default-class-0.2.0.0 (lib)
+Installing   HUnit-1.6.2.0 (lib)
+Building     data-default-class-0.2.0.0 (lib)
+Starting     ansi-terminal-types-1.1.3 (lib)
+Installing   data-default-class-0.2.0.0 (lib)
+Installing   blaze-markup-0.8.3.0 (lib)
+Completed    HUnit-1.6.2.0 (lib)
+Starting     scanner-0.3.1 (lib)
+Completed    data-default-class-0.2.0.0 (lib)
+Starting     cereal-text-0.1.0.2 (lib)
+Building     ansi-terminal-types-1.1.3 (lib)
+Completed    blaze-markup-0.8.3.0 (lib)
+Starting     happy-lib-2.1.7 (lib:tabular)
+Building     scanner-0.3.1 (lib)
+Starting     happy-lib-2.1.7 (lib:frontend)
+Building     cereal-text-0.1.0.2 (lib)
+Installing   extra-1.8 (lib)
+Installing   cereal-text-0.1.0.2 (lib)
+Building     happy-lib-2.1.7 (lib:tabular)
+Building     happy-lib-2.1.7 (lib:frontend)
+Completed    extra-1.8 (lib)
+Starting     OpenGLRaw-3.3.4.1 (lib)
+Installing   scanner-0.3.1 (lib)
+Completed    cereal-text-0.1.0.2 (lib)
+Starting     unordered-containers-0.2.20 (lib)
+Starting     time-compat-1.9.8 (lib)
+Completed    scanner-0.3.1 (lib)
+Building     OpenGLRaw-3.3.4.1 (lib)
+Installing   ansi-terminal-types-1.1.3 (lib)
+Building     time-compat-1.9.8 (lib)
+Building     unordered-containers-0.2.20 (lib)
+Completed    ansi-terminal-types-1.1.3 (lib)
+Starting     these-1.2.1 (lib)
+Installing   happy-lib-2.1.7 (lib:tabular)
+Installing   unicode-data-0.6.0 (lib)
+Building     these-1.2.1 (lib)
+Completed    happy-lib-2.1.7 (lib:tabular)
+Completed    unicode-data-0.6.0 (lib)
+Installing   time-compat-1.9.8 (lib)
+Starting     text-short-0.1.6 (lib)
+Completed    time-compat-1.9.8 (lib)
+Starting     data-fix-0.3.4 (lib)
+Building     text-short-0.1.6 (lib)
+Starting     case-insensitive-1.2.1.0 (lib)
+Building     data-fix-0.3.4 (lib)
+Building     case-insensitive-1.2.1.0 (lib)
+Installing   data-fix-0.3.4 (lib)
+Installing   these-1.2.1 (lib)
+Starting     async-2.2.5 (lib)
+Installing   case-insensitive-1.2.1.0 (lib)
+Installing   happy-lib-2.1.7 (lib:frontend)
+Completed    data-fix-0.3.4 (lib)
+Starting     zlib-0.7.1.1 (lib)
+Completed    these-1.2.1 (lib)
+Starting     network-3.2.8.0 (all, legacy fallback: build-type is Configure)
