@@ -578,7 +578,7 @@ exampleStatus =
       completed = Set.fromList (take 5 allPkgsL)
     }
   where
-    allPkgsL = (fromString . ("lib" <>) . show @Int) <$> [1 .. 20]
+    allPkgsL = fromString . ("lib" <>) . show @Int <$> [1 .. 20]
 
 type Unit = ()
 
@@ -589,9 +589,10 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
   testArgs <- getTestArgs
   logsRef <- newIORef mempty
   _ <-
-    TO.timeout 13_000_000 $
+    TO.timeout
+      13_000_000
       ( Env.withArgs cliArgs $ runner logsRef testArgs.mWindow $ do
-          (runBuildScript buildFileOsPath)
+          runBuildScript buildFileOsPath
             `EAsync.concurrently`
             -- start this second so build file exists.
             (ECC.threadDelay 500_000 *> Monitor.runMonitor Unit)
@@ -699,7 +700,5 @@ unlineStrip = T.strip . T.unlines
 
 containsLog :: Text -> Set Text -> Bool
 containsLog l logs =
-  if l `Set.member` logs
-    then True
-    -- O(n) fallback for inexact match.
-    else any (T.isInfixOf l) logs
+  -- O(n) fallback for inexact match.
+  (l `Set.member` logs) || any (T.isInfixOf l) logs

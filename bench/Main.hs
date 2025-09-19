@@ -90,7 +90,7 @@ runBenchEff ::
     [ FR.FileReader,
       PR.PathReader,
       Term.Terminal,
-      SState.State ((BuildState, Bool)),
+      SState.State (BuildState, Bool),
       Concurrent,
       IOE
     ]

@@ -166,7 +166,7 @@ readFormattedStatus mHeight mWidth path = do
         (Just height, Nothing) -> pure $ FormatNlTrunc height
         (Nothing, Just width) -> pure $ FormatInl width
         (Nothing, Nothing) -> do
-          eResult <- Ex.trySync $ Term.getTerminalSize
+          eResult <- Ex.trySync Term.getTerminalSize
           pure $ case eResult of
             Left _ -> FormatNl
             Right sz -> do
@@ -258,12 +258,11 @@ logCounter rType = do
 
     colorize = Pretty.color Pretty.Blue
 
-    fmtTime s =
+    fmtX header = colorize . (header <>) . fmtTime
+
+    fmtTime =
       T.pack
         . Rel.formatSeconds Rel.defaultFormat
-        $ s
-
-    fmtX header = colorize . (header <>) . fmtTime
 
 monus :: Natural -> Natural -> Natural
 monus x y

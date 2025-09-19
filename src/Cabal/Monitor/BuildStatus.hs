@@ -213,17 +213,17 @@ formatAll style toBuildS buildingS completedS = final
     toBuildL = Set.toList toBuildS
     toBuildBuilders =
       let bs = formatter toBuildL
-       in "To Build: " <> (BSB.intDec $ Set.size toBuildS) : bs
+       in "To Build: " <> BSB.intDec (Set.size toBuildS) : bs
 
     buildingL = Set.toList buildingS
     buildingBuilders =
       let bs = formatter buildingL
-       in "Building: " <> (BSB.intDec $ Set.size buildingS) : bs
+       in "Building: " <> BSB.intDec (Set.size buildingS) : bs
 
     completedL = Set.toList completedS
     completedBuilders =
       let bs = formatter completedL
-       in "Completed: " <> (BSB.intDec $ Set.size completedS) : bs
+       in "Completed: " <> BSB.intDec (Set.size completedS) : bs
 
 formatNewlines :: [Package] -> [Builder]
 formatNewlines = L.reverse . foldl' go []
@@ -264,7 +264,7 @@ takeCount k = fmap L.reverse . go (k, [])
   where
     go acc [] = acc
     go acc@(0, _) _ = acc
-    go (!cnt, zs) (x : xs) = go (cnt - 1, (x : zs)) xs
+    go (!cnt, zs) (x : xs) = go (cnt - 1, x : zs) xs
 
 takeTrunc :: Natural -> [Builder] -> [Builder]
 -- 1. Cannot take anymore.
