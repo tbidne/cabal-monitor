@@ -191,10 +191,27 @@ formatAll style toBuildS buildingS completedS = final
       FormatInlTrunc height width -> (formatInline width, concatTruncate height)
 
     concatTruncate height as bs cs =
-      let (h1, bs') = takeCount height bs
-          hEach = h1 `div` 2
-          as' = takeTrunc hEach as
-          cs' = takeTrunc hEach cs
+      let -- Take all building that we can, get remaining height.
+          (hRemaining, bs') = takeCount height bs
+
+          -- Calculate heights. hEach is the max amount each remaining
+          -- section gets if both are too large.
+          hEach = hRemaining `div` 2
+          numAs = fromIntegral $ length as
+          numCs = fromIntegral $ length cs
+
+          (as', cs') =
+            if
+              -- 1. num_as < hEach: Take all as, use the rest for cs.
+              | numAs < hEach ->
+                  let (hLeft, as_r) = takeCount hRemaining as
+                   in (as_r, takeTrunc hLeft cs)
+              -- 2. num_cs < hEach: Take all cs, use the rest for as.
+              | numCs < hEach ->
+                  let (hLeft, cs_r) = takeCount hRemaining cs
+                   in (takeTrunc hLeft as, cs_r)
+              -- 3. Neither fits completely. Divide evenly.
+              | otherwise -> (takeTrunc hEach as, takeTrunc hEach cs)
        in concatNewlines as' bs' cs'
 
     -- NOTE: We do the coloring here since the "safe" way to color functions,
