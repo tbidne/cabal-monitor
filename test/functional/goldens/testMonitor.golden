@@ -1,0 +1,89 @@
+To Build: 0
+
+Building: 0
+
+Completed: 0
+--------------------------------------------------------------------------------
+To Build: 8
+  - aeson-0.7
+  - bits-0.6
+  - byteable-0.1.1
+  - indexed-profunctors-0.1.1.1
+  - lens-1
+  - mtl-compat-0.2.2
+  - profunctors-2
+  - string-qq-0.0.6
+
+Building: 0
+
+Completed: 0
+--------------------------------------------------------------------------------
+To Build: 4
+  - lens-1
+  - mtl-compat-0.2.2
+  - profunctors-2
+  - string-qq-0.0.6
+
+Building: 4
+  - aeson-0.7
+  - bits-0.6
+  - byteable-0.1.1
+  - indexed-profunctors-0.1.1.1
+
+Completed: 0
+--------------------------------------------------------------------------------
+To Build: 2
+  - profunctors-2
+  - string-qq-0.0.6
+
+Building: 5
+  - bits-0.6
+  - byteable-0.1.1
+  - indexed-profunctors-0.1.1.1
+  - lens-1
+  - mtl-compat-0.2.2
+
+Completed: 1
+  - aeson-0.7
+--------------------------------------------------------------------------------
+To Build: 1
+  - string-qq-0.0.6
+
+Building: 4
+  - indexed-profunctors-0.1.1.1
+  - lens-1
+  - mtl-compat-0.2.2
+  - profunctors-2
+
+Completed: 3
+  - aeson-0.7
+  - bits-0.6
+  - byteable-0.1.1
+--------------------------------------------------------------------------------
+To Build: 0
+
+Building: 3
+  - mtl-compat-0.2.2
+  - profunctors-2
+  - string-qq-0.0.6
+
+Completed: 5
+  - aeson-0.7
+  - bits-0.6
+  - byteable-0.1.1
+  - indexed-profunctors-0.1.1.1
+  - lens-1
+--------------------------------------------------------------------------------
+To Build: 0
+
+Building: 0
+
+Completed: 8
+  - aeson-0.7
+  - bits-0.6
+  - byteable-0.1.1
+  - indexed-profunctors-0.1.1.1
+  - lens-1
+  - mtl-compat-0.2.2
+  - profunctors-2
+  - string-qq-0.0.6
