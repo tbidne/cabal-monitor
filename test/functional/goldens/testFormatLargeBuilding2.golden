@@ -12,7 +12,8 @@ To Build: 104
   - log-domain-0.13.2, matrix-0.3.6.4, mixed-types-num-0.6.2, mod-0.2.1.0, monad-logger-0.3.42, mono-traversable-1.0.21.0, monoid-subclasses-1.2.6
   - nonempty-containers-0.3.5.0, nonempty-vector-0.2.4, persistent-2.17.1.0, pointed-5.0.5, process-extras-0.7.4, refined-0.8.2, rio-0.1.22.0, rio-prettyprint-0.1.8.0
   - safecopy-0.10.4.3, semialign-1.3.1, serialise-0.2.6.1, servant-0.20.3.0, servant-client-0.20.3.0, servant-client-core-0.20.3.0, string-interpolate-0.3.4.0
-  ...
+  - test-framework-hunit-0.3.0.2, th-lift-instances-0.1.20, timerep-2.1.0.0, tls-2.1.11, uri-bytestring-0.4.0.1, vector-algorithms-0.9.1.0, vector-hashtables-0.1.2.1
+  - witherable-0.5, xml-conduit-1.10.0.1, yaml-0.11.11.2
 
 Building: 6
   - GLUT-2.7.0.16, crypton-x509-store-1.6.11, free-5.2, haskell-src-exts-1.23.1, hspec-smallcheck-0.5.3, vector-0.13.2.0
@@ -31,4 +32,7 @@ Completed: 295
   - byteorder-1.0.4, bytes-0.17.4, cabal-doctest-1.0.11, call-stack-0.4.0, case-insensitive-1.2.1.0, cborg-0.2.10.0, cdar-mBound-0.1.0.4, cereal-0.5.8.3, character-ps-0.1
   - charset-0.3.12, cli-arguments-0.7.0.0, clock-0.8.4, collect-errors-0.1.6.0, colour-2.3.6, commutative-semigroups-0.2.0.2, comonad-5.0.9, concurrent-output-1.10.21
   - constraints-0.14.2, contravariant-1.5.5, cookie-0.5.1, cryptohash-md5-0.11.101.0, cryptohash-sha1-0.11.101.0, crypton-1.0.4, crypton-socks-0.6.2, crypton-x509-1.7.7
+  - data-binary-ieee754-0.4.4, data-default-0.8.0.1, data-default-class-0.2.0.0, data-fix-0.3.4, data-hash-0.2.0.1, data-reify-0.6.4, dec-0.0.6, distributive-0.6.2.1
+  - dlist-1.0, double-conversion-2.0.5.0, easy-file-0.2.5, ech-config-0.0.1, edit-distance-0.2.2.1, entropy-0.4.1.11, equivalence-0.4.1.1, erf-2.0.0.0, exact-pi-0.5.0.2
+  - extensible-exceptions-0.1.1.4, extra-1.8, fail-4.9.0.0, fast-logger-3.2.6, fgl-5.8.3.0, file-embed-0.0.16.0, filelock-0.1.1.8, filemanip-0.3.6.3
   ...
