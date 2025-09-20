@@ -22,12 +22,12 @@ import Cabal.Monitor.Logger
         WithRegion
       ),
   )
-import Control.Monad (unless, void)
+import Control.Monad (void)
 import Data.ByteString (ByteString)
 import Data.ByteString.Char8 qualified as C8
-import Data.Foldable (for_)
+import Data.Foldable qualified as F
 import Data.IORef (IORef, atomicModifyIORef', newIORef, readIORef)
-import Data.Set (Set)
+import Data.List qualified as L
 import Data.Set qualified as Set
 import Data.String (IsString (fromString))
 import Data.Text (Text)
@@ -60,6 +60,7 @@ import FileSystem.OsPath
     (</>),
   )
 import FileSystem.UTF8 qualified as UTF8
+import GHC.Stack.Types (HasCallStack)
 import System.Environment qualified as Env
 import System.Environment.Guard (ExpectEnv (ExpectEnvSet), guardOrElse')
 import System.Timeout qualified as TO
@@ -70,11 +71,6 @@ import Test.Tasty
   )
 import Test.Tasty qualified as Tasty
 import Test.Tasty.Golden (DeleteOutputFile (OnPass), goldenVsFileDiff)
-import Test.Tasty.HUnit
-  ( HasCallStack,
-    assertFailure,
-    testCase,
-  )
 
 main :: IO ()
 main =
@@ -101,112 +97,15 @@ testMonitor :: IO TestArgs -> TestTree
 testMonitor getTestArgs =
   testMonitorHelper
     getTestArgs
-    [ospPathSep|testMonitor.txt|]
+    [ospPathSep|testMonitor|]
     "Monitors build output"
-    expected
-  where
-    expected = [e0, e1, e2, e3, e4, e5, t0, t1]
-
-    t0 = "Waiting to start:"
-
-    t1 = "Building: 1 second"
-
-    -- NOTE: No "Finished in" log because its presence is non-deterministic
-    -- (based on timing).
-
-    e0 = "Build file does not exist at path:"
-
-    e1 =
-      unlineStrip
-        [ "To Build: 8",
-          "  - aeson-0.7",
-          "  - bits-0.6",
-          "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1",
-          "  - lens-1",
-          "  - mtl-compat-0.2.2",
-          "  - profunctors-2",
-          "  - string-qq-0.0.6",
-          "",
-          "Building: 0",
-          "",
-          "Completed: 0"
-        ]
-    e2 =
-      unlineStrip
-        [ "To Build: 4",
-          "  - lens-1",
-          "  - mtl-compat-0.2.2",
-          "  - profunctors-2",
-          "  - string-qq-0.0.6",
-          "",
-          "Building: 4",
-          "  - aeson-0.7",
-          "  - bits-0.6",
-          "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1",
-          "",
-          "Completed: 0"
-        ]
-
-    e3 =
-      unlineStrip
-        [ "To Build: 2",
-          "  - profunctors-2",
-          "  - string-qq-0.0.6",
-          "",
-          "Building: 5",
-          "  - bits-0.6",
-          "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1",
-          "  - lens-1",
-          "  - mtl-compat-0.2.2",
-          "",
-          "Completed: 1",
-          "  - aeson-0.7"
-        ]
-
-    e4 =
-      unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
-          "",
-          "Building: 4",
-          "  - indexed-profunctors-0.1.1.1",
-          "  - lens-1",
-          "  - mtl-compat-0.2.2",
-          "  - profunctors-2",
-          "",
-          "Completed: 3",
-          "  - aeson-0.7",
-          "  - bits-0.6",
-          "  - byteable-0.1.1"
-        ]
-
-    e5 =
-      unlineStrip
-        [ "To Build: 0",
-          "",
-          "Building: 3",
-          "  - mtl-compat-0.2.2",
-          "  - profunctors-2",
-          "  - string-qq-0.0.6",
-          "",
-          "Completed: 5",
-          "  - aeson-0.7",
-          "  - bits-0.6",
-          "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1",
-          "  - lens-1"
-        ]
 
 testMonitorShortWindow :: IO TestArgs -> TestTree
 testMonitorShortWindow getTestArgs =
   testMonitorHelper
     (modTestArgs <$> getTestArgs)
-    [ospPathSep|testMonitorShortWindow.txt|]
+    [ospPathSep|testMonitorShortWindow|]
     "Monitors with short window"
-    expected
   where
     modTestArgs testArgs =
       testArgs
@@ -219,90 +118,23 @@ testMonitorShortWindow getTestArgs =
               )
         }
 
-    expected = [e0, e1, e2, e3, e4, e5, t0, t1]
-
-    t0 = "Waiting to start:"
-
-    t1 = "Building: 1 second"
-
-    e0 = "Build file does not exist at path:"
-
-    e1 =
-      unlineStrip
-        [ "To Build: 8",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1",
-          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
-          "",
-          "Building: 0",
-          "",
-          "Completed: 0"
-        ]
-    e2 =
-      unlineStrip
-        [ "To Build: 4",
-          "  - lens-1, mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
-          "",
-          "Building: 4",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1",
-          "",
-          "Completed: 0"
-        ]
-
-    e3 =
-      unlineStrip
-        [ "To Build: 2",
-          "  - profunctors-2, string-qq-0.0.6",
-          "",
-          "Building: 5",
-          "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1",
-          "  - mtl-compat-0.2.2",
-          "",
-          "Completed: 1",
-          "  - aeson-0.7"
-        ]
-
-    e4 =
-      unlineStrip
-        [ "To Build: 1",
-          "  - string-qq-0.0.6",
-          "",
-          "Building: 4",
-          "  - indexed-profunctors-0.1.1.1, lens-1, mtl-compat-0.2.2, profunctors-2",
-          "",
-          "Completed: 3",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1"
-        ]
-
-    e5 =
-      unlineStrip
-        [ "To Build: 0",
-          "",
-          "Building: 3",
-          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
-          "",
-          "Completed: 5",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1"
-        ]
-
-testMonitorHelper :: IO TestArgs -> OsPath -> String -> [Text] -> TestTree
-testMonitorHelper getTestArgs fileName desc expected = testCase desc $ do
+testMonitorHelper :: IO TestArgs -> OsPath -> String -> TestTree
+testMonitorHelper getTestArgs goldenName desc = goldenDiffCustom desc goldenFP actualFP $ do
   testArgs <- getTestArgs
-  let buildOsPath = testArgs.tmpDir </> fileName
+  let buildOsPath = testArgs.tmpDir </> goldenName <> [osp|.txt|]
   buildFilePath <- decodeThrowM buildOsPath
 
-  logs <- runMonitorLogs getTestArgs buildOsPath (args buildFilePath)
+  logs <-
+    -- Remove duplicates to make tests a little more robust (these are
+    -- non-deterministic, and sometimes we receive duplicates).
+    -- Yes nub is O(n^2) but n is small and this preserves order.
+    L.nub . L.reverse
+      <$> runMonitorLogs getTestArgs buildOsPath (args buildFilePath)
 
-  for_ expected $ \e -> do
-    unless (containsLog e logs) $ do
-      let msg =
-            T.unpack $
-              mconcat
-                [ "*** Did not find log: ***\n\n",
-                  e,
-                  "\n\n*** In logs: ***\n\n",
-                  T.intercalate logsSep (Set.toList logs)
-                ]
-      assertFailure msg
+  let buildOutput = L.filter isBuildOutput $ F.toList logs
+      formatted = T.intercalate logsSep buildOutput
+
+  writeActualFile $ tToBs formatted
   where
     args p =
       [ "--color",
@@ -314,6 +146,18 @@ testMonitorHelper getTestArgs fileName desc expected = testCase desc $ do
       ]
 
     logsSep = "\n" <> T.replicate 80 "-" <> "\n"
+
+    isBuildOutput = T.isPrefixOf "To Build:"
+
+    actualFP = unsafeDecode actualOsP
+    actualOsP = goldenBase <> [ospPathSep|.actual|]
+
+    goldenFP = unsafeDecode $ goldenBase <> [ospPathSep|.golden|]
+
+    goldenBase = [ospPathSep|test/functional/goldens|] </> goldenName
+
+    writeActualFile :: ByteString -> IO ()
+    writeActualFile = writeBS actualOsP
 
 formatStatusTests :: TestTree
 formatStatusTests =
@@ -361,11 +205,7 @@ testFormatStyle desc fileName style = goldenDiffCustom desc goldenFP actualFP $ 
     goldenBase = [ospPathSep|test/functional/goldens|] </> fileName
 
     writeActualFile :: ByteString -> IO ()
-    writeActualFile =
-      runEff
-        . FW.runFileWriter
-        . FW.writeBinaryFile actualOsP
-        . (<> "\n")
+    writeActualFile = writeBS actualOsP
 
 testFormatLargeStart :: TestTree
 testFormatLargeStart =
@@ -410,11 +250,7 @@ testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP 
     inputPath = [ospPathSep|test/functional|] </> inputName
 
     writeActualFile :: ByteString -> IO ()
-    writeActualFile =
-      runEff
-        . FW.runFileWriter
-        . FW.writeBinaryFile actualOsP
-        . (<> "\n")
+    writeActualFile = writeBS actualOsP
 
     runner =
       runEff
@@ -422,6 +258,13 @@ testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP 
         . PR.runPathReader
         . FR.runFileReader
         . runTerminalMock @Int (Just $ Window {height = 41, width = 174})
+
+writeBS :: OsPath -> ByteString -> IO ()
+writeBS actualOsP =
+  runEff
+    . FW.runFileWriter
+    . FW.writeBinaryFile actualOsP
+    . (<> "\n")
 
 exampleStatus :: BuildStatusInit
 exampleStatus =
@@ -437,13 +280,15 @@ type Unit = ()
 
 runMonitorLogs ::
   (HasCallStack) =>
-  IO TestArgs -> OsPath -> [String] -> IO (Set Text)
+  IO TestArgs -> OsPath -> [String] -> IO [Text]
 runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
   testArgs <- getTestArgs
-  logsRef <- newIORef mempty
+  logsRef <- newIORef []
   _ <-
     TO.timeout
-      13_000_000
+      -- Needs to be longer than however long it takes build.sh to finish
+      -- printing all logs, so we have everything for the golden tests.
+      14_000_000
       ( Env.withArgs cliArgs $ runner logsRef testArgs.mWindow $ do
           runBuildScript buildFileOsPath
             `EAsync.concurrently`
@@ -468,7 +313,7 @@ runRegionLoggerMock ::
     HasCallStack,
     IOE :> es
   ) =>
-  IORef (Set Text) ->
+  IORef [Text] ->
   Eff (RegionLogger r : es) a ->
   Eff es a
 runRegionLoggerMock logsRef = interpret $ \env -> \case
@@ -483,7 +328,7 @@ runRegionLoggerMock logsRef = interpret $ \env -> \case
       -- in the tests. That turned out to be false, but we should probably
       -- use this anyway as multiple threads are accessing this
       -- (timer thread and status printer).
-      atomicModifyIORef' logsRef (\st -> (Set.insert txt st, ()))
+      atomicModifyIORef' logsRef (\st -> (txt : st, ()))
 
 runTerminalMock :: (Integral b) => Maybe (Window b) -> Eff (Terminal : es) a -> Eff es a
 runTerminalMock mWindow = interpret_ $ \case
@@ -547,14 +392,6 @@ runTestEff =
   runEff
     . PW.runPathWriter
     . PR.runPathReader
-
-unlineStrip :: [Text] -> Text
-unlineStrip = T.strip . T.unlines
-
-containsLog :: Text -> Set Text -> Bool
-containsLog l logs =
-  -- O(n) fallback for inexact match.
-  (l `Set.member` logs) || any (T.isInfixOf l) logs
 
 coloring :: Coloring
 coloring = MkColoring False
