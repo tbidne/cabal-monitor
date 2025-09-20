@@ -115,6 +115,11 @@
                   CABAL_MONITOR_HASH = "${self.rev or self.dirtyRev}";
                   CABAL_MONITOR_MODIFIED = "${builtins.toString self.lastModified}";
                   CABAL_MONITOR_SHORT_HASH = "${self.shortRev or self.dirtyShortRev}";
+
+                  # Git is needed to run the tests (git diff).
+                  nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [
+                    pkgs.git
+                  ];
                 });
 
               devTools = [

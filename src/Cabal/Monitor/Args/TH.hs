@@ -87,13 +87,15 @@ gitDataFromEnvQ = do
 
     validateHash' :: Int -> OsString -> Either Text OsString
     validateHash' n str
-      | OsString.length str /= n =
+      | strLen /= n && strLen /= dirtyLen =
           Left $
             mconcat
               [ "Expected hash length ",
                 showt n,
+                " or ",
+                showt dirtyLen,
                 ", received ",
-                showt (OsString.length str),
+                showt strLen,
                 ": ",
                 T.pack (FS.OsString.decodeLenient str)
               ]
@@ -102,11 +104,20 @@ gitDataFromEnvQ = do
             "Invalid char in hash: "
               <> T.pack (FS.OsString.decodeLenient str)
       | otherwise = Right str
+      where
+        strLen = OsString.length str
+        dirtyLen = n + 6
 
     hasInvalidChar :: OsString -> Bool
-    hasInvalidChar =
-      OsString.any
-        (not . (\c -> OsString.elem c [osstr|0123456789abcdefABCDEF|]))
+    hasInvalidChar str =
+      -- We allow dirty hashes to have invalid chars, due to the '-dirty'
+      -- suffix.
+      let hasNonHexChar =
+            OsString.any
+              (not . (\c -> OsString.elem c [osstr|0123456789abcdefABCDEF|]))
+              str
+          isDirty = [osstr|-dirty|] `OsString.isSuffixOf` str
+       in hasNonHexChar && not isDirty
 
 displayUnixTime :: OsString -> OsString -> Either EnvError OsString
 displayUnixTime var unixTimeOsStr = do

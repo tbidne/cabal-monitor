@@ -17,7 +17,9 @@ extra-source-files:
   bench/sample.txt
   cabal.project
   README.md
+  test/functional/*.txt
   test/functional/build.sh
+  test/functional/goldens/*.golden
 
 extra-doc-files:    CHANGELOG.md
 
