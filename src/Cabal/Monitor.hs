@@ -179,11 +179,20 @@ readFormattedStatus coloring mHeight mWidth path = do
           pure $ case eResult of
             Left _ -> FormatNl
             Right sz -> do
-              -- - 4 (To Build, Building, Completed, Timer) stanzas with a header
-              --   and trailing newline --> 4 * 2 == 8
+              -- availPkgLines is used to tell the formatter how much vertical
+              -- space it can use before truncating. This value is the
+              -- terminal_height - 4, because we have 4 sections:
               --
-              --   --> 4 * 2 == 8
-              let availPkgLines = sz.height `monus` 8
+              --   (To Build, Building, Completed, Timer)
+              --
+              -- And each section has a trailing newline. Each section also
+              -- has a header, but the formatter includes that in its
+              -- calculations, so we do not need to take it into account here.
+              --
+              -- Finally, we subtract 1 from availPkgLines (same as the width),
+              -- to prevent the terminal from jumping to a newline, which can
+              -- happen when all space is used up.
+              let availPkgLines = sz.height `monus` 4
                   neededLines = int2Nat $ Status.numAllPkgs statusInit
 
               if neededLines < availPkgLines

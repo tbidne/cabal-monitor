@@ -27,6 +27,10 @@ To Build: 359
   - hspec-discover-2.11.13, hspec-expectations-0.8.4, hspec-expectations-lifted-0.10.0, http-client-0.7.19, http-client-tls-0.3.6.4, http-conduit-2.3.9.1, http-types-0.12.4
   - hxt-9.3.1.22, hxt-charproperties-9.5.0.0, hxt-http-9.1.5.2, hxt-regex-xmlschema-9.2.0.7, hxt-unicode-9.0.2.4, hyphenation-0.8.3, indexed-traversable-0.1.4
   - indexed-traversable-instances-0.1.2, integer-conversion-0.1.1, integer-logarithms-1.0.4, intervals-0.9.3, invariant-0.6.4, iproute-1.7.15, kan-extensions-5.2.7
+  - latex-0.1.0.4, lens-5.3.5, lifted-base-0.2.3.12, linear-1.23.2, log-domain-0.13.2, logict-0.8.2.0, loop-0.3.0, math-functions-0.3.4.4, matrix-0.3.6.4, memory-0.18.0
+  - mime-mail-0.5.1, mime-types-0.1.2.0, mmorph-1.2.1, monad-control-1.0.3.1, monad-logger-0.3.42, monad-logger-aeson-0.4.1.4, monad-loops-0.4.3, mono-traversable-1.0.21.0
+  - monoid-extras-0.7, mwc-random-0.15.2.0, network-3.2.8.0, network-bsd-2.8.1.0, network-byte-order-0.1.7, network-info-0.2.1, network-uri-2.6.4.2, newtype-generics-0.6.2
+  - old-locale-1.0.0.7, old-time-1.1.0.4, operational-0.2.4.2, optparse-applicative-0.19.0.0, pango-0.13.12.0, parallel-3.2.2.0, pem-0.2.4, pipes-4.3.16
   ...
 
 Building: 0

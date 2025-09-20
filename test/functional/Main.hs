@@ -112,7 +112,7 @@ testMonitorShortWindow getTestArgs =
         { mWindow =
             Just
               ( Window
-                  { height = 16,
+                  { height = 12,
                     width = 80
                   }
               )
