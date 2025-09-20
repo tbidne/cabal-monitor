@@ -9,7 +9,10 @@ module Cabal.Monitor
   )
 where
 
-import Cabal.Monitor.Args (Args (filePath, height, period, width))
+import Cabal.Monitor.Args
+  ( Args (coloring, filePath, height, period, width),
+    Coloring (MkColoring, unColoring),
+  )
 import Cabal.Monitor.Args qualified as Args
 import Cabal.Monitor.BuildState
   ( BuildState
@@ -91,7 +94,7 @@ monitorBuild rType args =
       eResult <-
         Async.race
           runStatus
-          (logCounter rType)
+          (logCounter rType coloring)
 
       case eResult of
         Left e -> pure e
@@ -100,8 +103,10 @@ monitorBuild rType args =
     runStatus = do
       let sleepSeconds = fromMaybe 5 args.period
       Logger.withRegion @rType Linear $ \r -> forever $ do
-        readPrintStatus r args.height args.width args.filePath
+        readPrintStatus r coloring args.height args.width args.filePath
         CCS.sleep sleepSeconds
+
+    coloring = fromMaybe (MkColoring True) args.coloring
 
 type SharedState s = SState.State s
 
@@ -115,6 +120,8 @@ readPrintStatus ::
     Terminal :> es
   ) =>
   r ->
+  -- | Color.
+  Coloring ->
   -- | Maybe terminal height
   Maybe Natural ->
   -- | Maybe terminal width
@@ -122,8 +129,8 @@ readPrintStatus ::
   -- | Path to file to monitor.
   OsPath ->
   Eff es ()
-readPrintStatus region mHeight mWidth path = do
-  readFormattedStatus mHeight mWidth path >>= \case
+readPrintStatus region coloring mHeight mWidth path = do
+  readFormattedStatus coloring mHeight mWidth path >>= \case
     Left (PathDoesNotExist p) ->
       Logger.logRegion
         LogModeSet
@@ -143,13 +150,15 @@ readFormattedStatus ::
     SharedState (BuildState, Bool) :> es,
     Terminal :> es
   ) =>
+  -- | Color.
+  Coloring ->
   -- | Maybe terminal height
   Maybe Natural ->
   -- | Maybe terminal width
   Maybe Natural ->
   OsPath ->
   Eff es (Either ReadStatusError Text)
-readFormattedStatus mHeight mWidth path = do
+readFormattedStatus coloring mHeight mWidth path = do
   readStatus path >>= \case
     Left err -> pure $ Left err
     Right statusInit -> do
@@ -185,7 +194,7 @@ readFormattedStatus mHeight mWidth path = do
                 --      determined by terminal size.
                 else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
 
-      pure $ Right $ Status.formatStatusFinal style statusFinal
+      pure $ Right $ Status.formatStatusFinal coloring style statusFinal
 
 newtype ReadStatusError = PathDoesNotExist OsPath
   deriving stock (Eq, Generic, Show)
@@ -214,8 +223,9 @@ logCounter ::
     SharedState (BuildState, Bool) :> es,
     RegionLogger r :> es
   ) =>
+  Coloring ->
   Eff es void
-logCounter rType = do
+logCounter rType coloring = do
   CC.threadDelay 100_000
   Logger.withRegion @rType Linear $ \r ->
     State.evalState @Natural 0 $
@@ -256,7 +266,10 @@ logCounter rType = do
     fmtBuilding = fmtX "\nBuilding: "
     fmtCompleted = fmtX "\nFinished in: "
 
-    colorize = Pretty.color Pretty.Blue
+    colorize =
+      if coloring.unColoring
+        then Pretty.color Pretty.Blue
+        else id
 
     fmtX header = colorize . (header <>) . fmtTime
 

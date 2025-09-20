@@ -5,6 +5,7 @@ module Main (main) where
 
 import Cabal.Monitor (BuildState (Building))
 import Cabal.Monitor qualified as Monitor
+import Cabal.Monitor.Args (Coloring (MkColoring))
 import Cabal.Monitor.BuildStatus
   ( BuildStatusInit,
     FormatStyle (FormatInlTrunc, FormatNl),
@@ -46,28 +47,31 @@ benchParseStatus txtLines =
 
 benchFormatStatus :: BuildStatusInit -> Benchmark
 benchFormatStatus status =
-  bench "formatStatus" $ nf (Status.formatStatusInit FormatNl) status
+  bench "formatStatus" $ nf (Status.formatStatusInit coloring FormatNl) status
 
 benchFormatStatusCompact :: BuildStatusInit -> Benchmark
 benchFormatStatusCompact status =
-  bench "formatStatus_compact" $ nf (Status.formatStatusInit compactStyle) status
+  bench "formatStatus_compact" $ nf (Status.formatStatusInit coloring compactStyle) status
 
 benchReadFormatted :: OsPath -> Benchmark
 benchReadFormatted path =
   bench "readFormattedStatus" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus Nothing Nothing $ path)
+    nfIO (runBenchEff . Monitor.readFormattedStatus coloring Nothing Nothing $ path)
 
 benchReadFormattedCompact :: OsPath -> Benchmark
 benchReadFormattedCompact path =
   bench "readFormattedStatus_compact" $
     nfIO
       ( runBenchEff
-          . Monitor.readFormattedStatus (Just termHeight) (Just termWidth)
+          . Monitor.readFormattedStatus coloring (Just termHeight) (Just termWidth)
           $ path
       )
 
 compactStyle :: FormatStyle
 compactStyle = FormatInlTrunc termHeight termWidth
+
+coloring :: Coloring
+coloring = MkColoring False
 
 termHeight :: Natural
 termHeight = 25

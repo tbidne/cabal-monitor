@@ -2,6 +2,7 @@
 
 module Cabal.Monitor.Args
   ( Args (..),
+    Coloring (..),
     getArgs,
   )
 where
@@ -35,7 +36,7 @@ import Options.Applicative
     (<**>),
   )
 import Options.Applicative qualified as OA
-import Options.Applicative.Help (Chunk (Chunk))
+import Options.Applicative.Help (Chunk (Chunk), Doc)
 import Options.Applicative.Help.Chunk qualified as Chunk
 import Options.Applicative.Help.Pretty qualified as Pretty
 import Options.Applicative.Types (ArgPolicy (Intersperse))
@@ -44,11 +45,15 @@ import System.Info qualified as Info
 
 -- | CLI args.
 data Args = MkArgs
-  { filePath :: OsPath,
+  { coloring :: Maybe Coloring,
+    filePath :: OsPath,
     height :: Maybe Natural,
     period :: Maybe Natural,
     width :: Maybe Natural
   }
+  deriving stock (Eq, Show)
+
+newtype Coloring = MkColoring {unColoring :: Bool}
   deriving stock (Eq, Show)
 
 getArgs :: (HasCallStack, Optparse :> es) => Eff es Args
@@ -79,7 +84,8 @@ parserInfo =
 argsParser :: Parser Args
 argsParser =
   MkArgs
-    <$> filePathParser
+    <$> coloringParser
+    <*> filePathParser
     <*> heightParser
     <*> periodParser
     <*> widthParser
@@ -109,6 +115,43 @@ heightParser =
         OA.metavar "NAT",
         mkHelp "Maximum number of lines to display."
       ]
+
+coloringParser :: Parser (Maybe Coloring)
+coloringParser =
+  OA.optional $
+    OA.option readColoring $
+      mconcat
+        [ OA.long "color",
+          OA.helpDoc helpTxt
+        ]
+  where
+    readColoring =
+      OA.str >>= \case
+        "t" -> pure $ MkColoring True
+        "true" -> pure $ MkColoring True
+        "f" -> pure $ MkColoring False
+        "false" -> pure $ MkColoring False
+        bad -> fail $ "Unexpected --coloring: " ++ bad
+
+    helpTxt =
+      mconcat
+        [ intro,
+          Just Pretty.hardline,
+          true,
+          false,
+          Just Pretty.hardline
+        ]
+    intro = toMDoc "Coloring options."
+    true =
+      mconcat
+        [ Just Pretty.hardline,
+          toMDoc "- (t|true): On."
+        ]
+    false =
+      mconcat
+        [ Just Pretty.hardline,
+          toMDoc "- (f|false): Off."
+        ]
 
 periodParser :: Parser (Maybe Natural)
 periodParser =
@@ -184,3 +227,6 @@ mkMultiHelp =
     . Chunk.unChunk
     . Chunk.vsepChunks
     . fmap Chunk.paragraph
+
+toMDoc :: String -> Maybe Doc
+toMDoc = Chunk.unChunk . Chunk.paragraph

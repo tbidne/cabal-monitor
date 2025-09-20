@@ -22,6 +22,7 @@ module Cabal.Monitor.BuildStatus
   )
 where
 
+import Cabal.Monitor.Args (Coloring (unColoring))
 import Cabal.Monitor.Pretty qualified as Pretty
 import Control.DeepSeq (NFData)
 import Data.ByteString (ByteString)
@@ -154,28 +155,30 @@ advancePhase status =
     building = status.building \\ status.completed
 
 -- | Advances and formats the status.
-formatStatusInit :: FormatStyle -> BuildStatusInit -> Text
-formatStatusInit style = formatStatusFinal style . advancePhase
+formatStatusInit :: Coloring -> FormatStyle -> BuildStatusInit -> Text
+formatStatusInit coloring style = formatStatusFinal coloring style . advancePhase
 
 -- | Formats the status.
-formatStatusFinal :: FormatStyle -> BuildStatusFinal -> Text
-formatStatusFinal style status =
+formatStatusFinal :: Coloring -> FormatStyle -> BuildStatusFinal -> Text
+formatStatusFinal coloring style status =
   UTF8.decodeUtf8Lenient $
     BSL.toStrict $
       BSB.toLazyByteString $
         formatAll
+          coloring
           style
           status.toBuild
           status.building
           status.completed
 
 formatAll ::
+  Coloring ->
   FormatStyle ->
   Set Package ->
   Set Package ->
   Set Package ->
   Builder
-formatAll style toBuildS buildingS completedS = final
+formatAll coloring style toBuildS buildingS completedS = final
   where
     final =
       mconcat $
@@ -217,15 +220,25 @@ formatAll style toBuildS buildingS completedS = final
     -- NOTE: We do the coloring here since the "safe" way to color functions,
     -- i.e. the color function, operates on a single string type, not a list.
     concatNewlines as bs cs =
-      mconcat
-        [ [Pretty.magenta],
-          as,
-          [Pretty.endCode, "\n", "\n", Pretty.yellow],
-          bs,
-          [Pretty.endCode, "\n", "\n", Pretty.green],
-          cs,
-          [Pretty.endCode]
-        ]
+      if coloring.unColoring
+        then
+          mconcat
+            [ [Pretty.magenta],
+              as,
+              [Pretty.endCode, "\n", "\n", Pretty.yellow],
+              bs,
+              [Pretty.endCode, "\n", "\n", Pretty.green],
+              cs,
+              [Pretty.endCode]
+            ]
+        else
+          mconcat
+            [ as,
+              ["\n", "\n"],
+              bs,
+              ["\n", "\n"],
+              cs
+            ]
 
     toBuildL = Set.toList toBuildS
     toBuildBuilders =

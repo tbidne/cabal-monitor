@@ -3,6 +3,7 @@
 module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
+import Cabal.Monitor.Args (Coloring (MkColoring))
 import Cabal.Monitor.BuildStatus
   ( BuildStatus (MkBuildStatus, building, completed, toBuild),
     BuildStatusInit,
@@ -21,7 +22,6 @@ import Cabal.Monitor.Logger
         WithRegion
       ),
   )
-import Cabal.Monitor.Pretty qualified as Pretty
 import Control.Monad (unless, void)
 import Data.Foldable (for_)
 import Data.IORef (IORef, atomicModifyIORef', newIORef, readIORef)
@@ -111,7 +111,7 @@ testMonitor getTestArgs =
 
     e1 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - aeson-0.7",
           "  - bits-0.6",
           "  - byteable-0.1.1",
@@ -119,78 +119,78 @@ testMonitor getTestArgs =
           "  - lens-1",
           "  - mtl-compat-0.2.2",
           "  - profunctors-2",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+          "  - string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 0" <> Pretty.endCode,
+          "Building: 0",
           "",
-          Pretty.green <> "Completed: 0" <> Pretty.endCode
+          "Completed: 0"
         ]
     e2 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 4",
+        [ "To Build: 4",
           "  - lens-1",
           "  - mtl-compat-0.2.2",
           "  - profunctors-2",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+          "  - string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 4",
+          "Building: 4",
           "  - aeson-0.7",
           "  - bits-0.6",
           "  - byteable-0.1.1",
-          "  - indexed-profunctors-0.1.1.1" <> Pretty.endCode,
+          "  - indexed-profunctors-0.1.1.1",
           "",
-          Pretty.green <> "Completed: 0" <> Pretty.endCode
+          "Completed: 0"
         ]
 
     e3 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 2",
+        [ "To Build: 2",
           "  - profunctors-2",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+          "  - string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 5",
+          "Building: 5",
           "  - bits-0.6",
           "  - byteable-0.1.1",
           "  - indexed-profunctors-0.1.1.1",
           "  - lens-1",
-          "  - mtl-compat-0.2.2" <> Pretty.endCode,
+          "  - mtl-compat-0.2.2",
           "",
-          Pretty.green <> "Completed: 1",
-          "  - aeson-0.7" <> Pretty.endCode
+          "Completed: 1",
+          "  - aeson-0.7"
         ]
 
     e4 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 1",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+        [ "To Build: 1",
+          "  - string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 4",
+          "Building: 4",
           "  - indexed-profunctors-0.1.1.1",
           "  - lens-1",
           "  - mtl-compat-0.2.2",
-          "  - profunctors-2" <> Pretty.endCode,
+          "  - profunctors-2",
           "",
-          Pretty.green <> "Completed: 3",
+          "Completed: 3",
           "  - aeson-0.7",
           "  - bits-0.6",
-          "  - byteable-0.1.1" <> Pretty.endCode
+          "  - byteable-0.1.1"
         ]
 
     e5 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 0" <> Pretty.endCode,
+        [ "To Build: 0",
           "",
-          Pretty.yellow <> "Building: 3",
+          "Building: 3",
           "  - mtl-compat-0.2.2",
           "  - profunctors-2",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+          "  - string-qq-0.0.6",
           "",
-          Pretty.green <> "Completed: 5",
+          "Completed: 5",
           "  - aeson-0.7",
           "  - bits-0.6",
           "  - byteable-0.1.1",
           "  - indexed-profunctors-0.1.1.1",
-          "  - lens-1" <> Pretty.endCode
+          "  - lens-1"
         ]
 
 testMonitorShortWindow :: IO TestArgs -> TestTree
@@ -222,59 +222,59 @@ testMonitorShortWindow getTestArgs =
 
     e1 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1",
-          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6" <> Pretty.endCode,
+          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 0" <> Pretty.endCode,
+          "Building: 0",
           "",
-          Pretty.green <> "Completed: 0" <> Pretty.endCode
+          "Completed: 0"
         ]
     e2 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 4",
-          "  - lens-1, mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6" <> Pretty.endCode,
+        [ "To Build: 4",
+          "  - lens-1, mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 4",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1" <> Pretty.endCode,
+          "Building: 4",
+          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1",
           "",
-          Pretty.green <> "Completed: 0" <> Pretty.endCode
+          "Completed: 0"
         ]
 
     e3 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 2",
-          "  - profunctors-2, string-qq-0.0.6" <> Pretty.endCode,
+        [ "To Build: 2",
+          "  - profunctors-2, string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 5",
+          "Building: 5",
           "  - bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1",
-          "  - mtl-compat-0.2.2" <> Pretty.endCode,
+          "  - mtl-compat-0.2.2",
           "",
-          Pretty.green <> "Completed: 1",
-          "  - aeson-0.7" <> Pretty.endCode
+          "Completed: 1",
+          "  - aeson-0.7"
         ]
 
     e4 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 1",
-          "  - string-qq-0.0.6" <> Pretty.endCode,
+        [ "To Build: 1",
+          "  - string-qq-0.0.6",
           "",
-          Pretty.yellow <> "Building: 4",
-          "  - indexed-profunctors-0.1.1.1, lens-1, mtl-compat-0.2.2, profunctors-2" <> Pretty.endCode,
+          "Building: 4",
+          "  - indexed-profunctors-0.1.1.1, lens-1, mtl-compat-0.2.2, profunctors-2",
           "",
-          Pretty.green <> "Completed: 3",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1" <> Pretty.endCode
+          "Completed: 3",
+          "  - aeson-0.7, bits-0.6, byteable-0.1.1"
         ]
 
     e5 =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 0" <> Pretty.endCode,
+        [ "To Build: 0",
           "",
-          Pretty.yellow <> "Building: 3",
-          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6" <> Pretty.endCode,
+          "Building: 3",
+          "  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6",
           "",
-          Pretty.green <> "Completed: 5",
-          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1" <> Pretty.endCode
+          "Completed: 5",
+          "  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1"
         ]
 
 testMonitorHelper :: IO TestArgs -> OsPath -> String -> [Text] -> TestTree
@@ -298,7 +298,9 @@ testMonitorHelper getTestArgs fileName desc expected = testCase desc $ do
       assertFailure msg
   where
     args p =
-      [ "--file",
+      [ "--color",
+        "false",
+        "--file",
         p,
         "--period",
         "1"
@@ -321,12 +323,12 @@ formatStatusTests =
 
 testFormatNl :: TestTree
 testFormatNl = testCase desc $ do
-  expected @=? BuildStatus.formatStatusInit FormatNl exampleStatus
+  expected @=? BuildStatus.formatStatusInit coloring FormatNl exampleStatus
   where
     desc = "Formats with newlines"
     expected =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - lib13",
           "  - lib14",
           "  - lib15",
@@ -334,98 +336,98 @@ testFormatNl = testCase desc $ do
           "  - lib17",
           "  - lib18",
           "  - lib19",
-          "  - lib20" <> Pretty.endCode,
+          "  - lib20",
           "",
-          Pretty.yellow <> "Building: 7",
+          "Building: 7",
           "  - lib10",
           "  - lib11",
           "  - lib12",
           "  - lib6",
           "  - lib7",
           "  - lib8",
-          "  - lib9" <> Pretty.endCode,
+          "  - lib9",
           "",
-          Pretty.green <> "Completed: 5",
+          "Completed: 5",
           "  - lib1",
           "  - lib2",
           "  - lib3",
           "  - lib4",
-          "  - lib5" <> Pretty.endCode
+          "  - lib5"
         ]
 
 testFormatNlTrunc :: TestTree
 testFormatNlTrunc = testCase desc $ do
-  expected @=? BuildStatus.formatStatusInit (FormatNlTrunc 15) exampleStatus
+  expected @=? BuildStatus.formatStatusInit coloring (FormatNlTrunc 15) exampleStatus
   where
     desc = "Formats with newlines and truncation"
     expected =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - lib13",
-          "  ..." <> Pretty.endCode,
+          "  ...",
           "",
-          Pretty.yellow <> "Building: 7",
+          "Building: 7",
           "  - lib10",
           "  - lib11",
           "  - lib12",
           "  - lib6",
           "  - lib7",
           "  - lib8",
-          "  - lib9" <> Pretty.endCode,
+          "  - lib9",
           "",
-          Pretty.green <> "Completed: 5",
+          "Completed: 5",
           "  - lib1",
-          "  ..." <> Pretty.endCode
+          "  ..."
         ]
 
 testFormatInl :: TestTree
 testFormatInl = testCase desc $ do
-  expected @=? BuildStatus.formatStatusInit (FormatInl 25) exampleStatus
+  expected @=? BuildStatus.formatStatusInit coloring (FormatInl 25) exampleStatus
   where
     desc = "Formats with inline"
     expected =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - lib13, lib14, lib15",
           "  - lib16, lib17, lib18",
-          "  - lib19, lib20" <> Pretty.endCode,
+          "  - lib19, lib20",
           "",
-          Pretty.yellow <> "Building: 7",
+          "Building: 7",
           "  - lib10, lib11, lib12",
           "  - lib6, lib7, lib8",
-          "  - lib9" <> Pretty.endCode,
+          "  - lib9",
           "",
-          Pretty.green <> "Completed: 5",
+          "Completed: 5",
           "  - lib1, lib2, lib3",
-          "  - lib4, lib5" <> Pretty.endCode
+          "  - lib4, lib5"
         ]
 
 testFormatInlTrunc :: TestTree
 testFormatInlTrunc = testCase desc $ do
-  expected @=? BuildStatus.formatStatusInit (FormatInlTrunc 11 25) exampleStatus
+  expected @=? BuildStatus.formatStatusInit coloring (FormatInlTrunc 11 25) exampleStatus
   where
     desc = "Formats with inline and truncation"
     expected =
       unlineStrip
-        [ Pretty.magenta <> "To Build: 8",
+        [ "To Build: 8",
           "  - lib13, lib14, lib15",
-          "  ..." <> Pretty.endCode,
+          "  ...",
           "",
-          Pretty.yellow <> "Building: 7",
+          "Building: 7",
           "  - lib10, lib11, lib12",
           "  - lib6, lib7, lib8",
-          "  - lib9" <> Pretty.endCode,
+          "  - lib9",
           "",
-          Pretty.green <> "Completed: 5",
+          "Completed: 5",
           "  - lib1, lib2, lib3",
-          "  - lib4, lib5" <> Pretty.endCode
+          "  - lib4, lib5"
         ]
 
 testFormatLargeStart :: TestTree
 testFormatLargeStart = testFormatManual expected [ospPathSep|example_large_start.txt|]
   where
     expected =
-      [ Pretty.magenta <> "To Build: 359",
+      [ "To Build: 359",
         "  - BNFC-2.9.6.1, BNFC-meta-0.6.1, BiobaseNewick-0.0.0.2, Blammo-2.1.3.0, Boolean-0.2.4, BoundedChan-1.0.3.0, ChannelT-0.0.0.7, Chart-1.9.5, Chart-cairo-1.9.4.1",
         "  - Chart-diagrams-1.9.5.1, ChasingBottoms-1.3.1.16, ClustalParser-1.3.0, Color-0.4.0, DAV-1.3.4, DPutils-0.1.1.0, Decimal-0.5.2, Diff-1.0.2, ENIG-0.0.1.0, Earley-0.13.0.1",
         "  - FailT-0.1.2.0, FenwickTree-0.1.2.1, FindBin-0.0.5, FloatingHex-0.5, FontyFruity-0.5.3.5, ForestStructures-0.0.1.1, GLFW-b-3.3.9.1, GLURaw-2.0.0.5, GLUT-2.7.0.16",
@@ -454,18 +456,18 @@ testFormatLargeStart = testFormatManual expected [ospPathSep|example_large_start
         "  - hspec-discover-2.11.13, hspec-expectations-0.8.4, hspec-expectations-lifted-0.10.0, http-client-0.7.19, http-client-tls-0.3.6.4, http-conduit-2.3.9.1, http-types-0.12.4",
         "  - hxt-9.3.1.22, hxt-charproperties-9.5.0.0, hxt-http-9.1.5.2, hxt-regex-xmlschema-9.2.0.7, hxt-unicode-9.0.2.4, hyphenation-0.8.3, indexed-traversable-0.1.4",
         "  - indexed-traversable-instances-0.1.2, integer-conversion-0.1.1, integer-logarithms-1.0.4, intervals-0.9.3, invariant-0.6.4, iproute-1.7.15, kan-extensions-5.2.7",
-        "  ..." <> Pretty.endCode,
+        "  ...",
         "",
-        Pretty.yellow <> "Building: 0" <> Pretty.endCode,
+        "Building: 0",
         "",
-        Pretty.green <> "Completed: 0" <> Pretty.endCode
+        "Completed: 0"
       ]
 
 testFormatLargeBuilding1 :: TestTree
 testFormatLargeBuilding1 = testFormatManual expected [ospPathSep|example_large_building_1.txt|]
   where
     expected =
-      [ Pretty.magenta <> "To Build: 216",
+      [ "To Build: 216",
         "  - BNFC-2.9.6.1, BNFC-meta-0.6.1, BiobaseNewick-0.0.0.2, Blammo-2.1.3.0, ChannelT-0.0.0.7, Chart-1.9.5, Chart-cairo-1.9.4.1, Chart-diagrams-1.9.5.1",
         "  - ChasingBottoms-1.3.1.16, ClustalParser-1.3.0, Color-0.4.0, DAV-1.3.4, DPutils-0.1.1.0, ENIG-0.0.1.0, Earley-0.13.0.1, FenwickTree-0.1.2.1, FontyFruity-0.5.3.5",
         "  - ForestStructures-0.0.1.1, GLFW-b-3.3.9.1, GLURaw-2.0.0.5, GLUT-2.7.0.16, Glob-0.10.2, HCodecs-0.5.2, HPDF-1.8, HSet-0.0.2, HStringTemplate-0.8.8, HTF-0.15.0.2",
@@ -479,12 +481,12 @@ testFormatLargeBuilding1 = testFormatManual expected [ospPathSep|example_large_b
         "  - cookie-0.5.1, cpphs-1.20.10, crypto-api-0.13.3, crypto-pubkey-types-0.4.3, crypton-1.0.4, crypton-connection-0.4.5, crypton-socks-0.6.2, crypton-x509-1.7.7",
         "  - crypton-x509-store-1.6.11, crypton-x509-system-1.6.7, crypton-x509-validation-1.6.14, diagrams-cairo-1.5, diagrams-core-1.5.1.1, diagrams-lib-1.5.0.1",
         "  - diagrams-postscript-1.5.3, diagrams-svg-1.5, distributive-0.6.2.1, dual-tree-0.2.3.1, ech-config-0.0.1, errors-2.3.0, fast-logger-3.2.6, free-5.2, generated-0.1.0.0",
-        "  ..." <> Pretty.endCode,
+        "  ...",
         "",
-        Pretty.yellow <> "Building: 7",
-        "  - OpenGLRaw-3.3.4.1, async-2.2.5, case-insensitive-1.2.1.0, network-3.2.8.0, text-short-0.1.6, unordered-containers-0.2.20, zlib-0.7.1.1" <> Pretty.endCode,
+        "Building: 7",
+        "  - OpenGLRaw-3.3.4.1, async-2.2.5, case-insensitive-1.2.1.0, network-3.2.8.0, text-short-0.1.6, unordered-containers-0.2.20, zlib-0.7.1.1",
         "",
-        Pretty.green <> "Completed: 136",
+        "Completed: 136",
         "  - Boolean-0.2.4, BoundedChan-1.0.3.0, Decimal-0.5.2, Diff-1.0.2, FailT-0.1.2.0, FindBin-0.0.5, FloatingHex-0.5, GenericPretty-1.2.2, HSlippyMap-3.0.1, HSvm-1.0.3.35",
         "  - HUnit-1.6.2.0, HasBigDecimal-0.2.0.0, HsYAML-0.2.1.5, IfElse-0.85, IntervalMap-0.6.2.1, LPFP-core-1.1.5, LetsBeRational-1.0.0.0, List-0.6.2, ListTree-0.2.3",
         "  - Mantissa-0.1.0.0, MonadPrompt-1.0.0.5, NoHoed-0.1.1, NumInstances-1.4, ObjectName-1.1.0.2, OneTuple-0.4.2, Only-0.1, PSQueue-1.2.2, ParsecTools-0.0.2.0, PyF-0.11.4.0",
@@ -498,14 +500,14 @@ testFormatLargeBuilding1 = testFormatManual expected [ospPathSep|example_large_b
         "  - hspec-discover-2.11.13, hxt-charproperties-9.5.0.0, indexed-traversable-0.1.4, integer-logarithms-1.0.4, logict-0.8.2.0, loop-0.3.0, mime-types-0.1.2.0",
         "  - monad-loops-0.4.3, network-byte-order-0.1.7, network-info-0.2.1, newtype-generics-0.6.2, old-locale-1.0.0.7, operational-0.2.4.2, parallel-3.2.2.0, polyparse-1.13.1",
         "  - prettyprinter-1.7.1, primitive-0.9.1.0, reflection-2.1.9, regex-base-0.94.0.3, safe-0.3.21, safe-exceptions-0.1.7.4, scanner-0.3.1, semigroups-0.20, split-0.2.5",
-        "  ..." <> Pretty.endCode
+        "  ..."
       ]
 
 testFormatLargeBuilding2 :: TestTree
 testFormatLargeBuilding2 = testFormatManual expected [ospPathSep|example_large_building_2.txt|]
   where
     expected =
-      [ Pretty.magenta <> "To Build: 104",
+      [ "To Build: 104",
         "  - AesonBson-0.4.1, Agda-2.8.0, ListLike-4.7.8.4, abstract-deque-tests-0.3, acid-state-0.16.1.4, active-0.2.1, ad-4.5.6, adjunctions-4.4.3, advent-of-code-api-0.2.9.1",
         "  - aern2-mp-0.2.16.1, aern2-real-0.2.16.1, aeson-2.2.3.0, aeson-attoparsec-0.0.0, aeson-better-errors-0.9.1.3, aeson-casing-0.2.0.0, aeson-combinators-0.1.2.1",
         "  - aeson-diff-1.1.0.13, aeson-gadt-th-0.2.5.4, aeson-generic-compat-0.0.2.0, aeson-jsonpath-0.3.0.2, aeson-pretty-0.8.10, aeson-qq-0.8.4, aeson-schemas-1.4.3.0",
@@ -519,12 +521,12 @@ testFormatLargeBuilding2 = testFormatManual expected [ospPathSep|example_large_b
         "  - log-domain-0.13.2, matrix-0.3.6.4, mixed-types-num-0.6.2, mod-0.2.1.0, monad-logger-0.3.42, mono-traversable-1.0.21.0, monoid-subclasses-1.2.6",
         "  - nonempty-containers-0.3.5.0, nonempty-vector-0.2.4, persistent-2.17.1.0, pointed-5.0.5, process-extras-0.7.4, refined-0.8.2, rio-0.1.22.0, rio-prettyprint-0.1.8.0",
         "  - safecopy-0.10.4.3, semialign-1.3.1, serialise-0.2.6.1, servant-0.20.3.0, servant-client-0.20.3.0, servant-client-core-0.20.3.0, string-interpolate-0.3.4.0",
-        "  ..." <> Pretty.endCode,
+        "  ...",
         "",
-        Pretty.yellow <> "Building: 6",
-        "  - GLUT-2.7.0.16, crypton-x509-store-1.6.11, free-5.2, haskell-src-exts-1.23.1, hspec-smallcheck-0.5.3, vector-0.13.2.0" <> Pretty.endCode,
+        "Building: 6",
+        "  - GLUT-2.7.0.16, crypton-x509-store-1.6.11, free-5.2, haskell-src-exts-1.23.1, hspec-smallcheck-0.5.3, vector-0.13.2.0",
         "",
-        Pretty.green <> "Completed: 295",
+        "Completed: 295",
         "  - AC-Angle-1.0, ANum-0.2.0.4, GLURaw-2.0.0.5, HUnit-1.6.2.0, ObjectName-1.1.0.2, OneTuple-0.4.2, OpenGL-3.0.3.0, OpenGLRaw-3.3.4.1, QuickCheck-2.16.0.0",
         "  - STMonadTrans-0.4.8.1, StateVar-1.2.2, Stream-0.4.7.2, abstract-deque-0.3, abstract-par-0.3.3, acc-0.2.0.3, ace-0.6, action-permutations-0.0.0.1, ad-delcont-0.5.0.0",
         "  - adler32-0.1.2.0, aftovolio-0.8.0.0, agreeing-0.2.2.0, alarmclock-0.7.0.7, alex-3.5.4.0, alex-tools-0.6.1, algebraic-graphs-0.7, almost-fix-0.0.2",
@@ -538,13 +540,14 @@ testFormatLargeBuilding2 = testFormatManual expected [ospPathSep|example_large_b
         "  - byteorder-1.0.4, bytes-0.17.4, cabal-doctest-1.0.11, call-stack-0.4.0, case-insensitive-1.2.1.0, cborg-0.2.10.0, cdar-mBound-0.1.0.4, cereal-0.5.8.3, character-ps-0.1",
         "  - charset-0.3.12, cli-arguments-0.7.0.0, clock-0.8.4, collect-errors-0.1.6.0, colour-2.3.6, commutative-semigroups-0.2.0.2, comonad-5.0.9, concurrent-output-1.10.21",
         "  - constraints-0.14.2, contravariant-1.5.5, cookie-0.5.1, cryptohash-md5-0.11.101.0, cryptohash-sha1-0.11.101.0, crypton-1.0.4, crypton-socks-0.6.2, crypton-x509-1.7.7",
-        "  ..." <> Pretty.endCode
+        "  ..."
       ]
 
 testFormatManual :: [Text] -> OsPath -> TestTree
 testFormatManual expected fileName = testCase desc $ do
   eResult <- runner $ do
     Monitor.readFormattedStatus
+      coloring
       Nothing
       Nothing
       path
@@ -717,3 +720,6 @@ containsLog :: Text -> Set Text -> Bool
 containsLog l logs =
   -- O(n) fallback for inexact match.
   (l `Set.member` logs) || any (T.isInfixOf l) logs
+
+coloring :: Coloring
+coloring = MkColoring False
