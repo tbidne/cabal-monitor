@@ -103,6 +103,7 @@ test-suite functional
   main-is:        Main.hs
   build-depends:
     , base
+    , bytestring          >=0.10.12.0 && <0.13
     , cabal-monitor
     , containers
     , effectful
@@ -111,8 +112,9 @@ test-suite functional
     , fs-effectful
     , fs-utils
     , optparse-effectful
-    , tasty               >=1.1.0.3 && <1.6
-    , tasty-hunit         >=0.9     && <0.11
+    , tasty               >=1.1.0.3   && <1.6
+    , tasty-golden        ^>=2.3.1.1
+    , tasty-hunit         >=0.9       && <0.11
     , terminal-effectful
     , text
 

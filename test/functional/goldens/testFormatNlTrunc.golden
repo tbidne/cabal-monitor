@@ -1,0 +1,16 @@
+To Build: 8
+  - lib13
+  ...
+
+Building: 7
+  - lib10
+  - lib11
+  - lib12
+  - lib6
+  - lib7
+  - lib8
+  - lib9
+
+Completed: 5
+  - lib1
+  ...
