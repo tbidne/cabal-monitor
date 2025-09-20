@@ -12,6 +12,8 @@ To Build: 216
   - cookie-0.5.1, cpphs-1.20.10, crypto-api-0.13.3, crypto-pubkey-types-0.4.3, crypton-1.0.4, crypton-connection-0.4.5, crypton-socks-0.6.2, crypton-x509-1.7.7
   - crypton-x509-store-1.6.11, crypton-x509-system-1.6.7, crypton-x509-validation-1.6.14, diagrams-cairo-1.5, diagrams-core-1.5.1.1, diagrams-lib-1.5.0.1
   - diagrams-postscript-1.5.3, diagrams-svg-1.5, distributive-0.6.2.1, dual-tree-0.2.3.1, ech-config-0.0.1, errors-2.3.0, fast-logger-3.2.6, free-5.2, generated-0.1.0.0
+  - glib-0.13.12.0, gloss-1.13.2.2, gloss-rendering-1.13.2.1, gnuplot-0.5.7, gtk2hs-buildtools-0.13.12.0, happy-2.1.7, happy-meta-0.2.1.0, hashtables-1.4.2
+  - haskell-src-1.0.4.2, haskell-src-exts-1.23.1, haskell-src-meta-0.8.15, hedis-0.15.2, hpke-0.0.0, hslogger-1.3.2.0, hspec-2.11.13, hspec-core-2.11.13
   ...
 
 Building: 7
@@ -31,4 +33,6 @@ Completed: 136
   - hspec-discover-2.11.13, hxt-charproperties-9.5.0.0, indexed-traversable-0.1.4, integer-logarithms-1.0.4, logict-0.8.2.0, loop-0.3.0, mime-types-0.1.2.0
   - monad-loops-0.4.3, network-byte-order-0.1.7, network-info-0.2.1, newtype-generics-0.6.2, old-locale-1.0.0.7, operational-0.2.4.2, parallel-3.2.2.0, polyparse-1.13.1
   - prettyprinter-1.7.1, primitive-0.9.1.0, reflection-2.1.9, regex-base-0.94.0.3, safe-0.3.21, safe-exceptions-0.1.7.4, scanner-0.3.1, semigroups-0.20, split-0.2.5
-  ...
+  - splitmix-0.1.3.1, statestack-0.3.1.1, stm-chans-3.0.0.9, string-qq-0.0.6, stringsearch-0.3.6.6, syb-0.7.3, tagged-0.8.9, text-binary-0.2.1.1, th-abstraction-0.7.1.0
+  - th-compat-0.1.6, these-1.2.1, time-compat-1.9.8, time-locale-compat-0.1.1.5, transformers-compat-0.7.2, unicode-data-0.6.0, unix-compat-0.7.4.1, unliftio-core-0.2.1.0
+  - utf8-string-1.0.2, utility-ht-0.0.17.2, vector-stream-0.1.0.1, void-0.7.3, xml-1.3.14, xml-types-0.3.8, xmlgen-0.6.2.2
