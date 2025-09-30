@@ -5,6 +5,7 @@ on: # yamllint disable-line rule:truthy rule:comments
   push:
     branches:
       - main
+      - vers
 
   pull_request:
     branches:
@@ -18,8 +19,8 @@ jobs:
       fail-fast: false
       matrix:
         ghc:
-          - "9.10.1"
-          - "9.12.1"
+          - "9.10.2"
+          - "9.12.2"
         os:
           - "macos-latest"
           - "ubuntu-latest"
@@ -49,11 +50,8 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         run: cabal test functional
 
-      # For some reason -- since the 'Add compact format option' change --
-      # the 9.12.1 benchmarks do not terminate on CI (it does locally, though).
-      # It's not critical, so disabling for now.
       - name: Benchmarks
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.ghc == '9.10.1' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         id: bench
         run: |
           cabal bench --benchmark-options '
