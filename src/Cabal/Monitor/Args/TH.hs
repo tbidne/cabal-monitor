@@ -30,7 +30,9 @@ import Text.Read qualified as TR
 gitData :: Code Q (OsString, OsString, OsString)
 gitData = toCode qs
   where
-    toCode = GRT.qToCode . GRT.projectError
+    toCode = GRT.qToCode . GRT.projectConst (unknown, unknown, unknown)
+
+    unknown = [osstr|UNKNOWN|]
 
     qs =
       GRT.firstSuccessQ
