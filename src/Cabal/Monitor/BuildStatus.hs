@@ -24,6 +24,7 @@ where
 
 import Cabal.Monitor.Args (Coloring (unColoring))
 import Cabal.Monitor.Pretty qualified as Pretty
+import Control.Applicative (asum)
 import Control.DeepSeq (NFData)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
@@ -34,6 +35,7 @@ import Data.ByteString.Lazy qualified as BSL
 import Data.Foldable qualified as F
 import Data.Kind (Type)
 import Data.List qualified as L
+import Data.Maybe (fromMaybe)
 import Data.Set (Set, (\\))
 import Data.Set qualified as Set
 import Data.String (IsString)
@@ -89,15 +91,27 @@ type BuildStatusFinal = BuildStatus BuildStatusPhaseFinal
 parseStatus :: ByteString -> BuildStatusInit
 parseStatus = F.foldMap' go . C8.lines
   where
-    go txt = case BS.stripPrefix " - " txt of
-      Just rest -> mkPkg (BS.takeWhile (/= spaceChr) rest)
-      -- "Starting" rather than "Building" as the former includes other steps
-      -- we care about e.g. downloading, configuring.
-      Nothing -> case BS.stripPrefix "Starting" txt of
-        Just rest -> mkBuilding (takeSkipLeadingSpc rest)
-        Nothing -> case BS.stripPrefix "Completed" txt of
-          Just rest -> mkCompleted (takeSkipLeadingSpc rest)
-          Nothing -> mempty
+    go txt =
+      fromMaybe mempty $
+        asum
+          [ mkInit mkPkg (BS.takeWhile (/= spaceChr)) " - ",
+            -- "Starting" rather than "Building" as the former includes other steps
+            -- we care about e.g. downloading, configuring.
+            mkInit mkBuilding takeSkipLeadingSpc "Starting",
+            mkInit mkCompleted takeSkipLeadingSpc "Completed"
+          ]
+      where
+        -- Constructs a BuildStatusInit from a bytestring, if the expected
+        -- prefix matches.
+        mkInit ::
+          -- BuildStatusInit constructor.
+          (ByteString -> BuildStatusInit) ->
+          -- Bytestring parse fn.
+          (ByteString -> ByteString) ->
+          -- Bytestring prefix to match.
+          ByteString ->
+          Maybe BuildStatusInit
+        mkInit cons parseFn pfx = cons . parseFn <$> BS.stripPrefix pfx txt
 
     spaceChr = 32
     takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
