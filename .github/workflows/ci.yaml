@@ -33,11 +33,6 @@ jobs:
         with:
           ghc-version: ${{ matrix.ghc }}
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23.x
-
       - name: Configure
         run: cabal configure --enable-tests --ghc-options -Werror
 
