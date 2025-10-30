@@ -15,9 +15,9 @@ import Data.String (IsString (fromString))
 import Data.Version (showVersion)
 import Effectful (Eff, (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
+import Effectful.Optparse.Completer qualified as EOC
 import Effectful.Optparse.Static (Optparse)
 import Effectful.Optparse.Static qualified as EOA
-import Effectful.Optparse.Completer qualified as EOC
 import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
 import FileSystem.OsString (OsString)
