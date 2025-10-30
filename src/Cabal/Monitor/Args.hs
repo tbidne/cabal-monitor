@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedLists #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Cabal.Monitor.Args
@@ -9,12 +10,14 @@ where
 
 import Cabal.Monitor.Args.TH qualified as TH
 import Data.List qualified as L
+import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.String (IsString (fromString))
 import Data.Version (showVersion)
 import Effectful (Eff, (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Optparse.Static (Optparse)
 import Effectful.Optparse.Static qualified as EOA
+import Effectful.Optparse.Completer qualified as EOC
 import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
 import FileSystem.OsString (OsString)
@@ -75,22 +78,71 @@ parserInfo =
     header = Just "Cabal-monitor: Monitors cabal builds"
     footerTxt = Just $ fromString versShort
     desc =
-      Chunk.paragraph $
-        mconcat
-          [ "Cabal-monitor monitors a cabal output build file (e.g. cabal ",
-            "build > out.txt) and reports basic progress information."
-          ]
+      Chunk.vcatChunks
+        [ Chunk.paragraph $
+            mconcat
+              [ "Cabal-monitor monitors a cabal output build file (e.g. cabal ",
+                "build > out.txt) and reports basic progress information."
+              ],
+          line,
+          Chunk.paragraph "Examples:",
+          line,
+          mkExample
+            [ "1. Simple usage:",
+              "",
+              "In terminal 1",
+              "$ cabal build > out.txt ",
+              "",
+              "In terminal 2",
+              "$ cabal-monitor -f out.txt "
+            ]
+        ]
+
+    mkExample :: NonEmpty String -> Chunk Doc
+    mkExample = identPara 2 5
+
+    identPara :: Int -> Int -> NonEmpty String -> Chunk Doc
+    identPara hIndent lIndent (h :| xs) =
+      Chunk.vcatChunks
+        . (\ys -> toChunk hIndent h : ys)
+        . fmap (toChunk lIndent)
+        $ xs
+
+    toChunk _ "" = line
+    toChunk i other = fmap (Pretty.indent i) . Chunk.stringChunk $ other
+
+    line = Chunk (Just Pretty.softline)
 
 argsParser :: Parser Args
-argsParser =
-  MkArgs
-    <$> coloringParser
-    <*> filePathParser
-    <*> heightParser
-    <*> periodParser
-    <*> widthParser
-      <**> OA.helper
-      <**> version
+argsParser = mainParser <**> OA.helper <**> version
+  where
+    mainParser = do
+      ~(filePath, period) <- coreOptsParser
+      ~(coloring, height, width) <- formattingOptsParser
+
+      pure $
+        MkArgs
+          { coloring,
+            filePath,
+            height,
+            period,
+            width
+          }
+
+    coreOptsParser =
+      OA.parserOptionGroup
+        "Core options:"
+        $ (,)
+          <$> filePathParser
+          <*> periodParser
+
+    formattingOptsParser =
+      OA.parserOptionGroup
+        "Formatting options:"
+        $ (,,)
+          <$> coloringParser
+          <*> heightParser
+          <*> widthParser
 
 filePathParser :: Parser OsPath
 filePathParser =
@@ -100,6 +152,7 @@ filePathParser =
       [ OA.short 'f',
         OA.long "file",
         OA.metavar "PATH",
+        OA.completer EOC.compgenCwdPathsCompleter,
         mkHelp "Path to file to monitor."
       ]
   where
@@ -122,36 +175,16 @@ coloringParser =
     OA.option readColoring $
       mconcat
         [ OA.long "color",
-          OA.helpDoc helpTxt
+          OA.metavar "(on | off)",
+          OA.completeWith ["on", "off"],
+          mkHelp "Coloring options."
         ]
   where
     readColoring =
       OA.str >>= \case
-        "t" -> pure $ MkColoring True
-        "true" -> pure $ MkColoring True
-        "f" -> pure $ MkColoring False
-        "false" -> pure $ MkColoring False
+        "on" -> pure $ MkColoring True
+        "off" -> pure $ MkColoring False
         bad -> fail $ "Unexpected --coloring: " ++ bad
-
-    helpTxt =
-      mconcat
-        [ intro,
-          Just Pretty.hardline,
-          true,
-          false,
-          Just Pretty.hardline
-        ]
-    intro = toMDoc "Coloring options."
-    true =
-      mconcat
-        [ Just Pretty.hardline,
-          toMDoc "- (t|true): On."
-        ]
-    false =
-      mconcat
-        [ Just Pretty.hardline,
-          toMDoc "- (f|false): Off."
-        ]
 
 periodParser :: Parser (Maybe Natural)
 periodParser =
@@ -162,7 +195,7 @@ periodParser =
       [ OA.short 'p',
         OA.long "period",
         OA.metavar "NAT",
-        mkHelp "Monitor refresh period, in seconds."
+        mkHelpNoLine "Monitor refresh period, in seconds."
       ]
 
 widthParser :: Parser (Maybe Natural)
@@ -173,7 +206,7 @@ widthParser =
     $ mconcat
       [ OA.long "width",
         OA.metavar "NAT",
-        mkHelp "Maximum line length."
+        mkHelpNoLine "Maximum line length."
       ]
 
 version :: Parser (a -> a)
@@ -220,10 +253,20 @@ versionInfo =
 mkHelp :: String -> Mod f a
 mkHelp s = mkMultiHelp [s]
 
+mkHelpNoLine :: String -> Mod f a
+mkHelpNoLine s = mkMultiHelpNoLine [s]
+
 mkMultiHelp :: [String] -> Mod f a
 mkMultiHelp =
   OA.helpDoc
     . fmap (<> Pretty.hardline)
+    . Chunk.unChunk
+    . Chunk.vsepChunks
+    . fmap Chunk.paragraph
+
+mkMultiHelpNoLine :: [String] -> Mod f a
+mkMultiHelpNoLine =
+  OA.helpDoc
     . Chunk.unChunk
     . Chunk.vsepChunks
     . fmap Chunk.paragraph

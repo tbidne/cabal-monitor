@@ -138,7 +138,7 @@ testMonitorHelper getTestArgs goldenName desc = goldenDiffCustom desc goldenFP a
   where
     args p =
       [ "--color",
-        "false",
+        "off",
         "--file",
         p,
         "--period",

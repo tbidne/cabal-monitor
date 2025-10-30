@@ -68,20 +68,20 @@
         { pkgs, ... }:
         let
           hlib = pkgs.haskell.lib;
-          ghc-version = "ghc9101";
+          ghc-version = "ghc9122";
           compiler = pkgs.haskell.packages."${ghc-version}".override {
             overrides =
               final: prev:
               {
-                path = hlib.dontCheck prev.path_0_9_6;
-
-                gitrev-typed = (
-                  final.callHackageDirect {
-                    pkg = "gitrev-typed";
-                    ver = "0.1";
-                    sha256 = "sha256-s7LEekR7NLe3CNhD/8uChnh50eGfaArrrtc5hoCtJ1A=";
-                  } { }
-                );
+                Cabal-syntax_3_10_3_0 = hlib.doJailbreak prev.Cabal-syntax_3_10_3_0;
+                fourmolu = hlib.doJailbreak prev.fourmolu;
+                hspec-golden = hlib.doJailbreak prev.hspec-golden;
+                ormolu = hlib.doJailbreak prev.ormolu;
+                # TODO: Would be great to be able to remove this (when it's
+                # the default in nixpkgs) as overriding forces a rebuild of
+                # many packages, hence makes the dev shell slow.
+                optparse-applicative = prev.optparse-applicative_0_19_0_0;
+                stylish-haskell = hlib.doJailbreak prev.stylish-haskell;
               }
               // nix-hs-utils.mkLibs inputs final [
                 "algebra-simple"
