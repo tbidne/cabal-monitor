@@ -254,20 +254,14 @@ formatAll coloring style toBuildS buildingS completedS = final
               cs
             ]
 
-    toBuildL = Set.toList toBuildS
-    toBuildBuilders =
-      let bs = formatter toBuildL
-       in "To Build: " <> BSB.intDec (Set.size toBuildS) : bs
+    toBuildBuilders = formatSet "To Build: " toBuildS
+    buildingBuilders = formatSet "Building: " buildingS
+    completedBuilders = formatSet "Completed: " completedS
 
-    buildingL = Set.toList buildingS
-    buildingBuilders =
-      let bs = formatter buildingL
-       in "Building: " <> BSB.intDec (Set.size buildingS) : bs
-
-    completedL = Set.toList completedS
-    completedBuilders =
-      let bs = formatter completedL
-       in "Completed: " <> BSB.intDec (Set.size completedS) : bs
+    formatSet pfx s =
+      let xs = Set.toList s
+          bs = formatter xs
+       in pfx <> BSB.intDec (Set.size s) : bs
 
 formatNewlines :: [Package] -> [Builder]
 formatNewlines = L.reverse . foldl' go []
