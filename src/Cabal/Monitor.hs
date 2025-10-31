@@ -6,6 +6,7 @@ module Cabal.Monitor
     BuildState (..),
     monitorBuild,
     readFormattedStatus,
+    mkFormatStyleFn,
   )
 where
 
@@ -102,8 +103,9 @@ monitorBuild rType args =
   where
     runStatus = do
       let sleepSeconds = fromMaybe 5 args.period
+      styleFn <- mkFormatStyleFn args.height args.width
       Logger.withRegion @rType Linear $ \r -> forever $ do
-        readPrintStatus r coloring args.height args.width args.filePath
+        readPrintStatus r coloring styleFn args.filePath
         CCS.sleep sleepSeconds
 
     coloring = fromMaybe (MkColoring True) args.coloring
@@ -116,21 +118,18 @@ readPrintStatus ::
     HasCallStack,
     PathReader :> es,
     SharedState (BuildState, Bool) :> es,
-    RegionLogger r :> es,
-    Terminal :> es
+    RegionLogger r :> es
   ) =>
   r ->
   -- | Color.
   Coloring ->
-  -- | Maybe terminal height
-  Maybe Natural ->
-  -- | Maybe terminal width
-  Maybe Natural ->
+  -- | Style function.
+  (BuildStatusInit -> FormatStyle) ->
   -- | Path to file to monitor.
   OsPath ->
   Eff es ()
-readPrintStatus region coloring mHeight mWidth path = do
-  readFormattedStatus coloring mHeight mWidth path >>= \case
+readPrintStatus region coloring styleFn path = do
+  readFormattedStatus coloring styleFn path >>= \case
     Left (PathDoesNotExist p) ->
       Logger.logRegion
         LogModeSet
@@ -147,61 +146,26 @@ readFormattedStatus ::
   ( FileReader :> es,
     HasCallStack,
     PathReader :> es,
-    SharedState (BuildState, Bool) :> es,
-    Terminal :> es
+    SharedState (BuildState, Bool) :> es
   ) =>
   -- | Color.
   Coloring ->
-  -- | Maybe terminal height
-  Maybe Natural ->
-  -- | Maybe terminal width
-  Maybe Natural ->
+  -- | Style function.
+  (BuildStatusInit -> FormatStyle) ->
   OsPath ->
   Eff es (Either ReadStatusError Text)
-readFormattedStatus coloring mHeight mWidth path = do
+readFormattedStatus coloring styleFn path = do
   readStatus path >>= \case
     Left err -> pure $ Left err
     Right statusInit -> do
       let statusFinal = Status.advancePhase statusInit
+          style = styleFn statusInit
 
       -- Update build state.
       SState.modify
         ( \(prevState, _) ->
             BuildState.mkNewBuildState prevState statusFinal
         )
-
-      style <- case (mHeight, mWidth) of
-        (Just height, Just width) -> pure $ FormatInlTrunc height width
-        (Just height, Nothing) -> pure $ FormatNlTrunc height
-        (Nothing, Just width) -> pure $ FormatInl width
-        (Nothing, Nothing) -> do
-          eResult <- Ex.trySync Term.getTerminalSize
-          pure $ case eResult of
-            Left _ -> FormatNl
-            Right sz -> do
-              -- availPkgLines is used to tell the formatter how much vertical
-              -- space it can use before truncating. This value is the
-              -- terminal_height - 4, because we have 4 sections:
-              --
-              --   (To Build, Building, Completed, Timer)
-              --
-              -- And each section has a trailing newline. Each section also
-              -- has a header, but the formatter includes that in its
-              -- calculations, so we do not need to take it into account here.
-              --
-              -- Finally, we subtract 1 from availPkgLines (same as the width),
-              -- to prevent the terminal from jumping to a newline, which can
-              -- happen when all space is used up.
-              let availPkgLines = sz.height `monus` 4
-                  neededLines = int2Nat $ Status.numAllPkgs statusInit
-
-              if neededLines < availPkgLines
-                -- 2.2. Normal, non-compact format fits in the vertical space;
-                --      use it.
-                then FormatNl
-                -- 2.3. Does not fit in vertical space. Use compact, with length
-                --      determined by terminal size.
-                else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
 
       pure $ Right $ Status.formatStatusFinal coloring style statusFinal
 
@@ -285,6 +249,52 @@ logCounter rType coloring = do
     fmtTime =
       T.pack
         . Rel.formatSeconds Rel.defaultFormat
+
+-- | Creates the style to use.
+mkFormatStyleFn ::
+  ( HasCallStack,
+    Terminal :> es
+  ) =>
+  -- | Maybe terminal height
+  Maybe Natural ->
+  -- | Maybe terminal width
+  Maybe Natural ->
+  -- | Function from init to style. This is dynamic in case nothing is
+  -- requested and we use heuristics to decide how to best fit the
+  -- status, based on its size.
+  Eff es (BuildStatusInit -> FormatStyle)
+mkFormatStyleFn mHeight mWidth = do
+  case (mHeight, mWidth) of
+    (Just height, Just width) -> pure $ const $ FormatInlTrunc height width
+    (Just height, Nothing) -> pure $ const $ FormatNlTrunc height
+    (Nothing, Just width) -> pure $ const $ FormatInl width
+    (Nothing, Nothing) -> do
+      eResult <- Ex.trySync Term.getTerminalSize
+      pure $ case eResult of
+        Left _ -> const FormatNl
+        Right sz -> \statusInit ->
+          -- availPkgLines is used to tell the formatter how much vertical
+          -- space it can use before truncating. This value is the
+          -- terminal_height - 4, because we have 4 sections:
+          --
+          --   (To Build, Building, Completed, Timer)
+          --
+          -- And each section has a trailing newline. Each section also
+          -- has a header, but the formatter includes that in its
+          -- calculations, so we do not need to take it into account here.
+          --
+          -- Finally, we subtract 1 from availPkgLines (same as the width),
+          -- to prevent the terminal from jumping to a newline, which can
+          -- happen when all space is used up.
+          let availPkgLines = sz.height `monus` 4
+              neededLines = int2Nat $ Status.numAllPkgs statusInit
+           in if neededLines < availPkgLines
+                -- 2.2. Normal, non-compact format fits in the vertical space;
+                --      use it.
+                then FormatNl
+                -- 2.3. Does not fit in vertical space. Use compact, with length
+                --      determined by terminal size.
+                else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
 
 monus :: Natural -> Natural -> Natural
 monus x y

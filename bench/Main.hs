@@ -33,12 +33,15 @@ import Test.Tasty.Bench
 
 main :: IO ()
 main = do
+  defaultSyleFn <- mkStyleFn Nothing Nothing
+  compactSyleFn <- mkStyleFn (Just termHeight) (Just termWidth)
+
   defaultMain
     [ env (pure sampleBS) benchParseStatus,
       env (pure sampleStatus) benchFormatStatus,
       env (pure sampleStatus) benchFormatStatusCompact,
-      benchReadFormatted samplePath,
-      benchReadFormattedCompact samplePath
+      benchReadFormatted defaultSyleFn samplePath,
+      benchReadFormattedCompact compactSyleFn samplePath
     ]
 
 benchParseStatus :: ByteString -> Benchmark
@@ -53,19 +56,25 @@ benchFormatStatusCompact :: BuildStatusInit -> Benchmark
 benchFormatStatusCompact status =
   bench "formatStatus_compact" $ nf (Status.formatStatusInit coloring compactStyle) status
 
-benchReadFormatted :: OsPath -> Benchmark
-benchReadFormatted path =
+benchReadFormatted :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
+benchReadFormatted styleFn path =
   bench "readFormattedStatus" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus coloring Nothing Nothing $ path)
+    nfIO (runBenchEff . Monitor.readFormattedStatus coloring styleFn $ path)
 
-benchReadFormattedCompact :: OsPath -> Benchmark
-benchReadFormattedCompact path =
+benchReadFormattedCompact :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
+benchReadFormattedCompact styleFn path =
   bench "readFormattedStatus_compact" $
     nfIO
       ( runBenchEff
-          . Monitor.readFormattedStatus coloring (Just termHeight) (Just termWidth)
+          . Monitor.readFormattedStatus coloring styleFn
           $ path
       )
+
+mkStyleFn :: Maybe Natural -> Maybe Natural -> IO (BuildStatusInit -> FormatStyle)
+mkStyleFn mHeight mWidth =
+  runEff
+    . Term.runTerminal
+    $ Monitor.mkFormatStyleFn mHeight mWidth
 
 compactStyle :: FormatStyle
 compactStyle = FormatInlTrunc termHeight termWidth

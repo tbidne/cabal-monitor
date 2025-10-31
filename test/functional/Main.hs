@@ -228,11 +228,8 @@ testFormatLargeBuilding2 =
 testFormatManual :: OsPath -> OsPath -> TestTree
 testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP $ do
   eResult <- runner $ do
-    Monitor.readFormattedStatus
-      coloring
-      Nothing
-      Nothing
-      inputPath
+    style <- Monitor.mkFormatStyleFn Nothing Nothing
+    Monitor.readFormattedStatus coloring style inputPath
 
   case eResult of
     Left err -> writeActualFile $ "Received error: " <> sToBs (show err)
