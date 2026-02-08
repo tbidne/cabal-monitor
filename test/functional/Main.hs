@@ -3,7 +3,7 @@
 module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Args (Coloring (MkColoring))
+import Cabal.Monitor.Args (Coloring (MkColoring), SearchInfix (MkSearchInfix))
 import Cabal.Monitor.BuildStatus
   ( BuildStatus (MkBuildStatus, building, completed, toBuild),
     BuildStatusInit,
@@ -168,7 +168,8 @@ formatStatusTests =
       testFormatInlTrunc,
       testFormatLargeStart,
       testFormatLargeBuilding1,
-      testFormatLargeBuilding2
+      testFormatLargeBuilding2,
+      testFormatHeader1
     ]
 
 testFormatNl :: TestTree
@@ -224,11 +225,17 @@ testFormatLargeBuilding2 =
     [ospPathSep|testFormatLargeBuilding2|]
     [ospPathSep|example_large_building_2.txt|]
 
+testFormatHeader1 :: TestTree
+testFormatHeader1 =
+  testFormatManual
+    [ospPathSep|testFormatHeader1|]
+    [ospPathSep|header_1.txt|]
+
 testFormatManual :: OsPath -> OsPath -> TestTree
 testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP $ do
   eResult <- runner $ do
     style <- Monitor.mkFormatStyleFn Nothing Nothing
-    Monitor.readFormattedStatus coloring style inputPath
+    Monitor.readFormattedStatus coloring searchInfix style inputPath
 
   case eResult of
     Left err -> writeActualFile $ "Received error: " <> sToBs (show err)
@@ -391,6 +398,9 @@ runTestEff =
 
 coloring :: Coloring
 coloring = MkColoring False
+
+searchInfix :: SearchInfix
+searchInfix = MkSearchInfix True
 
 -- | We use a custom diff as this will print the actual diff to stdout,
 -- whereas ordinary goldenVsFile will merely print something like

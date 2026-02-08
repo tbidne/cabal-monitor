@@ -13,6 +13,7 @@ where
 import Cabal.Monitor.Args
   ( Args (coloring, filePath, height, period, width),
     Coloring (MkColoring, unColoring),
+    SearchInfix (MkSearchInfix),
   )
 import Cabal.Monitor.Args qualified as Args
 import Cabal.Monitor.BuildState
@@ -33,6 +34,7 @@ import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
 import Control.DeepSeq (NFData)
 import Control.Monad (forever, when)
+import Data.ByteString (ByteString)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -105,10 +107,11 @@ monitorBuild rType args =
       let sleepSeconds = fromMaybe 5 args.period
       styleFn <- mkFormatStyleFn args.height args.width
       Logger.withRegion @rType Linear $ \r -> forever $ do
-        readPrintStatus r coloring styleFn args.filePath
+        readPrintStatus r coloring searchInfix styleFn args.filePath
         CCS.sleep sleepSeconds
 
     coloring = fromMaybe (MkColoring True) args.coloring
+    searchInfix = fromMaybe (MkSearchInfix False) args.searchInfix
 
 type SharedState s = SState.State s
 
@@ -123,13 +126,15 @@ readPrintStatus ::
   r ->
   -- | Color.
   Coloring ->
+  -- | Search infix.
+  SearchInfix ->
   -- | Style function.
   (BuildStatusInit -> FormatStyle) ->
   -- | Path to file to monitor.
   OsPath ->
   Eff es ()
-readPrintStatus region coloring styleFn path = do
-  readFormattedStatus coloring styleFn path >>= \case
+readPrintStatus region coloring searchInfix styleFn path = do
+  readFormattedStatus coloring searchInfix styleFn path >>= \case
     Left (PathDoesNotExist p) ->
       Logger.logRegion
         LogModeSet
@@ -150,12 +155,14 @@ readFormattedStatus ::
   ) =>
   -- | Color.
   Coloring ->
+  -- | Search infix.
+  SearchInfix ->
   -- | Style function.
   (BuildStatusInit -> FormatStyle) ->
   OsPath ->
   Eff es (Either ReadStatusError Text)
-readFormattedStatus coloring styleFn path = do
-  readStatus path >>= \case
+readFormattedStatus coloring searchInfix styleFn path = do
+  readStatus parseStatus path >>= \case
     Left err -> pure $ Left err
     Right statusInit -> do
       let statusFinal = Status.advancePhase statusInit
@@ -168,6 +175,11 @@ readFormattedStatus coloring styleFn path = do
         )
 
       pure $ Right $ Status.formatStatusFinal coloring style statusFinal
+  where
+    parseStatus =
+      if searchInfix.unSearchInfix
+        then Status.parseStatusInfix
+        else Status.parseStatus
 
 newtype ReadStatusError = PathDoesNotExist OsPath
   deriving stock (Eq, Generic, Show)
@@ -178,14 +190,15 @@ readStatus ::
     HasCallStack,
     PathReader :> es
   ) =>
+  (ByteString -> BuildStatusInit) ->
   OsPath ->
   Eff es (Either ReadStatusError BuildStatusInit)
-readStatus path = do
+readStatus parseStatus path = do
   exists <- PR.doesFileExist path
   if exists
     then do
       contents <- FR.readBinaryFile path
-      pure $ Right $ Status.parseStatus contents
+      pure $ Right $ parseStatus contents
     else pure $ Left $ PathDoesNotExist path
 
 logCounter ::

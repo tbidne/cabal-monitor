@@ -4,6 +4,7 @@
 module Cabal.Monitor.Args
   ( Args (..),
     Coloring (..),
+    SearchInfix (..),
     getArgs,
   )
 where
@@ -52,11 +53,15 @@ data Args = MkArgs
     filePath :: OsPath,
     height :: Maybe Natural,
     period :: Maybe Natural,
+    searchInfix :: Maybe SearchInfix,
     width :: Maybe Natural
   }
   deriving stock (Eq, Show)
 
 newtype Coloring = MkColoring {unColoring :: Bool}
+  deriving stock (Eq, Show)
+
+newtype SearchInfix = MkSearchInfix {unSearchInfix :: Bool}
   deriving stock (Eq, Show)
 
 getArgs :: (HasCallStack, Optparse :> es) => Eff es Args
@@ -117,7 +122,7 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(filePath, period) <- coreOptsParser
+      ~(filePath, period, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
@@ -126,15 +131,17 @@ argsParser = mainParser <**> OA.helper <**> version
             filePath,
             height,
             period,
+            searchInfix,
             width
           }
 
     coreOptsParser =
       OA.parserOptionGroup
         "Core options:"
-        $ (,)
+        $ (,,)
           <$> filePathParser
           <*> periodParser
+          <*> searchInfixParser
 
     formattingOptsParser =
       OA.parserOptionGroup
@@ -177,7 +184,7 @@ coloringParser =
         [ OA.long "color",
           OA.metavar "(on | off)",
           OA.completeWith ["on", "off"],
-          mkHelp "Coloring options."
+          mkHelp "Coloring options. Defaults to 'on'."
         ]
   where
     readColoring =
@@ -195,8 +202,33 @@ periodParser =
       [ OA.short 'p',
         OA.long "period",
         OA.metavar "NAT",
-        mkHelpNoLine "Monitor refresh period, in seconds."
+        mkHelp "Monitor refresh period, in seconds."
       ]
+
+searchInfixParser :: Parser (Maybe SearchInfix)
+searchInfixParser =
+  OA.optional $
+    OA.option readFn $
+      mconcat
+        [ OA.long "search-infix",
+          OA.metavar "(on | off)",
+          OA.completeWith ["on", "off"],
+          mkHelpNoLine helpTxt
+        ]
+  where
+    readFn =
+      OA.str >>= \case
+        "on" -> pure $ MkSearchInfix True
+        "off" -> pure $ MkSearchInfix False
+        bad -> fail $ "Unexpected --search-infix: " ++ bad
+
+    helpTxt =
+      mconcat
+        [ "Searches for expected cabal log keywords as infix patterns, as ",
+          "opposed to prefix. Slower but more flexible e.g. compatible with ",
+          "the cabal log file being processed to have each line prefixed ",
+          "with a timestamp. Defaults to 'off'."
+        ]
 
 widthParser :: Parser (Maybe Natural)
 widthParser =

@@ -1,0 +1,7 @@
+Name,Mean (ps),2*Stdev (ps),Allocated,Copied,Peak Memory
+All.parseStatus,42486118,3981914,139912,46,6291456
+All.parseStatusInfix,248108676,17753710,558077,1755,6291456
+All.formatStatus,4371620,373342,20986,3,8388608
+All.formatStatus_compact,5786287,546158,29102,5,8388608
+All.readFormattedStatus,74731292,7059790,255290,2164,17825792
+All.readFormattedStatus_compact,87428468,3599660,263368,2216,17825792

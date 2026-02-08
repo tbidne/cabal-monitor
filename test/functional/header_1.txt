@@ -1,0 +1,1210 @@
+[2026-02-09 10:53:55][Command][exe] # Copy of example_large_building_1.txt, except with line headers.
+[2026-02-09 10:53:55][Command][exe] Resolving dependencies...
+[2026-02-09 10:53:55][Command][exe] Build profile: -w ghc-9.12.2 -O0
+[2026-02-09 10:53:55][Command][exe] In order, the following will be built (use -v for more details):
+[2026-02-09 10:53:55][Command][exe]  - Boolean-0.2.4 (lib:Boolean) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - BoundedChan-1.0.3.0 (lib:BoundedChan) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Decimal-0.5.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Diff-1.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - FailT-0.1.2.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - FindBin-0.0.5 (lib:FindBin) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - FloatingHex-0.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - GenericPretty-1.2.2 (lib:GenericPretty) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HSlippyMap-3.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HSvm-1.0.3.35 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HasBigDecimal-0.2.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HsYAML-0.2.1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - IfElse-0.85 (lib:IfElse) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - IntervalMap-0.6.2.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - LPFP-core-1.1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - LetsBeRational-1.0.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - List-0.6.2 (lib:List) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Mantissa-0.1.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - MonadPrompt-1.0.0.5 (lib:MonadPrompt) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - NoHoed-0.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - NumInstances-1.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ObjectName-1.1.0.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - OneTuple-0.4.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Only-0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - PSQueue-1.2.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ParsecTools-0.0.2.0 (lib:ParsecTools) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - PyF-0.11.4.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - RoundingFiasco-0.1.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - SHA-1.6.4.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - STMonadTrans-0.4.8.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - SafeSemaphore-0.10.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - StateVar-1.2.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - alex-3.5.4.0 (exe:alex) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - appar-0.1.8 (lib:appar) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - assoc-1.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - attoparsec-0.14.4 (lib:attoparsec-internal) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - auto-update-0.2.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - base-orphans-0.9.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - base16-bytestring-1.0.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - base64-bytestring-1.2.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - basement-0.0.16 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - binary-orphans-1.0.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bindings-DSL-1.0.25 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - blaze-builder-0.4.4.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bmp-1.2.6.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - byteorder-1.0.4 (lib:byteorder) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bytestring-lexing-0.5.0.15 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - c-enum-0.1.1.3 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - cabal-doctest-1.0.11 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - call-stack-0.4.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cereal-0.5.8.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - character-ps-0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - clock-0.8.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - colour-2.3.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - context-0.2.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cryptohash-md5-0.11.101.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - data-accessor-0.2.3.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - data-default-0.8.0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - data-lens-light-0.1.2.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-solve-0.1.3.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - dlist-1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - easy-file-0.2.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - entropy-0.4.1.11 (lib:entropy) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - envparse-0.6.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - fail-4.9.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - fgl-5.8.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - file-embed-0.0.16.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - fingertree-0.1.6.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - fixed-0.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - fmlist-0.9.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - generically-0.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - groups-0.5.3 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - half-0.3.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib:grammar) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hashable-1.5.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - haskell-lexer-1.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hourglass-0.2.12 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hsc2hs-0.68.10 (exe:hsc2hs) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hspec-discover-2.11.13 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hxt-charproperties-9.5.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - indexed-traversable-0.1.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - integer-logarithms-1.0.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - logict-0.8.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - loop-0.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - mime-types-0.1.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - monad-loops-0.4.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - network-byte-order-0.1.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - network-info-0.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - newtype-generics-0.6.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - old-locale-1.0.0.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - operational-0.2.4.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - parallel-3.2.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - polyparse-1.13.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - prettyprinter-1.7.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - primitive-0.9.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - reflection-2.1.9 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - regex-base-0.94.0.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - safe-0.3.21 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - safe-exceptions-0.1.7.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - semigroups-0.20 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - split-0.2.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - splitmix-0.1.3.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - statestack-0.3.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - stm-chans-3.0.0.9 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - string-qq-0.0.6 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - stringsearch-0.3.6.6 (lib:stringsearch) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - syb-0.7.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - tagged-0.8.9 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - text-binary-0.2.1.1 (lib:text-binary) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-abstraction-0.7.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-compat-0.1.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - time-locale-compat-0.1.1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - transformers-compat-0.7.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - unicode-data-0.6.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - unix-compat-0.7.4.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - unliftio-core-0.2.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - utf8-string-1.0.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - utility-ht-0.0.17.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - vector-stream-0.1.0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - void-0.7.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - xml-1.3.14 (lib:xml) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - xml-types-0.3.8 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ListTree-0.2.3 (lib:ListTree) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - contravariant-1.5.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - memory-0.18.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - xmlgen-0.6.2.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - blaze-markup-0.8.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HUnit-1.6.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cereal-text-0.1.0.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - extra-1.8 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ansi-terminal-types-1.1.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - data-accessor-transformers-0.2.1.8 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - data-default-class-0.2.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - scanner-0.3.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - OpenGLRaw-3.3.4.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib:tabular) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib:frontend) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - unordered-containers-0.2.20 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - time-compat-1.9.8 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - these-1.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - text-short-0.1.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - data-fix-0.3.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - case-insensitive-1.2.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - async-2.2.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - zlib-0.7.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - network-3.2.8.0 (lib:network) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bindings-GLFW-3.3.9.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hxt-unicode-9.0.2.4 (lib:hxt-unicode) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - hxt-regex-xmlschema-9.2.0.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - smallcheck-1.2.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ech-config-0.0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - MemoTrie-0.6.11 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - old-time-1.1.0.4 (lib:old-time) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cpphs-1.20.10 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - cpphs-1.20.10 (exe:cpphs) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - scientific-0.3.8.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - resource-pool-0.5.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - integer-conversion-0.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cborg-0.2.10.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cairo-image-0.1.0.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - regex-tdfa-1.3.2.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - regex-posix-0.96.0.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - random-1.3.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - distributive-0.6.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypto-api-0.13.3 (lib:crypto-api) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-lift-0.8.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-expand-syns-0.4.12.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - network-uri-2.6.4.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - transformers-base-0.4.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - mmorph-1.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - errors-2.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Glob-0.10.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - unicode-transforms-0.4.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - resourcet-1.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - latex-0.1.0.4 (lib:latex) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - vector-0.13.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HStringTemplate-0.8.8 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pem-0.2.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-1.0.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - asn1-types-0.3.4 (lib:asn1-types) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - blaze-svg-0.3.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - blaze-html-0.9.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hspec-expectations-0.8.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - MultipletCombiner-0.0.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HUnit-approx-1.1.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ansi-terminal-1.1.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - cookie-0.5.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - GLURaw-2.0.0.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib:backend-lalr) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib:backend-glr) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - svg-builder-0.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - semirings-0.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - strict-0.5.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - base64-1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - http-types-0.12.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - unliftio-0.2.25.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - typed-process-0.2.13.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hyphenation-0.8.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - network-bsd-2.8.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - iproute-1.7.15 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-socks-0.6.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - GLFW-b-3.3.9.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - unix-time-0.4.17 (lib:unix-time) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bytes-0.17.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - attoparsec-0.14.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - text-iso8601-0.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Plural-0.0.2 (lib:Plural) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - regex-compat-0.95.2.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - uuid-types-1.0.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - tf-random-0.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - temporary-1.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - streaming-commons-0.2.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - mime-mail-0.5.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - QuickCheck-2.16.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - MonadRandom-0.6.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HaXml-1.25.14 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - intervals-0.9.3 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - comonad-5.0.9 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-reify-many-0.1.10 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hxt-9.3.1.22 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HTTP-4000.4.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - monad-control-1.0.3.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - streaming-0.2.4.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pipes-4.3.16 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - bibtex-0.1.0.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - vector-th-unbox-0.2.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - vector-binary-instances-0.2.5.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-lift-instances-0.1.20 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - matrix-0.3.6.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - math-functions-0.3.4.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - indexed-traversable-instances-0.1.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hashtables-1.4.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - cereal-vector-0.2.0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - bitvec-1.1.5.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ListLike-4.7.8.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - JuicyPixels-3.3.9 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - FontyFruity-0.5.3.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ENIG-0.0.1.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Color-0.4.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ClustalParser-1.3.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - hpke-0.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - asn1-encoding-0.9.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hspec-expectations-lifted-0.10.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - prettyprinter-ansi-terminal-1.1.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - OpenGL-3.0.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-lib-2.1.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - serialise-0.2.6.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Hclip-3.0.0.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HPDF-1.8 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - hslogger-1.3.2.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - fast-logger-3.2.6 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - gnuplot-0.5.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - http-client-0.7.19 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HaskellNet-0.6.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - quickcheck-transformer-0.3.1.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - quickcheck-io-0.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Ranged-sets-0.5.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ListZipper-1.2.0.2 (lib:ListZipper) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HCodecs-0.5.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - FenwickTree-0.1.2.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ChasingBottoms-1.3.1.16 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - bifunctors-5.6.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - th-orphans-0.13.16 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hxt-http-9.1.5.2 (lib:hxt-http) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - lifted-base-0.2.3.12 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - streaming-bytestring-0.3.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pipes-parse-3.0.9 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HaTeX-3.23.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - mwc-random-0.15.2.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - witherable-0.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - RefSerialize-0.4.0 (lib:RefSerialize) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HSet-0.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - vector-algorithms-0.9.1.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Earley-0.13.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - JuicyPixels-extra-0.6.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - JuicyCairo-0.1.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - crypto-pubkey-types-0.4.3 (lib:crypto-pubkey-types) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - asn1-parse-0.9.5 (lib:asn1-parse) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - optparse-applicative-0.19.0.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - OpenAL-1.7.0.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - GLUT-2.7.0.16 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-2.1.7 (exe:happy) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - MissingH-1.6.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - hspec-core-2.11.13 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - semigroupoids-6.0.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - profunctors-5.6.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HandsomeSoup-0.4.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - mono-traversable-1.0.21.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - RSA-2.4.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-x509-1.7.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - gloss-rendering-1.13.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - haskell-src-exts-1.23.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - haskell-src-1.0.4.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - gtk2hs-buildtools-0.13.12.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Sit-0.2023.8.3 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - BNFC-2.9.6.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - hspec-2.11.13 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - semialign-1.3.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - monoid-extras-0.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - log-domain-0.13.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - invariant-0.6.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - free-5.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - conduit-1.3.6.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-x509-store-1.6.11 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - gloss-1.13.2.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - haskell-src-meta-0.8.15 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - glib-0.13.12.0 (lib:glib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - cairo-0.13.12.0 (lib:cairo) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ImpSpec-0.1.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - aeson-2.2.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - dual-tree-0.2.3.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pipes-group-1.0.12 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - adjunctions-4.4.3 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Rasterific-0.7.5.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - ChannelT-0.0.0.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - conduit-extra-1.3.8 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-x509-validation-1.6.14 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-x509-system-1.6.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - happy-meta-0.2.1.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - alex-meta-0.3.0.13 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - QuasiText-0.1.2.6 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Interpolation-0.3.0 (lib:Interpolation) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pango-0.13.12.0 (lib:pango) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - shakespeare-2.1.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - attoparsec-aeson-2.2.2.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ShellCheck-0.11.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - NanoID-3.4.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - IPv6Addr-2.0.6.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HsYAML-aeson-0.2.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - HTF-0.15.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - pipes-bytestring-2.1.7 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - kan-extensions-5.2.7 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - xml-conduit-1.10.0.1 (lib:xml-conduit) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - monad-logger-0.3.42 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - tls-2.1.11 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - BNFC-meta-0.6.1 (lib:BNFC-meta) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - lens-5.3.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - xml-hamlet-0.5.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - monad-logger-aeson-0.4.1.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - hedis-0.15.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - crypton-connection-0.4.5 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - linear-1.23.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - ForestStructures-0.0.1.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - DPutils-0.1.1.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Chart-1.9.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Blammo-2.1.3.0 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - IPv6DB-0.3.3.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - http-client-tls-0.3.6.4 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - HaskellNet-SSL-0.4.0.2 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-core-1.5.1.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - active-0.2.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - Vis-1.0.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - BiobaseNewick-0.0.0.2 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - SciBaseTypes-0.1.1.0 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Chart-cairo-1.9.4.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - http-conduit-2.3.9.1 (lib) (requires build)
+[2026-02-09 10:53:55][Command][exe]  - DAV-1.3.4 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-lib-1.5.0.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - MusicBrainz-0.4.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-svg-1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-postscript-1.5.3 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - diagrams-cairo-1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - SVGFonts-1.8.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - LPFP-1.1.5 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - Chart-diagrams-1.9.5.1 (lib) (requires download & build)
+[2026-02-09 10:53:55][Command][exe]  - generated-0.1.0.0 (lib) (configuration changed)
+[2026-02-09 10:53:55][Command][exe] Created semaphore called cabal_semaphore_k with 8 slots.
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-solve-0.1.3.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-solve-0.1.3.1
+[2026-02-09 10:53:55][Command][exe] Downloading  fingertree-0.1.6.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   fingertree-0.1.6.2
+[2026-02-09 10:53:55][Command][exe] Downloading  groups-0.5.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   groups-0.5.3
+[2026-02-09 10:53:55][Command][exe] Downloading  hxt-charproperties-9.5.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   hxt-charproperties-9.5.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  hxt-unicode-9.0.2.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   hxt-unicode-9.0.2.4
+[2026-02-09 10:53:55][Command][exe] Downloading  scanner-0.3.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   scanner-0.3.1
+[2026-02-09 10:53:55][Command][exe] Downloading  c-enum-0.1.1.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   c-enum-0.1.1.3
+[2026-02-09 10:53:55][Command][exe] Downloading  string-qq-0.0.6
+[2026-02-09 10:53:55][Command][exe] Downloaded   string-qq-0.0.6
+[2026-02-09 10:53:55][Command][exe] Downloading  time-locale-compat-0.1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   time-locale-compat-0.1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  data-lens-light-0.1.2.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   data-lens-light-0.1.2.4
+[2026-02-09 10:53:55][Command][exe] Downloading  operational-0.2.4.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   operational-0.2.4.2
+[2026-02-09 10:53:55][Command][exe] Downloading  cairo-image-0.1.0.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   cairo-image-0.1.0.5
+[2026-02-09 10:53:55][Command][exe] Downloading  statestack-0.3.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   statestack-0.3.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  unicode-data-0.6.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   unicode-data-0.6.0
+[2026-02-09 10:53:55][Command][exe] Downloading  math-functions-0.3.4.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   math-functions-0.3.4.4
+[2026-02-09 10:53:55][Command][exe] Downloading  mwc-random-0.15.2.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   mwc-random-0.15.2.0
+[2026-02-09 10:53:55][Command][exe] Downloading  data-accessor-transformers-0.2.1.8
+[2026-02-09 10:53:55][Command][exe] Downloaded   data-accessor-transformers-0.2.1.8
+[2026-02-09 10:53:55][Command][exe] Downloading  haskell-src-1.0.4.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   haskell-src-1.0.4.2
+[2026-02-09 10:53:55][Command][exe] Downloading  happy-meta-0.2.1.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   happy-meta-0.2.1.0
+[2026-02-09 10:53:55][Command][exe] Downloading  intervals-0.9.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   intervals-0.9.3
+[2026-02-09 10:53:55][Command][exe] Downloading  pipes-4.3.16
+[2026-02-09 10:53:55][Command][exe] Downloaded   pipes-4.3.16
+[2026-02-09 10:53:55][Command][exe] Downloading  pipes-parse-3.0.9
+[2026-02-09 10:53:55][Command][exe] Downloaded   pipes-parse-3.0.9
+[2026-02-09 10:53:55][Command][exe] Downloading  gnuplot-0.5.7
+[2026-02-09 10:53:55][Command][exe] Downloaded   gnuplot-0.5.7
+[2026-02-09 10:53:55][Command][exe] Downloading  hslogger-1.3.2.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   hslogger-1.3.2.0
+[2026-02-09 10:53:55][Command][exe] Downloading  streaming-0.2.4.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   streaming-0.2.4.0
+[2026-02-09 10:53:55][Command][exe] Downloading  streaming-bytestring-0.3.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   streaming-bytestring-0.3.4
+[2026-02-09 10:53:55][Command][exe] Downloading  stringsearch-0.3.6.6
+[2026-02-09 10:53:55][Command][exe] Downloaded   stringsearch-0.3.6.6
+[2026-02-09 10:53:55][Command][exe] Downloading  hashtables-1.4.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   hashtables-1.4.2
+[2026-02-09 10:53:55][Command][exe] Downloading  mime-mail-0.5.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   mime-mail-0.5.1
+[2026-02-09 10:53:55][Command][exe] Downloading  hxt-regex-xmlschema-9.2.0.7
+[2026-02-09 10:53:55][Command][exe] Downloaded   hxt-regex-xmlschema-9.2.0.7
+[2026-02-09 10:53:55][Command][exe] Downloading  hxt-9.3.1.22
+[2026-02-09 10:53:55][Command][exe] Downloaded   hxt-9.3.1.22
+[2026-02-09 10:53:55][Command][exe] Downloading  polyparse-1.13.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   polyparse-1.13.1
+[2026-02-09 10:53:55][Command][exe] Downloading  cpphs-1.20.10
+[2026-02-09 10:53:55][Command][exe] Downloaded   cpphs-1.20.10
+[2026-02-09 10:53:55][Command][exe] Downloading  svg-builder-0.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   svg-builder-0.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  unicode-transforms-0.4.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   unicode-transforms-0.4.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  xmlgen-0.6.2.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   xmlgen-0.6.2.2
+[2026-02-09 10:53:55][Command][exe] Downloading  pipes-group-1.0.12
+[2026-02-09 10:53:55][Command][exe] Downloaded   pipes-group-1.0.12
+[2026-02-09 10:53:55][Command][exe] Downloading  pipes-bytestring-2.1.7
+[2026-02-09 10:53:55][Command][exe] Downloaded   pipes-bytestring-2.1.7
+[2026-02-09 10:53:55][Command][exe] Downloading  monoid-extras-0.7
+[2026-02-09 10:53:55][Command][exe] Downloaded   monoid-extras-0.7
+[2026-02-09 10:53:55][Command][exe] Downloading  dual-tree-0.2.3.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   dual-tree-0.2.3.1
+[2026-02-09 10:53:55][Command][exe] Downloading  Sit-0.2023.8.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   Sit-0.2023.8.3
+[2026-02-09 10:53:55][Command][exe] Downloading  SafeSemaphore-0.10.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   SafeSemaphore-0.10.1
+[2026-02-09 10:53:55][Command][exe] Downloading  RoundingFiasco-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   RoundingFiasco-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  RefSerialize-0.4.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   RefSerialize-0.4.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Ranged-sets-0.5.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   Ranged-sets-0.5.0
+[2026-02-09 10:53:55][Command][exe] Downloading  quickcheck-transformer-0.3.1.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   quickcheck-transformer-0.3.1.2
+[2026-02-09 10:53:55][Command][exe] Downloading  QuasiText-0.1.2.6
+[2026-02-09 10:53:55][Command][exe] Downloaded   QuasiText-0.1.2.6
+[2026-02-09 10:53:55][Command][exe] Downloading  PyF-0.11.4.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   PyF-0.11.4.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Plural-0.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   Plural-0.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  ParsecTools-0.0.2.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   ParsecTools-0.0.2.0
+[2026-02-09 10:53:55][Command][exe] Downloading  PSQueue-1.2.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   PSQueue-1.2.2
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-core-1.5.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-core-1.5.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  shakespeare-2.1.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   shakespeare-2.1.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  NumInstances-1.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   NumInstances-1.4
+[2026-02-09 10:53:55][Command][exe] Downloading  NoHoed-0.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   NoHoed-0.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  NanoID-3.4.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   NanoID-3.4.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  MonadRandom-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   MonadRandom-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloading  MonadPrompt-1.0.0.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   MonadPrompt-1.0.0.5
+[2026-02-09 10:53:55][Command][exe] Downloading  MissingH-1.6.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   MissingH-1.6.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  MemoTrie-0.6.11
+[2026-02-09 10:53:55][Command][exe] Downloaded   MemoTrie-0.6.11
+[2026-02-09 10:53:55][Command][exe] Downloading  Mantissa-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   Mantissa-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  ListZipper-1.2.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   ListZipper-1.2.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  List-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   List-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloading  ListTree-0.2.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   ListTree-0.2.3
+[2026-02-09 10:53:55][Command][exe] Downloading  LetsBeRational-1.0.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   LetsBeRational-1.0.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  LPFP-core-1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   LPFP-core-1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  JuicyPixels-3.3.9
+[2026-02-09 10:53:55][Command][exe] Downloaded   JuicyPixels-3.3.9
+[2026-02-09 10:53:55][Command][exe] Downloading  JuicyPixels-extra-0.6.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   JuicyPixels-extra-0.6.0
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-lib-1.5.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-lib-1.5.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  SVGFonts-1.8.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   SVGFonts-1.8.1
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-postscript-1.5.3
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-postscript-1.5.3
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-svg-1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-svg-1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  JuicyCairo-0.1.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   JuicyCairo-0.1.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  IntervalMap-0.6.2.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   IntervalMap-0.6.2.1
+[2026-02-09 10:53:55][Command][exe] Downloading  Interpolation-0.3.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   Interpolation-0.3.0
+[2026-02-09 10:53:55][Command][exe] Downloading  IfElse-0.85
+[2026-02-09 10:53:55][Command][exe] Downloaded   IfElse-0.85
+[2026-02-09 10:53:55][Command][exe] Downloading  IPv6Addr-2.0.6.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   IPv6Addr-2.0.6.1
+[2026-02-09 10:53:55][Command][exe] Downloading  HsYAML-0.2.1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   HsYAML-0.2.1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  HsYAML-aeson-0.2.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HsYAML-aeson-0.2.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  Hclip-3.0.0.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   Hclip-3.0.0.4
+[2026-02-09 10:53:55][Command][exe] Downloading  HaskellNet-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HaskellNet-0.6.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HaskellNet-SSL-0.4.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HaskellNet-SSL-0.4.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HaXml-1.25.14
+[2026-02-09 10:53:55][Command][exe] Downloaded   HaXml-1.25.14
+[2026-02-09 10:53:55][Command][exe] Downloading  HaTeX-3.23.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   HaTeX-3.23.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  HUnit-approx-1.1.1.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   HUnit-approx-1.1.1.1
+[2026-02-09 10:53:55][Command][exe] Downloading  MultipletCombiner-0.0.7
+[2026-02-09 10:53:55][Command][exe] Downloaded   MultipletCombiner-0.0.7
+[2026-02-09 10:53:55][Command][exe] Downloading  hspec-expectations-lifted-0.10.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   hspec-expectations-lifted-0.10.0
+[2026-02-09 10:53:55][Command][exe] Downloading  ImpSpec-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   ImpSpec-0.1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  HTTP-4000.4.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   HTTP-4000.4.1
+[2026-02-09 10:53:55][Command][exe] Downloading  hedis-0.15.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   hedis-0.15.2
+[2026-02-09 10:53:55][Command][exe] Downloading  IPv6DB-0.3.3.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   IPv6DB-0.3.3.4
+[2026-02-09 10:53:55][Command][exe] Downloading  hxt-http-9.1.5.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   hxt-http-9.1.5.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HandsomeSoup-0.4.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HandsomeSoup-0.4.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HSvm-1.0.3.35
+[2026-02-09 10:53:55][Command][exe] Downloaded   HSvm-1.0.3.35
+[2026-02-09 10:53:55][Command][exe] Downloading  HStringTemplate-0.8.8
+[2026-02-09 10:53:55][Command][exe] Downloaded   HStringTemplate-0.8.8
+[2026-02-09 10:53:55][Command][exe] Downloading  HSlippyMap-3.0.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   HSlippyMap-3.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  HSet-0.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HSet-0.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HPDF-1.8
+[2026-02-09 10:53:55][Command][exe] Downloaded   HPDF-1.8
+[2026-02-09 10:53:55][Command][exe] Downloading  HCodecs-0.5.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   HCodecs-0.5.2
+[2026-02-09 10:53:55][Command][exe] Downloading  Glob-0.10.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   Glob-0.10.2
+[2026-02-09 10:53:55][Command][exe] Downloading  GenericPretty-1.2.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   GenericPretty-1.2.2
+[2026-02-09 10:53:55][Command][exe] Downloading  OpenAL-1.7.0.5
+[2026-02-09 10:53:55][Command][exe] Starting     GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   OpenAL-1.7.0.5
+[2026-02-09 10:53:55][Command][exe] Downloading  Vis-1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   Vis-1.0.0
+[2026-02-09 10:53:55][Command][exe] Downloading  GLFW-b-3.3.9.1
+[2026-02-09 10:53:55][Command][exe] Building     GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   GLFW-b-3.3.9.1
+[2026-02-09 10:53:55][Command][exe] Downloading  FontyFruity-0.5.3.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   FontyFruity-0.5.3.5
+[2026-02-09 10:53:55][Command][exe] Downloading  Rasterific-0.7.5.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   Rasterific-0.7.5.4
+[2026-02-09 10:53:55][Command][exe] Downloading  FloatingHex-0.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   FloatingHex-0.5
+[2026-02-09 10:53:55][Command][exe] Downloading  FindBin-0.0.5
+[2026-02-09 10:53:55][Command][exe] Starting     FloatingHex-0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   FindBin-0.0.5
+[2026-02-09 10:53:55][Command][exe] Downloading  FenwickTree-0.1.2.1
+[2026-02-09 10:53:55][Command][exe] Starting     FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   FenwickTree-0.1.2.1
+[2026-02-09 10:53:55][Command][exe] Downloading  FailT-0.1.2.0
+[2026-02-09 10:53:55][Command][exe] Building     FloatingHex-0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   FailT-0.1.2.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Earley-0.13.0.1
+[2026-02-09 10:53:55][Command][exe] Starting     FailT-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    GenericPretty-1.2.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     HSlippyMap-3.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   Earley-0.13.0.1
+[2026-02-09 10:53:55][Command][exe] Downloading  ENIG-0.0.1.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   ENIG-0.0.1.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Diff-1.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   Diff-1.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  HTF-0.15.0.2
+[2026-02-09 10:53:55][Command][exe] Starting     Diff-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     FailT-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   HTF-0.15.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  ShellCheck-0.11.0
+[2026-02-09 10:53:55][Command][exe] Installing   FloatingHex-0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   ShellCheck-0.11.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Decimal-0.5.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   Decimal-0.5.2
+[2026-02-09 10:53:55][Command][exe] Downloading  DPutils-0.1.1.0
+[2026-02-09 10:53:55][Command][exe] Starting     Decimal-0.5.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   DPutils-0.1.1.0
+[2026-02-09 10:53:55][Command][exe] Downloading  SciBaseTypes-0.1.1.0
+[2026-02-09 10:53:55][Command][exe] Building     HSlippyMap-3.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   SciBaseTypes-0.1.1.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Color-0.4.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   Color-0.4.0
+[2026-02-09 10:53:55][Command][exe] Downloading  ClustalParser-1.3.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   ClustalParser-1.3.0
+[2026-02-09 10:53:55][Command][exe] Downloading  ChasingBottoms-1.3.1.16
+[2026-02-09 10:53:55][Command][exe] Completed    FloatingHex-0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     HSvm-1.0.3.35 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   ChasingBottoms-1.3.1.16
+[2026-02-09 10:53:55][Command][exe] Downloading  Chart-1.9.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   Chart-1.9.5
+[2026-02-09 10:53:55][Command][exe] Downloading  Chart-diagrams-1.9.5.1
+[2026-02-09 10:53:55][Command][exe] Building     Diff-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    FindBin-0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     HasBigDecimal-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   Chart-diagrams-1.9.5.1
+[2026-02-09 10:53:55][Command][exe] Downloading  ChannelT-0.0.0.7
+[2026-02-09 10:53:55][Command][exe] Installing   HSlippyMap-3.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   ChannelT-0.0.0.7
+[2026-02-09 10:53:55][Command][exe] Downloading  gtk2hs-buildtools-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Building     Decimal-0.5.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   gtk2hs-buildtools-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloading  cairo-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   cairo-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Chart-cairo-1.9.4.1
+[2026-02-09 10:53:55][Command][exe] Downloaded   Chart-cairo-1.9.4.1
+[2026-02-09 10:53:55][Command][exe] Downloading  glib-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   glib-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloading  pango-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Building     HSvm-1.0.3.35 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    HSlippyMap-3.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     HsYAML-0.2.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   pango-0.13.12.0
+[2026-02-09 10:53:55][Command][exe] Downloading  diagrams-cairo-1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   diagrams-cairo-1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  LPFP-1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloaded   LPFP-1.1.5
+[2026-02-09 10:53:55][Command][exe] Downloading  MusicBrainz-0.4.1
+[2026-02-09 10:53:55][Command][exe] Building     HasBigDecimal-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   MusicBrainz-0.4.1
+[2026-02-09 10:53:55][Command][exe] Downloading  xml-hamlet-0.5.0.2
+[2026-02-09 10:53:55][Command][exe] Downloaded   xml-hamlet-0.5.0.2
+[2026-02-09 10:53:55][Command][exe] Downloading  DAV-1.3.4
+[2026-02-09 10:53:55][Command][exe] Downloaded   DAV-1.3.4
+[2026-02-09 10:53:55][Command][exe] Downloading  BoundedChan-1.0.3.0
+[2026-02-09 10:53:55][Command][exe] Downloaded   BoundedChan-1.0.3.0
+[2026-02-09 10:53:55][Command][exe] Downloading  Boolean-0.2.4
+[2026-02-09 10:53:55][Command][exe] Starting     BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   Boolean-0.2.4
+[2026-02-09 10:53:55][Command][exe] Downloading  BNFC-meta-0.6.1
+[2026-02-09 10:53:55][Command][exe] Starting     Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Downloaded   BNFC-meta-0.6.1
+[2026-02-09 10:53:55][Command][exe] Downloading  BNFC-2.9.6.1
+[2026-02-09 10:53:55][Command][exe] Building     HsYAML-0.2.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Downloaded   BNFC-2.9.6.1
+[2026-02-09 10:53:55][Command][exe] Building     BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   Decimal-0.5.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   HasBigDecimal-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   Diff-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    Decimal-0.5.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    HasBigDecimal-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     IntervalMap-0.6.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   FailT-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    BoundedChan-1.0.3.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     LPFP-core-1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    Diff-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    FailT-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     LetsBeRational-1.0.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     IntervalMap-0.6.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   HSvm-1.0.3.35 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     LPFP-core-1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    HSvm-1.0.3.35 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     LetsBeRational-1.0.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    Boolean-0.2.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     Mantissa-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    IfElse-0.85 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     Mantissa-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   LetsBeRational-1.0.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   Mantissa-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    LetsBeRational-1.0.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     NoHoed-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    Mantissa-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     NumInstances-1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     NoHoed-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    MonadPrompt-1.0.0.5 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     ObjectName-1.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   NoHoed-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     NumInstances-1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     ObjectName-1.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    NoHoed-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     OneTuple-0.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   ObjectName-1.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    List-0.6.2 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    ObjectName-1.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     Only-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     OneTuple-0.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   OneTuple-0.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     Only-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    OneTuple-0.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     PSQueue-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     PSQueue-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   Only-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     PyF-0.11.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    Only-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     RoundingFiasco-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     PyF-0.11.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     RoundingFiasco-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    ParsecTools-0.0.2.0 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     SHA-1.6.4.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     SHA-1.6.4.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   NumInstances-1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   PSQueue-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    NumInstances-1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   RoundingFiasco-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   IntervalMap-0.6.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    PSQueue-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     STMonadTrans-0.4.8.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     SafeSemaphore-0.10.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    RoundingFiasco-0.1.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    IntervalMap-0.6.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     StateVar-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     STMonadTrans-0.4.8.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     alex-3.5.4.0 (exe:alex)
+[2026-02-09 10:53:55][Command][exe] Building     SafeSemaphore-0.10.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     StateVar-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     alex-3.5.4.0 (exe:alex)
+[2026-02-09 10:53:55][Command][exe] Installing   StateVar-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   LPFP-core-1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    StateVar-1.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    LPFP-core-1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   STMonadTrans-0.4.8.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    STMonadTrans-0.4.8.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     assoc-1.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    appar-0.1.8 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     attoparsec-0.14.4 (lib:attoparsec-internal)
+[2026-02-09 10:53:55][Command][exe] Building     assoc-1.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     auto-update-0.2.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   assoc-1.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     attoparsec-0.14.4 (lib:attoparsec-internal)
+[2026-02-09 10:53:55][Command][exe] Installing   SafeSemaphore-0.10.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     auto-update-0.2.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    assoc-1.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     base-orphans-0.9.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    SafeSemaphore-0.10.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     base-orphans-0.9.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   base-orphans-0.9.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    base-orphans-0.9.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     base16-bytestring-1.0.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   auto-update-0.2.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   PyF-0.11.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   attoparsec-0.14.4 (lib:attoparsec-internal)
+[2026-02-09 10:53:55][Command][exe] Completed    auto-update-0.2.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     base16-bytestring-1.0.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    PyF-0.11.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     base64-bytestring-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   SHA-1.6.4.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    attoparsec-0.14.4 (lib:attoparsec-internal)
+[2026-02-09 10:53:55][Command][exe] Completed    SHA-1.6.4.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     basement-0.0.16 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     binary-orphans-1.0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     base64-bytestring-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   base16-bytestring-1.0.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     bindings-DSL-1.0.25 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     blaze-builder-0.4.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    base16-bytestring-1.0.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     bmp-1.2.6.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     basement-0.0.16 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     binary-orphans-1.0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     bindings-DSL-1.0.25 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     blaze-builder-0.4.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   bindings-DSL-1.0.25 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     bmp-1.2.6.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   binary-orphans-1.0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    bindings-DSL-1.0.25 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    binary-orphans-1.0.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     bytestring-lexing-0.5.0.15 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   base64-bytestring-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    base64-bytestring-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     c-enum-0.1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     bytestring-lexing-0.5.0.15 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     c-enum-0.1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   HsYAML-0.2.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    byteorder-1.0.4 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     cabal-doctest-1.0.11 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   blaze-builder-0.4.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    HsYAML-0.2.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    blaze-builder-0.4.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     cabal-doctest-1.0.11 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     call-stack-0.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   c-enum-0.1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   bmp-1.2.6.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    c-enum-0.1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     call-stack-0.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    bmp-1.2.6.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     cereal-0.5.8.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   call-stack-0.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     character-ps-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     cereal-0.5.8.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    call-stack-0.4.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     clock-0.8.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   cabal-doctest-1.0.11 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     colour-2.3.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     character-ps-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    cabal-doctest-1.0.11 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     clock-0.8.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     colour-2.3.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   alex-3.5.4.0 (exe:alex)
+[2026-02-09 10:53:55][Command][exe] Completed    alex-3.5.4.0 (exe:alex)
+[2026-02-09 10:53:55][Command][exe] Starting     context-0.2.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     context-0.2.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     cryptohash-md5-0.11.101.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   character-ps-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   clock-0.8.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     cryptohash-md5-0.11.101.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   context-0.2.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    character-ps-0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-accessor-0.2.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    clock-0.8.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-default-0.8.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    context-0.2.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   cryptohash-md5-0.11.101.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-accessor-0.2.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-default-0.8.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    cryptohash-md5-0.11.101.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-lens-light-0.1.2.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-lens-light-0.1.2.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-accessor-0.2.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-default-0.8.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-lens-light-0.1.2.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    data-accessor-0.2.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     diagrams-solve-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    data-default-0.8.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    data-lens-light-0.1.2.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     dlist-1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     diagrams-solve-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     dlist-1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   colour-2.3.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    colour-2.3.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   dlist-1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   diagrams-solve-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    dlist-1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     easy-file-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+[2026-02-09 10:53:55][Command][exe] Completed    diagrams-solve-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     envparse-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   bytestring-lexing-0.5.0.15 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     fail-4.9.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     easy-file-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    bytestring-lexing-0.5.0.15 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     fgl-5.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     envparse-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     fail-4.9.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   fail-4.9.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    fail-4.9.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     fgl-5.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     file-embed-0.0.16.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   easy-file-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     fingertree-0.1.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    easy-file-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     file-embed-0.0.16.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     fingertree-0.1.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   file-embed-0.0.16.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     fixed-0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+[2026-02-09 10:53:55][Command][exe] Installing   envparse-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    file-embed-0.0.16.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     fixed-0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    envparse-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     fmlist-0.9.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   fixed-0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     fmlist-0.9.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    fixed-0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     generically-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   fmlist-0.9.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     generically-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   generically-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+[2026-02-09 10:53:55][Command][exe] Completed    fmlist-0.9.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    generically-0.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     groups-0.5.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     groups-0.5.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   cereal-0.5.8.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    entropy-0.4.1.11 (all, legacy fallback: build-type is Custom)
+[2026-02-09 10:53:55][Command][exe] Starting     half-0.3.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   groups-0.5.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    cereal-0.5.8.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     happy-lib-2.1.7 (lib:grammar)
+[2026-02-09 10:53:55][Command][exe] Starting     hashable-1.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   fgl-5.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    groups-0.5.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     haskell-lexer-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     half-0.3.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     happy-lib-2.1.7 (lib:grammar)
+[2026-02-09 10:53:55][Command][exe] Completed    fgl-5.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     hourglass-0.2.12 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     hashable-1.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     haskell-lexer-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     hourglass-0.2.12 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   happy-lib-2.1.7 (lib:grammar)
+[2026-02-09 10:53:55][Command][exe] Installing   fingertree-0.1.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     hsc2hs-0.68.10 (exe:hsc2hs)
+[2026-02-09 10:53:55][Command][exe] Completed    happy-lib-2.1.7 (lib:grammar)
+[2026-02-09 10:53:55][Command][exe] Installing   half-0.3.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    fingertree-0.1.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     hspec-discover-2.11.13 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     hsc2hs-0.68.10 (exe:hsc2hs)
+[2026-02-09 10:53:55][Command][exe] Starting     hxt-charproperties-9.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    half-0.3.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     indexed-traversable-0.1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     hspec-discover-2.11.13 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     hxt-charproperties-9.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     indexed-traversable-0.1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   hashable-1.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   hspec-discover-2.11.13 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    hashable-1.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     integer-logarithms-1.0.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    hspec-discover-2.11.13 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     integer-logarithms-1.0.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   integer-logarithms-1.0.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     logict-0.8.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    integer-logarithms-1.0.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     logict-0.8.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   indexed-traversable-0.1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    indexed-traversable-0.1.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     loop-0.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     loop-0.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   loop-0.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    loop-0.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     mime-types-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     mime-types-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   logict-0.8.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     monad-loops-0.4.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   hsc2hs-0.68.10 (exe:hsc2hs)
+[2026-02-09 10:53:55][Command][exe] Completed    hsc2hs-0.68.10 (exe:hsc2hs)
+[2026-02-09 10:53:55][Command][exe] Starting     network-byte-order-0.1.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    logict-0.8.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     network-info-0.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   hourglass-0.2.12 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     monad-loops-0.4.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    hourglass-0.2.12 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     newtype-generics-0.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     network-byte-order-0.1.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     network-info-0.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     newtype-generics-0.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   monad-loops-0.4.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   newtype-generics-0.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    monad-loops-0.4.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     old-locale-1.0.0.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   network-info-0.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    newtype-generics-0.6.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     operational-0.2.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    network-info-0.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     parallel-3.2.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     old-locale-1.0.0.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   network-byte-order-0.1.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     operational-0.2.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   old-locale-1.0.0.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     parallel-3.2.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    network-byte-order-0.1.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     polyparse-1.13.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   operational-0.2.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    old-locale-1.0.0.7 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     prettyprinter-1.7.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    operational-0.2.4.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     primitive-0.9.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     polyparse-1.13.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   parallel-3.2.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     prettyprinter-1.7.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     primitive-0.9.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    parallel-3.2.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     reflection-2.1.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   mime-types-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     reflection-2.1.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    mime-types-0.1.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     regex-base-0.94.0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     regex-base-0.94.0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   regex-base-0.94.0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   hxt-charproperties-9.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    regex-base-0.94.0.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     safe-0.3.21 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    hxt-charproperties-9.5.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   basement-0.0.16 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     safe-0.3.21 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    basement-0.0.16 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   reflection-2.1.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   prettyprinter-1.7.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   safe-0.3.21 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    reflection-2.1.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     safe-exceptions-0.1.7.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    prettyprinter-1.7.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     semigroups-0.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    safe-0.3.21 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     safe-exceptions-0.1.7.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     split-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     semigroups-0.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     split-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   semigroups-0.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   polyparse-1.13.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     splitmix-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   safe-exceptions-0.1.7.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    semigroups-0.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     statestack-0.3.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    polyparse-1.13.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     stm-chans-3.0.0.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   split-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     splitmix-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    safe-exceptions-0.1.7.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     string-qq-0.0.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     statestack-0.3.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    split-0.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     stm-chans-3.0.0.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     string-qq-0.0.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   haskell-lexer-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   statestack-0.3.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     syb-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   string-qq-0.0.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   splitmix-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    haskell-lexer-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    statestack-0.3.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     tagged-0.8.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   stm-chans-3.0.0.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     syb-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    string-qq-0.0.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    splitmix-0.1.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     tagged-0.8.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     th-abstraction-0.7.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    stm-chans-3.0.0.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     th-compat-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     th-abstraction-0.7.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     th-compat-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    text-binary-0.2.1.1 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   primitive-0.9.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     time-locale-compat-0.1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   th-compat-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   syb-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    primitive-0.9.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     transformers-compat-0.7.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   tagged-0.8.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    th-compat-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     time-locale-compat-0.1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     unicode-data-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   time-locale-compat-0.1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    syb-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     unix-compat-0.7.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     transformers-compat-0.7.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    tagged-0.8.9 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     unliftio-core-0.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     unicode-data-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    time-locale-compat-0.1.1.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     unix-compat-0.7.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     utf8-string-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     unliftio-core-0.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   unix-compat-0.7.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     utf8-string-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   unliftio-core-0.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    unix-compat-0.7.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     utility-ht-0.0.17.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    unliftio-core-0.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     vector-stream-0.1.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    stringsearch-0.3.6.6 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Starting     void-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     utility-ht-0.0.17.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   transformers-compat-0.7.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     vector-stream-0.1.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   th-abstraction-0.7.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     void-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    transformers-compat-0.7.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   void-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    th-abstraction-0.7.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    void-0.7.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     xml-types-0.3.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   utf8-string-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     xml-types-0.3.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    utf8-string-1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   utility-ht-0.0.17.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    utility-ht-0.0.17.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Building     ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   vector-stream-0.1.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    ListTree-0.2.3 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Completed    vector-stream-0.1.0.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     contravariant-1.5.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    xml-1.3.14 (all, legacy fallback: cabal-version is less than 1.8)
+[2026-02-09 10:53:55][Command][exe] Installing   xml-types-0.3.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     contravariant-1.5.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    xml-types-0.3.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     xmlgen-0.6.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     xmlgen-0.6.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   contravariant-1.5.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    contravariant-1.5.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   xmlgen-0.6.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     blaze-markup-0.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     HUnit-1.6.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     extra-1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    xmlgen-0.6.2.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-accessor-transformers-0.2.1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     blaze-markup-0.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     HUnit-1.6.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     extra-1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-accessor-transformers-0.2.1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-accessor-transformers-0.2.1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    data-accessor-transformers-0.2.1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-default-class-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   HUnit-1.6.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-default-class-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     ansi-terminal-types-1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-default-class-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   blaze-markup-0.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    HUnit-1.6.2.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     scanner-0.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    data-default-class-0.2.0.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     cereal-text-0.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     ansi-terminal-types-1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    blaze-markup-0.8.3.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     happy-lib-2.1.7 (lib:tabular)
+[2026-02-09 10:53:55][Command][exe] Building     scanner-0.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     happy-lib-2.1.7 (lib:frontend)
+[2026-02-09 10:53:55][Command][exe] Building     cereal-text-0.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   extra-1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   cereal-text-0.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     happy-lib-2.1.7 (lib:tabular)
+[2026-02-09 10:53:55][Command][exe] Building     happy-lib-2.1.7 (lib:frontend)
+[2026-02-09 10:53:55][Command][exe] Completed    extra-1.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     OpenGLRaw-3.3.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   scanner-0.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    cereal-text-0.1.0.2 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     unordered-containers-0.2.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     time-compat-1.9.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    scanner-0.3.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     OpenGLRaw-3.3.4.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   ansi-terminal-types-1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     time-compat-1.9.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     unordered-containers-0.2.20 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    ansi-terminal-types-1.1.3 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     these-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   happy-lib-2.1.7 (lib:tabular)
+[2026-02-09 10:53:55][Command][exe] Installing   unicode-data-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     these-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    happy-lib-2.1.7 (lib:tabular)
+[2026-02-09 10:53:55][Command][exe] Completed    unicode-data-0.6.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   time-compat-1.9.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     text-short-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    time-compat-1.9.8 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     data-fix-0.3.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     text-short-0.1.6 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     case-insensitive-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     data-fix-0.3.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Building     case-insensitive-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   data-fix-0.3.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   these-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     async-2.2.5 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   case-insensitive-1.2.1.0 (lib)
+[2026-02-09 10:53:55][Command][exe] Installing   happy-lib-2.1.7 (lib:frontend)
+[2026-02-09 10:53:55][Command][exe] Completed    data-fix-0.3.4 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     zlib-0.7.1.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Completed    these-1.2.1 (lib)
+[2026-02-09 10:53:55][Command][exe] Starting     network-3.2.8.0 (all, legacy fallback: build-type is Configure)

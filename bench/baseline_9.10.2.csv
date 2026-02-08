@@ -1,6 +1,0 @@
-Name,Mean (ps),2*Stdev (ps),Allocated,Copied,Peak Memory
-All.parseStatus,78751347,5553156,108904,260,8388608
-All.formatStatus,33368587,920472,111704,150,10485760
-All.formatStatus_compact,25945804,2115808,105784,124,10485760
-All.readFormattedStatus,175562588,12026314,417207,3226,11534336
-All.readFormattedStatus_compact,171590967,15029132,416873,3231,12582912
