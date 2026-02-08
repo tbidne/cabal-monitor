@@ -11,6 +11,7 @@ module Cabal.Monitor.BuildStatus
 
     -- * Construction
     parseStatus,
+    parseStatusInfix,
 
     -- * Elimination
     FormatStyle (..),
@@ -40,6 +41,7 @@ import Data.Set (Set, (\\))
 import Data.Set qualified as Set
 import Data.String (IsString)
 import Data.Text (Text)
+import Data.Word (Word8)
 import FileSystem.UTF8 qualified as UTF8
 import GHC.Generics (Generic)
 import GHC.Natural (Natural)
@@ -89,32 +91,54 @@ type BuildStatusFinal = BuildStatus BuildStatusPhaseFinal
 
 -- | Parses a status.
 parseStatus :: ByteString -> BuildStatusInit
-parseStatus = F.foldMap' go . C8.lines
+parseStatus = parseStatus' searches
   where
-    go txt =
-      fromMaybe mempty $
-        asum
-          [ mkInit mkPkg (BS.takeWhile (/= spaceChr)) " - ",
-            -- "Starting" rather than "Building" as the former includes other steps
-            -- we care about e.g. downloading, configuring.
-            mkInit mkBuilding takeSkipLeadingSpc "Starting",
-            mkInit mkCompleted takeSkipLeadingSpc "Completed"
-          ]
-      where
-        -- Constructs a BuildStatusInit from a bytestring, if the expected
-        -- prefix matches.
-        mkInit ::
-          -- BuildStatusInit constructor.
-          (ByteString -> BuildStatusInit) ->
-          -- Bytestring parse fn.
-          (ByteString -> ByteString) ->
-          -- Bytestring prefix to match.
-          ByteString ->
-          Maybe BuildStatusInit
-        mkInit cons parseFn pfx = cons . parseFn <$> BS.stripPrefix pfx txt
+    searches bs =
+      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
+        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc "Starting" bs,
+        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc "Completed" bs
+      ]
 
-    spaceChr = 32
-    takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
+-- | Like 'parseStatus', except does an additional pass that searches for
+-- infix patterns, if the prefix patterns are not found. This is more
+-- flexible but significantly slower.
+parseStatusInfix :: ByteString -> BuildStatusInit
+parseStatusInfix = parseStatus' searches
+  where
+    searches bs =
+      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
+        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc "Starting" bs,
+        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc "Completed" bs,
+        mkInit stripInfix' mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
+        mkInit stripInfix' mkBuilding takeSkipLeadingSpc "Starting" bs,
+        mkInit stripInfix' mkCompleted takeSkipLeadingSpc "Completed" bs
+      ]
+
+    stripInfix' bs1 = fmap snd . stripInfix bs1
+
+parseStatus' :: (ByteString -> [Maybe BuildStatusInit]) -> ByteString -> BuildStatusInit
+parseStatus' searches = F.foldMap' go . C8.lines
+  where
+    go txt = fromMaybe mempty $ asum (searches txt)
+
+mkInit ::
+  -- Search function
+  (ByteString -> ByteString -> Maybe ByteString) ->
+  -- BuildStatusInit constructor.
+  (ByteString -> BuildStatusInit) ->
+  -- Bytestring parse fn.
+  (ByteString -> ByteString) ->
+  -- Bytestring prefix to match.
+  ByteString ->
+  ByteString ->
+  Maybe BuildStatusInit
+mkInit searchFn cons parseFn pfx txt = cons . parseFn <$> searchFn pfx txt
+
+spaceChr :: Word8
+spaceChr = 32
+
+takeSkipLeadingSpc :: ByteString -> ByteString
+takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 
 mkPkg :: ByteString -> BuildStatusInit
 mkPkg lib =
@@ -320,3 +344,10 @@ int2Nat = fromIntegral
 -- | Returns the size of all packages we want to build.
 numAllPkgs :: BuildStatusInit -> Int
 numAllPkgs status = Set.size status.toBuild
+
+-- | @stripInfix needle haystack@ returns @Just (pre, post)@ iff
+-- @haystack === pre needle post@. Otherwise returns @Nothing@.
+stripInfix :: ByteString -> ByteString -> Maybe (ByteString, ByteString)
+stripInfix bs1 bs2 = (pre,) <$> BS.stripPrefix bs1 rest
+  where
+    (pre, rest) = BS.breakSubstring bs1 bs2

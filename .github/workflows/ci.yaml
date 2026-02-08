@@ -5,6 +5,7 @@ on: # yamllint disable-line rule:truthy rule:comments
   push:
     branches:
       - main
+      - search-infix
 
   pull_request:
     branches:
@@ -54,8 +55,8 @@ jobs:
             --csv bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.csv
             --svg bench/${{ matrix.os }}_${{ matrix.ghc }}_ci.svg
             --baseline bench/baseline_${{ matrix.os }}_${{ matrix.ghc }}_ci.csv
-            --fail-if-slower 40
-            --fail-if-faster 40'
+            --fail-if-slower 1
+            --fail-if-faster 1'
 
       - uses: actions/upload-artifact@v4
         name: Bench upload
