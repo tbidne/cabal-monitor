@@ -75,8 +75,7 @@ import Test.Tasty.Golden (DeleteOutputFile (OnPass), goldenVsFileDiff)
 main :: IO ()
 main =
   Tasty.defaultMain $
-    Tasty.localOption OnPass $
-      (Tasty.withResource setup teardown tests)
+    Tasty.localOption OnPass (Tasty.withResource setup teardown tests)
   where
     tests getTestArgs =
       testGroup

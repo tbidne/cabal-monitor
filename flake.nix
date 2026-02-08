@@ -137,6 +137,8 @@
 
           apps = {
             format = nix-hs-utils.format compilerPkgs;
+            lint = nix-hs-utils.lint compilerPkgs;
+            lint-refactor = nix-hs-utils.lint-refactor compilerPkgs;
           };
         };
       systems = [

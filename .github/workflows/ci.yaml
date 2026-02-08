@@ -101,3 +101,7 @@ jobs:
         run: |
           nix run .#format
           git diff --exit-code --color=always
+
+      - name: Lint
+        run: |
+          nix run .#lint
