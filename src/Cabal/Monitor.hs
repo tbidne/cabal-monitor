@@ -33,7 +33,8 @@ import Cabal.Monitor.Logger (LogMode (LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
 import Control.DeepSeq (NFData)
-import Control.Monad (forever, when)
+import Control.Exception.Utils (trySync)
+import Control.Monad (forever, void, when)
 import Data.ByteString (ByteString)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
@@ -48,6 +49,10 @@ import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Exception qualified as Ex
 import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.HandleReader.Static (HandleReader)
+import Effectful.FileSystem.HandleReader.Static qualified as HR
+import Effectful.FileSystem.HandleWriter.Static (HandleWriter)
+import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Static (PathReader)
 import Effectful.FileSystem.PathReader.Static qualified as PR
 import Effectful.Optparse.Static (Optparse)
@@ -60,6 +65,7 @@ import FileSystem.OsPath qualified as OsPath
 import GHC.Generics (Generic)
 import GHC.Natural (Natural)
 import System.Console.Regions (RegionLayout (Linear))
+import System.IO qualified as IO
 
 -- | Parses CLI args and runs the monitor loop.
 runMonitor ::
@@ -67,6 +73,8 @@ runMonitor ::
   forall es void.
   ( Concurrent :> es,
     FileReader :> es,
+    HandleReader :> es,
+    HandleWriter :> es,
     HasCallStack,
     Optparse :> es,
     PathReader :> es,
@@ -84,6 +92,8 @@ monitorBuild ::
   forall es void.
   ( Concurrent :> es,
     FileReader :> es,
+    HandleReader :> es,
+    HandleWriter :> es,
     HasCallStack,
     PathReader :> es,
     RegionLogger r :> es,
@@ -91,16 +101,17 @@ monitorBuild ::
   ) =>
   Args ->
   Eff es void
-monitorBuild rType args =
+monitorBuild rType args = withHiddenInput $
   Logger.displayRegions rType $ do
     SState.evalState (BuildWaiting, False) $ do
       eResult <-
-        Async.race
-          runStatus
-          (logCounter rType coloring)
+        runStatus
+          `Async.race` logCounter rType coloring
+          `Async.race` drainStdinLoop
 
       case eResult of
-        Left e -> pure e
+        Left (Left x) -> pure x
+        Left (Right x) -> pure x
         Right x -> pure x
   where
     runStatus = do
@@ -316,3 +327,51 @@ monus x y
 
 int2Nat :: Int -> Natural
 int2Nat = fromIntegral
+
+withHiddenInput ::
+  ( HasCallStack,
+    HandleReader :> es,
+    HandleWriter :> es
+  ) =>
+  Eff es a ->
+  Eff es a
+withHiddenInput m = Ex.bracket hideInput unhideInput (const m)
+  where
+    -- Note that this may not work on windows, if we ever want that.
+    --
+    -- - https://stackoverflow.com/questions/15848975/preventing-input-characters-appearing-in-terminal
+    -- - https://hackage.haskell.org/package/echo
+    hideInput = do
+      buffMode <- HR.hGetBuffering IO.stdin
+      echoMode <- HR.hGetEcho IO.stdin
+      HW.hSetBuffering IO.stdin HW.NoBuffering
+      HW.hSetEcho IO.stdin False
+      pure (buffMode, echoMode)
+
+    unhideInput (buffMode, echoMode) = do
+      HW.hSetBuffering IO.stdin buffMode
+      HW.hSetEcho IO.stdin echoMode
+
+drainStdinLoop ::
+  ( Concurrent :> es,
+    HasCallStack,
+    HandleReader :> es
+  ) =>
+  Eff es vd
+drainStdinLoop = go
+  where
+    go = forever $ do
+      drainStdin
+      CCS.sleep 60
+
+drainStdin :: (HasCallStack, HandleReader :> es) => Eff es ()
+drainStdin =
+  void $
+    trySync $
+      HR.hIsClosed IO.stdin
+        >>= \case
+          True -> pure ()
+          False ->
+            HR.hIsReadable IO.stdin >>= \case
+              False -> pure ()
+              True -> void $ HR.hGetNonBlocking IO.stdin 1_000

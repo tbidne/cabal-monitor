@@ -39,6 +39,8 @@ import Effectful.Dispatch.Dynamic (interpret, interpret_, localSeqUnlift)
 import Effectful.Dynamic.Utils (ShowEffect (showEffectCons))
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.FileWriter.Static qualified as FW
+import Effectful.FileSystem.HandleReader.Static qualified as HR
+import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Static (PathReader)
 import Effectful.FileSystem.PathReader.Static qualified as PR
 import Effectful.FileSystem.PathWriter.Static qualified as PW
@@ -294,7 +296,10 @@ type Unit = ()
 
 runMonitorLogs ::
   (HasCallStack) =>
-  IO TestArgs -> OsPath -> [String] -> IO [Text]
+  IO TestArgs ->
+  OsPath ->
+  [String] ->
+  IO [Text]
 runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
   testArgs <- getTestArgs
   logsRef <- newIORef []
@@ -318,6 +323,8 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
         . runTerminalMock mWindow
         . runRegionLoggerMock ref
         . PR.runPathReader
+        . HW.runHandleWriter
+        . HR.runHandleReader
         . FR.runFileReader
         . EOA.runOptparse
 
