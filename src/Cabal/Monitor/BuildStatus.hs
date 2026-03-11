@@ -94,9 +94,9 @@ parseStatus :: ByteString -> BuildStatusInit
 parseStatus = parseStatus' searches
   where
     searches bs =
-      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
-        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc "Starting" bs,
-        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc "Completed" bs
+      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
+        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc buildingPrefix bs,
+        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc completedPrefix bs
       ]
 
 -- | Like 'parseStatus', except does an additional pass that searches for
@@ -106,15 +106,28 @@ parseStatusInfix :: ByteString -> BuildStatusInit
 parseStatusInfix = parseStatus' searches
   where
     searches bs =
-      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
-        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc "Starting" bs,
-        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc "Completed" bs,
-        mkInit stripInfix' mkPkg (BS.takeWhile (/= spaceChr)) " - " bs,
-        mkInit stripInfix' mkBuilding takeSkipLeadingSpc "Starting" bs,
-        mkInit stripInfix' mkCompleted takeSkipLeadingSpc "Completed" bs
+      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
+        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc buildingPrefix bs,
+        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc completedPrefix bs,
+        mkInit stripInfix' mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
+        mkInit stripInfix' mkBuilding takeSkipLeadingSpc buildingPrefix bs,
+        mkInit stripInfix' mkCompleted takeSkipLeadingSpc completedPrefix bs
       ]
 
     stripInfix' bs1 = fmap snd . stripInfix bs1
+
+-- Require at least one trailing whitespace in prefixes.
+-- See NOTE: [Prefix whitespace].
+initPrefix :: ByteString
+initPrefix = " - "
+
+-- "Starting" rather than "Building" as the former includes other steps
+-- we care about e.g. downloading, configuring.
+buildingPrefix :: ByteString
+buildingPrefix = "Starting "
+
+completedPrefix :: ByteString
+completedPrefix = "Completed "
 
 parseStatus' :: (ByteString -> [Maybe BuildStatusInit]) -> ByteString -> BuildStatusInit
 parseStatus' searches = F.foldMap' go . C8.lines
@@ -137,6 +150,17 @@ mkInit searchFn cons parseFn pfx txt = cons . parseFn <$> searchFn pfx txt
 spaceChr :: Word8
 spaceChr = 32
 
+-- NOTE: [Prefix whitespace]
+--
+-- If this doesn't take _some_ whitespace, then there can be false
+-- positives when the text Completed appears e.g.
+--
+--     # Lines below this manually added to bump up 'Completed' category
+--
+-- parsed as bytestring ', as it thought the trailing squote was the a
+-- package name.
+--
+-- Another false positive was the initial 'Starting...'.
 takeSkipLeadingSpc :: ByteString -> ByteString
 takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 

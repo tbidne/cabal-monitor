@@ -1,0 +1,287 @@
+Starting...
+Configuration is affected by the following files:
+- cabal.project
+Build profile: -w ghc-9.12.2 -O1
+In order, the following will be built (use -v for more details):
+ - Diff-0.5 (lib) (requires download & build)
+ - OneTuple-0.4.2.1 (lib) (requires download & build)
+ - ansi-terminal-1.1.5 (lib) (requires download & build)
+ - bitvec-1.1.6.0 (lib) (requires build)
+ - clock-0.8.4 (lib) (requires build)
+ - contravariant-1.5.6 (lib) (requires download & build)
+ - cryptohash-sha256-0.11.102.1 (lib) (requires build)
+ - data-default-0.8.0.2 (lib) (requires build)
+ - distributive-0.6.3 (lib) (requires build)
+ - ed25519-0.0.5.0 (lib) (requires build)
+ - happy-lib-2.2 (lib:grammar) (requires build)
+ - hashable-1.5.1.0 (lib) (requires build)
+ - integer-logarithms-1.0.5 (lib) (requires build)
+ - mtl-compat-0.2.2 (lib) (requires build)
+ - parser-combinators-1.3.1 (lib) (requires build)
+ - regex-base-0.94.0.3 (lib) (requires download & build)
+ - resolv-0.2.0.3 (lib:resolv) (requires build)
+ - splitmix-0.1.3.2 (lib) (requires build)
+ - th-abstraction-0.7.2.0 (lib) (requires build)
+ - th-compat-0.1.7 (lib) (requires build)
+ - time-1.12.2 (lib:time) (requires build)
+ - unbounded-delays-0.1.1.1 (lib) (requires build)
+ - vector-binary-instances-0.2.5.2 (lib) (requires build)
+ - vector-th-unbox-0.2.2 (lib) (requires build)
+ - wherefrom-compat-0.1.1.1 (lib) (requires build)
+ - zinza-0.2.1 (lib) (requires download & build)
+ - prettyprinter-ansi-terminal-1.1.3 (lib) (requires build)
+ - vector-algorithms-0.9.1.0 (lib) (requires build)
+ - data-default-class-0.2.0.0 (lib) (requires build)
+ - comonad-5.0.10 (lib) (requires build)
+ - happy-lib-2.2 (lib:tabular) (requires build)
+ - happy-lib-2.2 (lib:frontend) (requires build)
+ - unordered-containers-0.2.21 (lib) (requires build)
+ - these-1.2.1 (lib) (requires build)
+ - text-short-0.1.6.1 (lib) (requires download & build)
+ - data-fix-0.3.4 (lib) (requires build)
+ - case-insensitive-1.2.1.0 (lib) (requires build)
+ - scientific-0.3.8.1 (lib) (requires download & build)
+ - regex-tdfa-1.3.2.5 (lib) (requires download & build)
+ - regex-posix-0.96.0.2 (lib) (requires download & build)
+ - random-1.2.1.3 (lib) (requires build)
+ - network-uri-2.6.4.2 (lib) (requires build)
+ - unix-2.8.8.0 (lib:unix) (requires build)
+ - time-compat-1.9.9 (lib) (requires build)
+ - nothunks-0.2.1.1 (lib) (requires download & build)
+ - prettyprinter-compat-ansi-wl-pprint-1.0.2 (lib) (requires download & build)
+ - math-functions-0.3.4.4 (lib) (requires build)
+ - bifunctors-5.6.3 (lib) (requires build)
+ - happy-lib-2.2 (lib:backend-lalr) (requires build)
+ - happy-lib-2.2 (lib:backend-glr) (requires build)
+ - indexed-traversable-instances-0.1.2 (lib) (requires build)
+ - charset-0.3.12 (lib) (requires download & build)
+ - async-2.2.6 (lib) (requires download & build)
+ - strict-0.5.1 (lib) (requires build)
+ - megaparsec-9.7.0 (lib) (requires build)
+ - attoparsec-0.14.4 (lib) (requires build)
+ - uuid-types-1.0.6 (lib) (requires build)
+ - retry-0.9.3.1 (lib) (requires build)
+ - edit-distance-0.2.2.1 (lib) (requires build)
+ - QuickCheck-2.14.3 (lib) (requires download & build)
+ - semaphore-compat-1.0.0 (lib) (requires build)
+ - file-io-0.1.6 (lib) (requires build)
+ - directory-ospath-streaming-0.3 (lib) (requires build)
+ - base-compat-0.13.1 (lib) (requires build)
+ - text-iso8601-0.1.1 (lib) (requires build)
+ - ansi-wl-pprint-1.0.2 (lib) (requires download & build)
+ - mwc-random-0.15.3.0 (lib) (requires build)
+ - dense-linear-algebra-0.1.0.0 (lib) (requires build)
+ - semigroupoids-6.0.2 (lib) (requires download & build)
+ - happy-lib-2.2 (lib) (requires build)
+ - witherable-0.5 (lib) (requires build)
+ - parsers-0.12.12 (lib) (requires download & build)
+ - rere-0.2.0.2 (lib) (requires download & build)
+ - directory-1.3.10.1 (lib:directory) (requires build)
+ - semialign-1.3.1 (lib) (requires build)
+ - happy-2.2 (exe:happy) (requires build)
+ - temporary-1.3 (lib) (requires build)
+ - tar-0.7.0.0 (lib:tar-internal) (requires build)
+ - silently-1.2.5.4 (lib) (requires build)
+ - process-1.6.27.0 (lib:process) (requires build)
+ - alex-3.5.4.0 (exe:alex) (requires download & build)
+ - Glob-0.10.2 (lib) (requires download & build)
+ - aeson-2.2.3.0 (lib) (requires build)
+ - pretty-show-1.10 (lib) (requires build)
+ - tar-0.7.0.0 (lib) (requires build)
+ - typed-process-0.2.13.0 (lib) (requires build)
+ - optparse-applicative-0.18.1.0 (lib) (requires download & build)
+ - open-browser-0.4.0.0 (lib) (requires build)
+ - hsc2hs-0.68.10 (exe:hsc2hs) (requires build)
+ - githash-0.1.7.0 (lib) (requires build)
+ - echo-0.1.4 (lib) (requires build)
+ - Cabal-syntax-3.17.0.0 (lib) (first run)
+ - Cabal-syntax-3.12.1.0 (lib) (requires download & build)
+ - tree-diff-0.3.4 (lib) (requires download & build)
+ - statistics-0.16.5.0 (lib) (requires download & build)
+ - os-release-1.0.2.1 (lib) (requires download & build)
+ - tasty-1.5.3 (lib) (requires build)
+ - zlib-0.7.1.1 (lib) (requires build)
+ - terminal-size-0.3.4 (lib) (requires build)
+ - network-3.2.8.0 (lib:network) (requires build)
+ - Cabal-3.17.0.0 (lib) (first run)
+ - Cabal-3.12.1.0 (lib) (requires download & build)
+ - solver-benchmarks-3 (lib) (first run)
+ - tasty-quickcheck-0.11.1 (lib) (requires download & build)
+ - tasty-hunit-0.10.2 (lib) (requires build)
+ - tasty-golden-2.3.6 (lib) (requires download & build)
+ - tasty-expected-failure-0.12.3 (lib) (requires download & build)
+ - tasty-bench-0.3.5 (lib) (requires download & build)
+ - cabal-validate-1.0.0 (exe:cabal-validate) (first run)
+ - network-wait-0.2.0.0 (lib) (requires build)
+ - hackage-security-0.6.3.2 (lib) (requires download & build)
+ - HTTP-4000.5.0 (lib) (requires download & build)
+ - cabal-install-solver-3.17.0.0 (lib) (first run)
+ - Cabal-tree-diff-3.17.0.0 (lib) (first run)
+ - Cabal-tests-3 (test:custom-setup-tests) (first run)
+ - Cabal-tests-3 (lib) (first run)
+ - Cabal-hooks-3.17 (lib) (first run)
+ - Cabal-QuickCheck-3.17.0.0 (lib) (first run)
+ - solver-benchmarks-3 (exe:hackage-benchmark) (first run)
+ - Cabal-described-3.17.0.0 (lib) (first run)
+ - solver-benchmarks-3 (test:unit-tests) (first run)
+ - Cabal-tests-3 (test:rpmvercmp) (first run)
+ - Cabal-tests-3 (test:no-thunks-test) (first run)
+ - Cabal-tests-3 (test:check-tests) (first run)
+ - cabal-benchmarks-3 (test:cabal-benchmarks) (first run)
+ - cabal-install-solver-3.17.0.0 (test:unit-tests) (first run)
+ - cabal-install-3.17.0.0 (lib) (first run)
+ - Cabal-tests-3 (test:parser-tests) (first run)
+ - Cabal-tests-3 (test:hackage-tests) (first run)
+ - cabal-testsuite-3 (lib:cabal-testsuite, exe:cabal-tests, exe:setup, exe:test-runtime-deps) (first run)
+ - buildinfo-reference-generator-0 (exe:buildinfo-reference-generator) (first run)
+ - Cabal-tests-3 (test:unit-tests) (first run)
+ - cabal-install-3.17.0.0 (test:unit-tests) (first run)
+ - cabal-install-3.17.0.0 (test:parser-tests) (first run)
+ - cabal-install-3.17.0.0 (test:mem-use-tests) (first run)
+ - cabal-install-3.17.0.0 (test:long-tests) (first run)
+ - cabal-install-3.17.0.0 (test:integration-tests2) (first run)
+ - cabal-install-3.17.0.0 (exe:cabal) (first run)
+Created semaphore called cabal_semaphore_b with 8 slots.
+Downloading  async-2.2.6
+Downloaded   async-2.2.6
+Downloading  charset-0.3.12
+Starting     clock-0.8.4 (lib)
+Starting     bitvec-1.1.6.0 (lib)
+Downloaded   charset-0.3.12
+Downloading  nothunks-0.2.1.1
+Starting     cryptohash-sha256-0.11.102.1 (lib)
+Starting     data-default-0.8.0.2 (lib)
+Downloaded   nothunks-0.2.1.1
+Downloading  regex-base-0.94.0.3
+Downloaded   regex-base-0.94.0.3
+Downloading  regex-posix-0.96.0.2
+Downloaded   regex-posix-0.96.0.2
+Downloading  regex-tdfa-1.3.2.5
+Downloaded   regex-tdfa-1.3.2.5
+Downloading  scientific-0.3.8.1
+Downloaded   scientific-0.3.8.1
+Downloading  parsers-0.12.12
+Downloaded   parsers-0.12.12
+Downloading  text-short-0.1.6.1
+Downloaded   text-short-0.1.6.1
+Downloading  zinza-0.2.1
+Building     cryptohash-sha256-0.11.102.1 (lib)
+Downloaded   zinza-0.2.1
+Downloading  ansi-terminal-1.1.5
+Downloaded   ansi-terminal-1.1.5
+Downloading  optparse-applicative-0.18.1.0
+Starting     ansi-terminal-1.1.5 (lib)
+Downloaded   optparse-applicative-0.18.1.0
+Downloading  prettyprinter-compat-ansi-wl-pprint-1.0.2
+Downloaded   prettyprinter-compat-ansi-wl-pprint-1.0.2
+Downloading  ansi-wl-pprint-1.0.2
+Building     data-default-0.8.0.2 (lib)
+Downloaded   ansi-wl-pprint-1.0.2
+Downloading  tasty-bench-0.3.5
+Building     clock-0.8.4 (lib)
+Building     bitvec-1.1.6.0 (lib)
+Downloaded   tasty-bench-0.3.5
+Downloading  tasty-expected-failure-0.12.3
+Downloaded   tasty-expected-failure-0.12.3
+Downloading  tasty-golden-2.3.6
+Downloaded   tasty-golden-2.3.6
+Downloading  alex-3.5.4.0
+Downloaded   alex-3.5.4.0
+Downloading  contravariant-1.5.6
+Downloaded   contravariant-1.5.6
+Downloading  semigroupoids-6.0.2
+Starting     contravariant-1.5.6 (lib)
+Downloaded   semigroupoids-6.0.2
+Downloading  QuickCheck-2.14.3
+Downloaded   QuickCheck-2.14.3
+Downloading  rere-0.2.0.2
+Building     ansi-terminal-1.1.5 (lib)
+Downloaded   rere-0.2.0.2
+Downloading  tasty-quickcheck-0.11.1
+Installing   data-default-0.8.0.2 (lib)
+Downloaded   tasty-quickcheck-0.11.1
+Downloading  OneTuple-0.4.2.1
+Downloaded   OneTuple-0.4.2.1
+Downloading  os-release-1.0.2.1
+Starting     OneTuple-0.4.2.1 (lib)
+Downloaded   os-release-1.0.2.1
+Downloading  statistics-0.16.5.0
+Downloaded   statistics-0.16.5.0
+Downloading  tree-diff-0.3.4
+Completed    data-default-0.8.0.2 (lib)
+Starting     distributive-0.6.3 (lib)
+Building     contravariant-1.5.6 (lib)
+Downloaded   tree-diff-0.3.4
+Downloading  HTTP-4000.5.0
+Downloaded   HTTP-4000.5.0
+Downloading  Glob-0.10.2
+Downloaded   Glob-0.10.2
+Downloading  Diff-0.5
+Downloaded   Diff-0.5
+Downloading  hackage-security-0.6.3.2
+Starting     Diff-0.5 (lib)
+Installing   cryptohash-sha256-0.11.102.1 (lib)
+Downloaded   hackage-security-0.6.3.2
+Downloading  Cabal-syntax-3.12.1.0
+Downloaded   Cabal-syntax-3.12.1.0
+Downloading  Cabal-3.12.1.0
+Installing   ansi-terminal-1.1.5 (lib)
+Installing   clock-0.8.4 (lib)
+Downloaded   Cabal-3.12.1.0
+Completed    cryptohash-sha256-0.11.102.1 (lib)
+Building     OneTuple-0.4.2.1 (lib)
+Building     distributive-0.6.3 (lib)
+Completed    ansi-terminal-1.1.5 (lib)
+Starting     ed25519-0.0.5.0 (lib)
+Installing   OneTuple-0.4.2.1 (lib)
+Completed    clock-0.8.4 (lib)
+Installing   contravariant-1.5.6 (lib)
+Building     Diff-0.5 (lib)
+Starting     happy-lib-2.2 (lib:grammar)
+Completed    OneTuple-0.4.2.1 (lib)
+Starting     hashable-1.5.1.0 (lib)
+Installing   distributive-0.6.3 (lib)
+Completed    contravariant-1.5.6 (lib)
+Starting     integer-logarithms-1.0.5 (lib)
+Building     ed25519-0.0.5.0 (lib)
+Building     happy-lib-2.2 (lib:grammar)
+Completed    distributive-0.6.3 (lib)
+Starting     mtl-compat-0.2.2 (lib)
+Building     hashable-1.5.1.0 (lib)
+Installing   Diff-0.5 (lib)
+Building     integer-logarithms-1.0.5 (lib)
+Installing   happy-lib-2.2 (lib:grammar)
+Building     mtl-compat-0.2.2 (lib)
+Installing   mtl-compat-0.2.2 (lib)
+Completed    Diff-0.5 (lib)
+Starting     parser-combinators-1.3.1 (lib)
+Completed    happy-lib-2.2 (lib:grammar)
+Starting     regex-base-0.94.0.3 (lib)
+Completed    mtl-compat-0.2.2 (lib)
+Starting     resolv-0.2.0.3 (all, legacy fallback: build-type is Configure)
+Installing   integer-logarithms-1.0.5 (lib)
+Building     parser-combinators-1.3.1 (lib)
+Building     regex-base-0.94.0.3 (lib)
+Completed    integer-logarithms-1.0.5 (lib)
+Starting     splitmix-0.1.3.2 (lib)
+Building     splitmix-0.1.3.2 (lib)
+# Lines below this manually added to bump up Completed category
+Building     th-abstraction-0.7.2.0 (lib)
+Completed    th-abstraction-0.7.2.0 (lib)
+Building     th-compat-0.1.7 (lib)
+Completed    th-compat-0.1.7 (lib)
+Building     time-1.12.2 (lib)
+Completed    time-1.12.2 (lib)
+Building     unbounded-delays-0.1.1.1 (lib)
+Completed    unbounded-delays-0.1.1.1 (lib)
+Building     vector-binary-instances-0.2.5.2 (lib)
+Completed    vector-binary-instances-0.2.5.2 (lib)
+Building     vector-th-unbox-0.2.2 (lib)
+Completed    vector-th-unbox-0.2.2 (lib)
+Building     wherefrom-compat-0.1.1.1 (lib)
+Completed    wherefrom-compat-0.1.1.1 (lib)
+Building     zinza-0.2.1 (lib)
+Completed    zinza-0.2.1 (lib)
+Building     prettyprinter-ansi-terminal-1.1.3 (lib)
+Completed    prettyprinter-ansi-terminal-1.1.3 (lib)
+Starting     prettyprinter-compat-ansi-wl-pprint-1.0.2 (lib)

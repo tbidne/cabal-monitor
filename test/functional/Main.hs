@@ -169,6 +169,7 @@ formatStatusTests =
       testFormatLargeStart,
       testFormatLargeBuilding1,
       testFormatLargeBuilding2,
+      testFormatLargeBuilding3,
       testFormatHeader1
     ]
 
@@ -225,6 +226,13 @@ testFormatLargeBuilding2 =
     [ospPathSep|testFormatLargeBuilding2|]
     [ospPathSep|example_large_building_2.txt|]
 
+testFormatLargeBuilding3 :: TestTree
+testFormatLargeBuilding3 =
+  testFormatManualWindow
+    (Window {height = 15, width = 150})
+    [ospPathSep|testFormatLargeBuilding3|]
+    [ospPathSep|example_large_building_3.txt|]
+
 testFormatHeader1 :: TestTree
 testFormatHeader1 =
   testFormatManual
@@ -232,7 +240,10 @@ testFormatHeader1 =
     [ospPathSep|header_1.txt|]
 
 testFormatManual :: OsPath -> OsPath -> TestTree
-testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP $ do
+testFormatManual = testFormatManualWindow $ Window {height = 41, width = 174}
+
+testFormatManualWindow :: Window Int -> OsPath -> OsPath -> TestTree
+testFormatManualWindow window goldenName inputName = goldenDiffCustom desc goldenFP actualFP $ do
   eResult <- runner $ do
     style <- Monitor.mkFormatStyleFn Nothing Nothing
     Monitor.readFormattedStatus coloring searchInfix style inputPath
@@ -260,7 +271,7 @@ testFormatManual goldenName inputName = goldenDiffCustom desc goldenFP actualFP 
         . SState.evalState (Monitor.BuildWaiting, False)
         . PR.runPathReader
         . FR.runFileReader
-        . runTerminalMock @Int (Just $ Window {height = 41, width = 174})
+        . runTerminalMock @Int (Just window)
 
 writeBS :: OsPath -> ByteString -> IO ()
 writeBS actualOsP =
