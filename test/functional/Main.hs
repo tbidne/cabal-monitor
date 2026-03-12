@@ -172,6 +172,7 @@ formatStatusTests =
       testFormatLargeBuilding1,
       testFormatLargeBuilding2,
       testFormatLargeBuilding3,
+      testFormatLargeBuilding3Window,
       testFormatHeader1
     ]
 
@@ -230,9 +231,15 @@ testFormatLargeBuilding2 =
 
 testFormatLargeBuilding3 :: TestTree
 testFormatLargeBuilding3 =
+  testFormatManual
+    [ospPathSep|testFormatLargeBuilding3|]
+    [ospPathSep|example_large_building_3.txt|]
+
+testFormatLargeBuilding3Window :: TestTree
+testFormatLargeBuilding3Window =
   testFormatManualWindow
     (Window {height = 15, width = 150})
-    [ospPathSep|testFormatLargeBuilding3|]
+    [ospPathSep|testFormatLargeBuilding3Window|]
     [ospPathSep|example_large_building_3.txt|]
 
 testFormatHeader1 :: TestTree

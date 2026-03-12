@@ -116,7 +116,7 @@ parseStatusInfix = parseStatus' searches
 
     stripInfix' bs1 = fmap snd . stripInfix bs1
 
--- Require at least one trailing whitespace in prefixes.
+-- Require at least one leading and trailing whitespace in prefixes.
 -- See NOTE: [Prefix whitespace].
 initPrefix :: ByteString
 initPrefix = " - "
@@ -160,7 +160,10 @@ spaceChr = 32
 -- parsed as bytestring ', as it thought the trailing squote was the a
 -- package name.
 --
--- Another false positive was the initial 'Starting...'.
+-- More false positives:
+--   - Initial 'Starting...'.
+--   - Configuration is affected by ...:
+--     - cabal.project
 takeSkipLeadingSpc :: ByteString -> ByteString
 takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 

@@ -1,6 +1,7 @@
 Starting...
 Configuration is affected by the following files:
 - cabal.project
+- cabal.project.local
 Build profile: -w ghc-9.12.2 -O1
 In order, the following will be built (use -v for more details):
  - Diff-0.5 (lib) (requires download & build)
