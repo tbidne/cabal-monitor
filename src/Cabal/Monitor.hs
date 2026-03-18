@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+
 module Cabal.Monitor
   ( -- * High level
     runMonitor,
@@ -11,7 +13,7 @@ module Cabal.Monitor
 where
 
 import Cabal.Monitor.Args
-  ( Args (coloring, filePath, height, period, width),
+  ( Args (cabalPid, coloring, filePath, height, period, width),
     Coloring (MkColoring, unColoring),
     SearchInfix (MkSearchInfix),
   )
@@ -32,10 +34,13 @@ import Cabal.Monitor.BuildStatus qualified as Status
 import Cabal.Monitor.Logger (LogMode (LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
+import Cabal.Monitor.Process (MonitorProcessC)
+import Cabal.Monitor.Process qualified as Process
 import Control.DeepSeq (NFData)
 import Control.Exception.Utils (trySync)
 import Control.Monad (forever, void, when)
 import Data.ByteString (ByteString)
+import Data.Functor ((<&>))
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -70,18 +75,19 @@ import System.IO qualified as IO
 -- | Parses CLI args and runs the monitor loop.
 runMonitor ::
   forall r ->
-  forall es void.
+  forall es.
   ( Concurrent :> es,
     FileReader :> es,
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
+    MonitorProcessC es,
     Optparse :> es,
     PathReader :> es,
     RegionLogger r :> es,
     Terminal :> es
   ) =>
-  Eff es void
+  Eff es ()
 runMonitor rType = do
   args <- Args.getArgs
   monitorBuild rType args
@@ -89,33 +95,45 @@ runMonitor rType = do
 -- | Monitors a build.
 monitorBuild ::
   forall r ->
-  forall es void.
+  forall es.
   ( Concurrent :> es,
     FileReader :> es,
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
+    MonitorProcessC es,
     PathReader :> es,
     RegionLogger r :> es,
     Terminal :> es
   ) =>
   Args ->
-  Eff es void
-monitorBuild rType args = withHiddenInput $
-  Logger.displayRegions rType $ do
+  Eff es ()
+monitorBuild rType args = withHiddenInput $ do
+  cabalPid <- Logger.displayRegions rType $ do
     SState.evalState (BuildWaiting, False) $ do
-      eResult <-
-        runStatus
-          `Async.race` logCounter rType coloring
-          `Async.race` drainStdinLoop
+      let coreProcs =
+            runStatus
+              `race'` logCounter rType coloring
+              `race'` drainStdinLoop
 
-      case eResult of
-        Left (Left x) -> pure x
-        Left (Right x) -> pure x
-        Right x -> pure x
+          allProcs = case args.cabalPid of
+            Nothing -> coreProcs
+            Just pid ->
+              coreProcs
+                `race'` Process.monitorCabalProc pid sleepSeconds
+
+      allProcs
+
+  -- If we get there then monitorCabalProc must have finished since none of
+  -- the other threads terminate.
+  Term.putTextLn $
+    "Process with pid "
+      <> T.pack (show cabalPid)
+      <> " is no longer running, terminating cabal-monitor."
   where
+    sleepSeconds = fromMaybe 5 args.period
+
     runStatus = do
-      let sleepSeconds = fromMaybe 5 args.period
       styleFn <- mkFormatStyleFn args.height args.width
       Logger.withRegion @rType Linear $ \r -> forever $ do
         readPrintStatus r coloring searchInfix styleFn args.filePath
@@ -259,16 +277,18 @@ logCounter rType coloring = do
                 r
                 (fmtWaiting elapsed)
   where
-    fmtWaiting = fmtX "\nWaiting to start: "
-    fmtBuilding = fmtX "\nBuilding: "
-    fmtCompleted = fmtX "\nFinished in: "
+    fmtWaiting = fmtX "Waiting to start: "
+    fmtBuilding = fmtX "Building: "
+    fmtCompleted = fmtX "Finished in: "
 
     colorize =
       if coloring.unColoring
         then Pretty.color Pretty.Blue
         else id
 
-    fmtX header = colorize . (header <>) . fmtTime
+    -- Need to put the newline _before_ the colorize, so that coloring does
+    -- not bleed through.
+    fmtX header = ("\n" <>) . colorize . (header <>) . fmtTime
 
     fmtTime =
       T.pack
@@ -353,11 +373,12 @@ withHiddenInput m = Ex.bracket hideInput unhideInput (const m)
       HW.hSetEcho IO.stdin echoMode
 
 drainStdinLoop ::
+  forall es void.
   ( Concurrent :> es,
     HasCallStack,
     HandleReader :> es
   ) =>
-  Eff es vd
+  Eff es void
 drainStdinLoop = go
   where
     go = forever $ do
@@ -375,3 +396,6 @@ drainStdin =
             HR.hIsReadable IO.stdin >>= \case
               False -> pure ()
               True -> void $ HR.hGetNonBlocking IO.stdin 1_000
+
+race' :: (Concurrent :> es) => Eff es a -> Eff es a -> Eff es a
+race' mx my = Async.race mx my <&> either id id

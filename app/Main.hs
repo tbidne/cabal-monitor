@@ -2,6 +2,7 @@ module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
 import Cabal.Monitor.Logger qualified as Logger
+import Cabal.Monitor.Process qualified as Process
 import Effectful (runEff)
 import Effectful.Concurrent qualified as CC
 import Effectful.FileSystem.FileReader.Static qualified as FR
@@ -21,6 +22,7 @@ main = runner (Monitor.runMonitor ConsoleRegion)
     runner =
       runEff
         . CC.runConcurrent
+        . Process.runMonitorProcessC
         . Logger.runRegionLogger
         . Term.runTerminal
         . PR.runPathReader

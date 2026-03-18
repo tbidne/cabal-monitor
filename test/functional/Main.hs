@@ -22,6 +22,7 @@ import Cabal.Monitor.Logger
         WithRegion
       ),
   )
+import Cabal.Monitor.Process qualified as Process
 import Control.Monad (void)
 import Data.ByteString (ByteString)
 import Data.ByteString.Char8 qualified as C8
@@ -327,6 +328,7 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
       runEff
         . ECC.runConcurrent
         . EProcess.runProcess
+        . Process.runMonitorProcessC
         . runTerminalMock mWindow
         . runRegionLoggerMock ref
         . PR.runPathReader

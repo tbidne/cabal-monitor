@@ -20,16 +20,18 @@ package cabal-monitor
     -Wno-unticked-promoted-constructors
 
 source-repository-package
-    type: git
-    location: https://github.com/tbidne/algebra-simple.git
-    tag: 37ec7127fbd0f591d4539e4bf72a0badd7569181
+  type: git
+  location: https://github.com/tbidne/algebra-simple.git
+  tag: 37ec7127fbd0f591d4539e4bf72a0badd7569181
 
 source-repository-package
-    type: git
-    location: https://github.com/tbidne/bounds.git
-    tag: b7ca541cfdd8564bcebe5d38456fe7abf77885b8
+  type: git
+  location: https://github.com/tbidne/bounds.git
+  tag: b7ca541cfdd8564bcebe5d38456fe7abf77885b8
 
-source-repository-package
+-- windows cannot build unix package
+if os(windows)
+  source-repository-package
     type: git
     location: https://github.com/tbidne/effectful-libs.git
     tag: 326ee75e7705ccaf010941ae698f1c43355d4c1b
@@ -39,11 +41,23 @@ source-repository-package
       lib/fs-effectful
       lib/optparse-effectful
       lib/terminal-effectful
+else
+  source-repository-package
+    type: git
+    location: https://github.com/tbidne/effectful-libs.git
+    tag: 326ee75e7705ccaf010941ae698f1c43355d4c1b
+    subdir:
+      lib/concurrent-effectful
+      lib/effectful-utils
+      lib/fs-effectful
+      lib/optparse-effectful
+      lib/terminal-effectful
+      lib/unix-effectful
 
 source-repository-package
-    type: git
-    location: https://github.com/tbidne/exception-utils.git
-    tag: 61a9e06a26adcca70d565105a1508a16022435a2
+  type: git
+  location: https://github.com/tbidne/exception-utils.git
+  tag: 61a9e06a26adcca70d565105a1508a16022435a2
 
 source-repository-package
   type: git
@@ -51,9 +65,9 @@ source-repository-package
   tag: 26136275027fd827574c5004ebd11b659d7abdab
 
 source-repository-package
-    type: git
-    location: https://github.com/tbidne/relative-time.git
-    tag: be79249b8909dba64d3b301025d4d684f46ec2a1
+  type: git
+  location: https://github.com/tbidne/relative-time.git
+  tag: be79249b8909dba64d3b301025d4d684f46ec2a1
 
 optimization: 2
 test-show-details: direct

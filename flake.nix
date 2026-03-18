@@ -96,6 +96,7 @@
                 "fs-effectful"
                 "optparse-effectful"
                 "terminal-effectful"
+                "unix-effectful"
               ];
           };
           compilerPkgs = {

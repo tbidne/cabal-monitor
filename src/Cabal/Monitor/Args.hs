@@ -49,7 +49,8 @@ import System.Info qualified as Info
 
 -- | CLI args.
 data Args = MkArgs
-  { coloring :: Maybe Coloring,
+  { cabalPid :: Maybe Natural,
+    coloring :: Maybe Coloring,
     filePath :: OsPath,
     height :: Maybe Natural,
     period :: Maybe Natural,
@@ -122,12 +123,13 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(filePath, period, searchInfix) <- coreOptsParser
+      ~(cabalPid, filePath, period, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
         MkArgs
-          { coloring,
+          { cabalPid,
+            coloring,
             filePath,
             height,
             period,
@@ -138,8 +140,9 @@ argsParser = mainParser <**> OA.helper <**> version
     coreOptsParser =
       OA.parserOptionGroup
         "Core options:"
-        $ (,,)
-          <$> filePathParser
+        $ (,,,)
+          <$> cabalPidParser
+          <*> filePathParser
           <*> periodParser
           <*> searchInfixParser
 
@@ -174,6 +177,21 @@ heightParser =
       [ OA.long "height",
         OA.metavar "NAT",
         mkHelp "Maximum number of lines to display."
+      ]
+
+cabalPidParser :: Parser (Maybe Natural)
+cabalPidParser =
+  OA.optional
+    $ OA.option
+      OA.auto
+    $ mconcat
+      [ OA.long "cabal-pid",
+        OA.metavar "NAT",
+        mkHelp $
+          mconcat
+            [ "The pid of the cabal-process. Use to exit automatically ",
+              "after cabal has finished."
+            ]
       ]
 
 coloringParser :: Parser (Maybe Coloring)

@@ -44,6 +44,9 @@ common common-lang
     TypeAbstractions
     TypeFamilies
 
+  if os(windows)
+    cpp-options: -DWINDOWS
+
   default-language:   GHC2024
 
 library
@@ -58,6 +61,7 @@ library
     Cabal.Monitor.BuildStatus
     Cabal.Monitor.Logger
     Cabal.Monitor.Pretty
+    Cabal.Monitor.Process
 
   build-depends:
     , base                  >=4.14.0.0 && <4.22
@@ -80,6 +84,9 @@ library
     , terminal-effectful    ^>=0.1
     , text                  >=1.2.3.2  && <2.2
     , time                  >=1.9.3    && <1.16
+
+  if !os(windows)
+    build-depends: unix-effectful ^>=0.1
 
   hs-source-dirs:  src
 
