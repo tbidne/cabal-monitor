@@ -223,9 +223,23 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
       guard (d1 == d2)
       pure post
 
+-- |
+--
+-- >>> stripInfix' "foo" "barfoobaz"
+-- Just "baz"
+--
+-- >>> stripInfix' "foo" "barfobaz"
+-- Nothing
 stripInfix' :: ByteString -> ByteString -> Maybe ByteString
 stripInfix' bs1 = fmap snd . stripInfix bs1
 
+-- | Like @take notEq@, except operates on a bytestring, rather than single word8.
+--
+-- >>> takeUntilEq "foo" "barfoobaz"
+-- Just "bar"
+--
+-- >>> takeUntilEq "foo" "barfobaz"
+-- Nothing
 takeUntilEq :: ByteString -> ByteString -> Maybe ByteString
 takeUntilEq n bs = BS.pack <$> go n' bs'
   where
@@ -240,6 +254,13 @@ takeUntilEq n bs = BS.pack <$> go n' bs'
     n' = BS.unpack n
     bs' = BS.unpack bs
 
+-- | Like 'takeUntilEq', except returns both (non-inclusive) sides of the match.
+--
+-- >>> breaksEqStrip "foo" "barfoobaz"
+-- Just ("bar","baz")
+--
+-- >>> breaksEqStrip "foo" "barfobaz"
+-- Nothing
 breaksEqStrip :: ByteString -> ByteString -> Maybe (ByteString, ByteString)
 breaksEqStrip n bs = bimap BS.pack BS.pack <$> go n' bs'
   where
@@ -247,6 +268,8 @@ breaksEqStrip n bs = bimap BS.pack BS.pack <$> go n' bs'
     go [] rs = Just (rs, [])
     go (_ : _) [] = Nothing
     go wss@(_ : _) rss@(r : rs) =
+      -- Using L.isPrefixOf instead of stripPrefix would instead give us
+      -- breaksEq i.e. the needle would be part of the second value.
       case wss `L.stripPrefix` rss of
         Just rest -> Just ([], rest)
         Nothing -> first (r :) <$> go wss rs
@@ -264,6 +287,10 @@ squoteW8 = 39
 spaceChr :: Word8
 spaceChr = 32
 
+-- | Skips leading space, takes all trailing non-space.
+--
+-- >>> takeSkipLeadingSpc "  foobar baz"
+-- "foobar"
 takeSkipLeadingSpc :: ByteString -> ByteString
 takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 
@@ -463,6 +490,14 @@ formatInline width = L.reverse . fmap fst . foldl' go []
 prependNewline :: Builder -> Builder
 prependNewline b = "\n  - " <> b
 
+-- | @takeCount n xs@ takes up to @n@ elements from @xs@, and returns the
+-- difference.
+--
+-- >>> takeCount 5 [1, 2]
+-- (3,[1,2])
+--
+-- >>> takeCount 3 [1,2,3,4,5]
+-- (0,[1,2,3])
 takeCount :: Natural -> [a] -> (Natural, [a])
 takeCount k = fmap L.reverse . go (k, [])
   where
@@ -470,6 +505,14 @@ takeCount k = fmap L.reverse . go (k, [])
     go acc@(0, _) _ = acc
     go (!cnt, zs) (x : xs) = go (cnt - 1, x : zs) xs
 
+-- | @takeTrunc n xs@ takes up to @n@ elements from @xs@, appending an
+-- ellipsis if it could not take everything.
+--
+-- >>> takeTrunc 5 ["1", "2"]
+-- ["1","2"]
+--
+-- >>> takeTrunc 3 ["1", "2", "3", "4", "5"]
+-- ["1","2","\n  ..."]
 takeTrunc :: Natural -> [Builder] -> [Builder]
 -- 1. Cannot take anymore.
 takeTrunc 0 acc = acc
@@ -489,6 +532,12 @@ numAllPkgs status = Set.size status.toBuild
 
 -- | @stripInfix needle haystack@ returns @Just (pre, post)@ iff
 -- @haystack === pre needle post@. Otherwise returns @Nothing@.
+--
+-- >>> stripInfix "foo" "barfoobaz"
+-- Just ("bar","baz")
+--
+-- >>> stripInfix "foo" "barfobaz"
+-- Nothing
 stripInfix :: ByteString -> ByteString -> Maybe (ByteString, ByteString)
 stripInfix bs1 bs2 = (pre,) <$> BS.stripPrefix bs1 rest
   where

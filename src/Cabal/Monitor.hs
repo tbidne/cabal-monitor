@@ -343,6 +343,13 @@ mkFormatStyleFn mHeight mWidth = do
                 --      determined by terminal size.
                 else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
 
+-- | Subtraction, clamped to zero.
+--
+-- >>> 4 `monus` 2
+-- 2
+--
+-- >>> 4 `monus` 5
+-- 0
 monus :: Natural -> Natural -> Natural
 monus x y
   | x < y = 0
