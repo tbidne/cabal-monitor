@@ -3,7 +3,11 @@
 module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Args (Coloring (MkColoring), SearchInfix (MkSearchInfix))
+import Cabal.Monitor.Args
+  ( Coloring (MkColoring),
+    LocalPackages (MkLocalPackages),
+    SearchInfix (MkSearchInfix),
+  )
 import Cabal.Monitor.BuildStatus
   ( BuildStatus (MkBuildStatus, building, completed, toBuild),
     BuildStatusInit,
@@ -174,7 +178,9 @@ formatStatusTests =
       testFormatLargeBuilding2,
       testFormatLargeBuilding3,
       testFormatLargeBuilding3Window,
-      testFormatHeader1
+      testFormatLocal,
+      testFormatHeader1,
+      testFormatHeaderLocal
     ]
 
 testFormatNl :: TestTree
@@ -243,11 +249,23 @@ testFormatLargeBuilding3Window =
     [ospPathSep|testFormatLargeBuilding3Window|]
     [ospPathSep|example_large_building_3.txt|]
 
+testFormatLocal :: TestTree
+testFormatLocal =
+  testFormatManual
+    [ospPathSep|testFormatLocal|]
+    [ospPathSep|local.txt|]
+
 testFormatHeader1 :: TestTree
 testFormatHeader1 =
   testFormatManual
     [ospPathSep|testFormatHeader1|]
     [ospPathSep|header_1.txt|]
+
+testFormatHeaderLocal :: TestTree
+testFormatHeaderLocal =
+  testFormatManual
+    [ospPathSep|testFormatHeaderLocal|]
+    [ospPathSep|header_local.txt|]
 
 testFormatManual :: OsPath -> OsPath -> TestTree
 testFormatManual = testFormatManualWindow $ Window {height = 41, width = 174}
@@ -256,7 +274,7 @@ testFormatManualWindow :: Window Int -> OsPath -> OsPath -> TestTree
 testFormatManualWindow window goldenName inputName = goldenDiffCustom desc goldenFP actualFP $ do
   eResult <- runner $ do
     style <- Monitor.mkFormatStyleFn Nothing Nothing
-    Monitor.readFormattedStatus coloring searchInfix style inputPath
+    Monitor.readFormattedStatus coloring localPackages searchInfix style inputPath
 
   case eResult of
     Left err -> writeActualFile $ "Received error: " <> sToBs (show err)
@@ -295,6 +313,7 @@ exampleStatus =
   MkBuildStatus
     { toBuild = Set.fromList allPkgsL,
       building = Set.fromList (take 12 allPkgsL),
+      buildingLocal = mempty,
       completed = Set.fromList (take 5 allPkgsL)
     }
   where
@@ -425,6 +444,9 @@ runTestEff =
 
 coloring :: Coloring
 coloring = MkColoring False
+
+localPackages :: LocalPackages
+localPackages = MkLocalPackages True
 
 searchInfix :: SearchInfix
 searchInfix = MkSearchInfix True

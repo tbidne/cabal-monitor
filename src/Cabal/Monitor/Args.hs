@@ -4,6 +4,7 @@
 module Cabal.Monitor.Args
   ( Args (..),
     Coloring (..),
+    LocalPackages (..),
     SearchInfix (..),
     getArgs,
   )
@@ -53,6 +54,7 @@ data Args = MkArgs
     coloring :: Maybe Coloring,
     filePath :: OsPath,
     height :: Maybe Natural,
+    localPackages :: Maybe LocalPackages,
     period :: Maybe Natural,
     searchInfix :: Maybe SearchInfix,
     width :: Maybe Natural
@@ -60,6 +62,9 @@ data Args = MkArgs
   deriving stock (Eq, Show)
 
 newtype Coloring = MkColoring {unColoring :: Bool}
+  deriving stock (Eq, Show)
+
+newtype LocalPackages = MkLocalPackages {unLocalPackages :: Bool}
   deriving stock (Eq, Show)
 
 newtype SearchInfix = MkSearchInfix {unSearchInfix :: Bool}
@@ -123,7 +128,7 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(cabalPid, filePath, period, searchInfix) <- coreOptsParser
+      ~(cabalPid, filePath, localPackages, period, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
@@ -132,6 +137,7 @@ argsParser = mainParser <**> OA.helper <**> version
             coloring,
             filePath,
             height,
+            localPackages,
             period,
             searchInfix,
             width
@@ -140,9 +146,10 @@ argsParser = mainParser <**> OA.helper <**> version
     coreOptsParser =
       OA.parserOptionGroup
         "Core options:"
-        $ (,,,)
+        $ (,,,,)
           <$> cabalPidParser
           <*> filePathParser
+          <*> localPackagesParser
           <*> periodParser
           <*> searchInfixParser
 
@@ -190,7 +197,7 @@ cabalPidParser =
         mkHelp $
           mconcat
             [ "The pid of the cabal-process. Use to exit automatically ",
-              "after cabal has finished."
+              "after cabal has finished. This is unavailable on windows."
             ]
       ]
 
@@ -209,7 +216,29 @@ coloringParser =
       OA.str >>= \case
         "on" -> pure $ MkColoring True
         "off" -> pure $ MkColoring False
-        bad -> fail $ "Unexpected --coloring: " ++ bad
+        bad -> fail $ "Unexpected --color: " ++ bad
+
+localPackagesParser :: Parser (Maybe LocalPackages)
+localPackagesParser =
+  OA.optional $
+    OA.option readColoring $
+      mconcat
+        [ OA.long "local-packages",
+          OA.metavar "(on | off)",
+          OA.completeWith ["on", "off"],
+          mkHelp $
+            mconcat
+              [ "Local packages require special handling in order to detect ",
+                "completion. This flag turns this handling on, at a significant ",
+                "performance cost. Defaults to 'on'."
+              ]
+        ]
+  where
+    readColoring =
+      OA.str >>= \case
+        "on" -> pure $ MkLocalPackages True
+        "off" -> pure $ MkLocalPackages False
+        bad -> fail $ "Unexpected --local-packages: " ++ bad
 
 periodParser :: Parser (Maybe Natural)
 periodParser =

@@ -15,6 +15,7 @@ where
 import Cabal.Monitor.Args
   ( Args (cabalPid, coloring, filePath, height, period, width),
     Coloring (MkColoring, unColoring),
+    LocalPackages (MkLocalPackages),
     SearchInfix (MkSearchInfix),
   )
 import Cabal.Monitor.Args qualified as Args
@@ -136,10 +137,11 @@ monitorBuild rType args = withHiddenInput $ do
     runStatus = do
       styleFn <- mkFormatStyleFn args.height args.width
       Logger.withRegion @rType Linear $ \r -> forever $ do
-        readPrintStatus r coloring searchInfix styleFn args.filePath
+        readPrintStatus r coloring localPackages searchInfix styleFn args.filePath
         CCS.sleep sleepSeconds
 
     coloring = fromMaybe (MkColoring True) args.coloring
+    localPackages = fromMaybe (MkLocalPackages True) args.localPackages
     searchInfix = fromMaybe (MkSearchInfix False) args.searchInfix
 
 type SharedState s = SState.State s
@@ -155,6 +157,8 @@ readPrintStatus ::
   r ->
   -- | Color.
   Coloring ->
+  -- | Local packages.
+  LocalPackages ->
   -- | Search infix.
   SearchInfix ->
   -- | Style function.
@@ -162,8 +166,8 @@ readPrintStatus ::
   -- | Path to file to monitor.
   OsPath ->
   Eff es ()
-readPrintStatus region coloring searchInfix styleFn path = do
-  readFormattedStatus coloring searchInfix styleFn path >>= \case
+readPrintStatus region coloring localPackages searchInfix styleFn path = do
+  readFormattedStatus coloring localPackages searchInfix styleFn path >>= \case
     Left (PathDoesNotExist p) ->
       Logger.logRegion
         LogModeSet
@@ -184,13 +188,15 @@ readFormattedStatus ::
   ) =>
   -- | Color.
   Coloring ->
+  -- | Local packages.
+  LocalPackages ->
   -- | Search infix.
   SearchInfix ->
   -- | Style function.
   (BuildStatusInit -> FormatStyle) ->
   OsPath ->
   Eff es (Either ReadStatusError Text)
-readFormattedStatus coloring searchInfix styleFn path = do
+readFormattedStatus coloring localPackages searchInfix styleFn path = do
   readStatus parseStatus path >>= \case
     Left err -> pure $ Left err
     Right statusInit -> do
@@ -205,10 +211,7 @@ readFormattedStatus coloring searchInfix styleFn path = do
 
       pure $ Right $ Status.formatStatusFinal coloring style statusFinal
   where
-    parseStatus =
-      if searchInfix.unSearchInfix
-        then Status.parseStatusInfix
-        else Status.parseStatus
+    parseStatus = Status.parseStatus localPackages searchInfix
 
 newtype ReadStatusError = PathDoesNotExist OsPath
   deriving stock (Eq, Generic, Show)

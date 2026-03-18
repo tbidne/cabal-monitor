@@ -5,7 +5,11 @@ module Main (main) where
 
 import Cabal.Monitor (BuildState (Building))
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Args (Coloring (MkColoring), SearchInfix (MkSearchInfix))
+import Cabal.Monitor.Args
+  ( Coloring (MkColoring),
+    LocalPackages (MkLocalPackages),
+    SearchInfix (MkSearchInfix),
+  )
 import Cabal.Monitor.BuildStatus
   ( BuildStatusInit,
     FormatStyle (FormatInlTrunc, FormatNl),
@@ -39,7 +43,9 @@ main = do
 
   defaultMain
     [ env (pure sampleBS) benchParseStatus,
-      env (pure sampleBSInfix) benchParseStatusInfix,
+      env (pure localBS) benchParseStatusLocal,
+      env (pure sampleInfixBS) benchParseStatusInfix,
+      env (pure localInfixBS) benchParseStatusLocalInfix,
       env (pure sampleStatus) benchFormatStatus,
       env (pure sampleStatus) benchFormatStatusCompact,
       benchReadFormatted defaultSyleFn samplePath,
@@ -48,11 +54,19 @@ main = do
 
 benchParseStatus :: ByteString -> Benchmark
 benchParseStatus txtLines =
-  bench "parseStatus" $ nf Status.parseStatus txtLines
+  bench "parseStatus" $ nf (Status.parseStatus localPackages searchInfix) txtLines
+
+benchParseStatusLocal :: ByteString -> Benchmark
+benchParseStatusLocal txtLines =
+  bench "parseStatusLocal" $ nf (Status.parseStatus (MkLocalPackages True) searchInfix) txtLines
 
 benchParseStatusInfix :: ByteString -> Benchmark
 benchParseStatusInfix txtLines =
-  bench "parseStatusInfix" $ nf Status.parseStatusInfix txtLines
+  bench "parseStatusInfix" $ nf (Status.parseStatus localPackages (MkSearchInfix True)) txtLines
+
+benchParseStatusLocalInfix :: ByteString -> Benchmark
+benchParseStatusLocalInfix txtLines =
+  bench "parseStatusLocalInfix" $ nf (Status.parseStatus (MkLocalPackages True) (MkSearchInfix True)) txtLines
 
 benchFormatStatus :: BuildStatusInit -> Benchmark
 benchFormatStatus status =
@@ -65,14 +79,14 @@ benchFormatStatusCompact status =
 benchReadFormatted :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
 benchReadFormatted styleFn path =
   bench "readFormattedStatus" $
-    nfIO (runBenchEff . Monitor.readFormattedStatus coloring searchInfix styleFn $ path)
+    nfIO (runBenchEff . Monitor.readFormattedStatus coloring localPackages searchInfix styleFn $ path)
 
 benchReadFormattedCompact :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
 benchReadFormattedCompact styleFn path =
   bench "readFormattedStatus_compact" $
     nfIO
       ( runBenchEff
-          . Monitor.readFormattedStatus coloring searchInfix styleFn
+          . Monitor.readFormattedStatus coloring localPackages searchInfix styleFn
           $ path
       )
 
@@ -87,6 +101,9 @@ compactStyle = FormatInlTrunc termHeight termWidth
 
 coloring :: Coloring
 coloring = MkColoring False
+
+localPackages :: LocalPackages
+localPackages = MkLocalPackages False
 
 searchInfix :: SearchInfix
 searchInfix = MkSearchInfix False
@@ -103,8 +120,8 @@ samplePath = [ospPathSep|./bench/sample.txt|]
 sampleBS :: ByteString
 sampleBS = $$TH.readSampleTH
 
-sampleBSInfix :: ByteString
-sampleBSInfix =
+sampleInfixBS :: ByteString
+sampleInfixBS =
   C8.unlines
     . fmap (pfx <>)
     . C8.lines
@@ -112,8 +129,14 @@ sampleBSInfix =
   where
     pfx = "   Some prefix   "
 
+localBS :: ByteString
+localBS = $$TH.readLocalPackagesTH
+
+localInfixBS :: ByteString
+localInfixBS = $$TH.readLocalPackagesInfixTH
+
 sampleStatus :: BuildStatusInit
-sampleStatus = Status.parseStatus sampleBS
+sampleStatus = Status.parseStatus localPackages searchInfix sampleBS
 
 runBenchEff ::
   (HasCallStack) =>

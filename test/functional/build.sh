@@ -12,6 +12,7 @@ out=$1
 sleep 1
 
 echo "Resolving dependencies..." > $out
+echo "In order, the following will be built" >> $out
 
 sleep 1
 

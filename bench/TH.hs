@@ -2,6 +2,8 @@
 
 module TH
   ( readSampleTH,
+    readLocalPackagesTH,
+    readLocalPackagesInfixTH,
   )
 where
 
@@ -16,6 +18,14 @@ import Language.Haskell.TH.Syntax (Lift (liftTyped))
 readSampleTH :: Code Q ByteString
 readSampleTH =
   liftIOToTH $ IO.readBinaryFileIO [ospPathSep|./bench/sample.txt|]
+
+readLocalPackagesTH :: Code Q ByteString
+readLocalPackagesTH =
+  liftIOToTH $ IO.readBinaryFileIO [ospPathSep|./test/functional/local.txt|]
+
+readLocalPackagesInfixTH :: Code Q ByteString
+readLocalPackagesInfixTH =
+  liftIOToTH $ IO.readBinaryFileIO [ospPathSep|./test/functional/header_local.txt|]
 
 -- | Binds an IO action to TH.
 bindIOToTH :: (HasCallStack, Lift b) => ((HasCallStack) => a -> IO b) -> a -> Code Q b

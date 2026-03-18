@@ -1,4 +1,8 @@
 [2026-02-09 10:53:55][Command][exe] # Copy of example_large_building_1.txt, except with line headers.
+[2026-02-09 10:53:55][Command][exe] Starting...
+[2026-02-09 10:53:55][Command][exe] Configuration is affected by the following files:
+[2026-02-09 10:53:55][Command][exe] - cabal.project
+[2026-02-09 10:53:55][Command][exe] - cabal.project.local
 [2026-02-09 10:53:55][Command][exe] Resolving dependencies...
 [2026-02-09 10:53:55][Command][exe] Build profile: -w ghc-9.12.2 -O0
 [2026-02-09 10:53:55][Command][exe] In order, the following will be built (use -v for more details):

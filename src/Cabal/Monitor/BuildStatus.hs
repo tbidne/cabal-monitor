@@ -11,7 +11,6 @@ module Cabal.Monitor.BuildStatus
 
     -- * Construction
     parseStatus,
-    parseStatusInfix,
 
     -- * Elimination
     FormatStyle (..),
@@ -23,20 +22,25 @@ module Cabal.Monitor.BuildStatus
   )
 where
 
-import Cabal.Monitor.Args (Coloring (unColoring))
+import Cabal.Monitor.Args
+  ( Coloring (unColoring),
+    LocalPackages (unLocalPackages),
+    SearchInfix (unSearchInfix),
+  )
 import Cabal.Monitor.Pretty qualified as Pretty
 import Control.Applicative (asum)
 import Control.DeepSeq (NFData)
+import Control.Monad (guard)
+import Data.Bifunctor (bimap, first)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Char8 qualified as C8
 import Data.ByteString.Lazy qualified as BSL
-import Data.Foldable qualified as F
 import Data.Kind (Type)
 import Data.List qualified as L
-import Data.Maybe (fromMaybe)
+import Data.Maybe (isJust)
 import Data.Set (Set, (\\))
 import Data.Set qualified as Set
 import Data.String (IsString)
@@ -72,6 +76,9 @@ data BuildStatus p = MkBuildStatus
     -- also completed. In the 'BuildStatusPhaseFinal' phase, this is only the
     -- packages currently building.
     building :: Set Package,
+    -- | Local packages that are being built. These require special care for
+    -- detecting completion.
+    buildingLocal :: Set Package,
     -- | Packages that have completed building. Same for both phases.
     completed :: Set Package
   }
@@ -79,91 +86,184 @@ data BuildStatus p = MkBuildStatus
   deriving anyclass (NFData)
 
 instance Semigroup (BuildStatus p) where
-  MkBuildStatus x1 x2 x3 <> MkBuildStatus y1 y2 y3 =
-    MkBuildStatus (x1 <> y1) (x2 <> y2) (x3 <> y3)
+  MkBuildStatus x1 x2 x3 x4 <> MkBuildStatus y1 y2 y3 y4 =
+    MkBuildStatus (x1 <> y1) (x2 <> y2) (x3 <> y3) (x4 <> y4)
 
 instance Monoid (BuildStatus p) where
-  mempty = MkBuildStatus mempty mempty mempty
+  mempty = MkBuildStatus mempty mempty mempty mempty
 
 type BuildStatusInit = BuildStatus BuildStatusPhaseInit
 
 type BuildStatusFinal = BuildStatus BuildStatusPhaseFinal
 
 -- | Parses a status.
-parseStatus :: ByteString -> BuildStatusInit
-parseStatus = parseStatus' searches
+parseStatus ::
+  -- | Whether to apply special local packages handling.
+  LocalPackages ->
+  -- | Whether to search for infix patterns.
+  SearchInfix ->
+  -- | ByteString to parse.
+  ByteString ->
+  BuildStatusInit
+parseStatus localPackages searchInfix = go mempty . C8.lines
   where
-    searches bs =
-      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
-        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc buildingPrefix bs,
-        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc completedPrefix bs
+    stripFn =
+      if searchInfix.unSearchInfix
+        then stripInfix'
+        else BS.stripPrefix
+
+    go acc [] = acc
+    go acc (l : ls) = case parseContextFreeLine acc l of
+      Just acc' -> go (acc' <> acc) ls
+      Nothing ->
+        if isInit l
+          then
+            let (acc', rest) = parseInit mempty ls
+             in go (acc' <> acc) rest
+          else go acc ls
+
+    isInit = isJust . stripFn "In order, the following will be built"
+
+    parseInit acc [] = (acc, [])
+    parseInit acc (l : ls) = case stripFn " - " l of
+      Nothing -> (acc, l : ls)
+      Just r1 ->
+        let acc' = acc <> mkPkg (BS.takeWhile (/= spaceChr) r1)
+         in parseInit acc' ls
+
+    parseContextFreeLine acc bs = asum $ ($ bs) <$> contextFreeLineParsers acc
+
+    contextFreeLineParsers acc =
+      if localPackages.unLocalPackages
+        then coreParsers ++ localPackageParsers acc
+        else coreParsers
+
+    coreParsers =
+      [ parseStarting,
+        parseCompleted
       ]
 
--- | Like 'parseStatus', except does an additional pass that searches for
--- infix patterns, if the prefix patterns are not found. This is more
--- flexible but significantly slower.
-parseStatusInfix :: ByteString -> BuildStatusInit
-parseStatusInfix = parseStatus' searches
-  where
-    searches bs =
-      [ mkInit BS.stripPrefix mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
-        mkInit BS.stripPrefix mkBuilding takeSkipLeadingSpc buildingPrefix bs,
-        mkInit BS.stripPrefix mkCompleted takeSkipLeadingSpc completedPrefix bs,
-        mkInit stripInfix' mkPkg (BS.takeWhile (/= spaceChr)) initPrefix bs,
-        mkInit stripInfix' mkBuilding takeSkipLeadingSpc buildingPrefix bs,
-        mkInit stripInfix' mkCompleted takeSkipLeadingSpc completedPrefix bs
+    localPackageParsers acc =
+      [ parseLocalLib,
+        parseLocalTestSuite,
+        parseLocalExecutable,
+        parseLocalCompleted acc
       ]
 
-    stripInfix' bs1 = fmap snd . stripInfix bs1
+    parseStarting bs = do
+      r1 <- stripFn "Starting " bs
+      let r2 = takeSkipLeadingSpc r1
+      pure $ mkBuilding r2
 
--- Require at least one leading and trailing whitespace in prefixes.
--- See NOTE: [Prefix whitespace].
-initPrefix :: ByteString
-initPrefix = " - "
+    parseCompleted bs = do
+      r1 <- stripFn "Completed " bs
+      let r2 = takeSkipLeadingSpc r1
+      pure $ mkCompleted r2
 
--- "Starting" rather than "Building" as the former includes other steps
--- we care about e.g. downloading, configuring.
-buildingPrefix :: ByteString
-buildingPrefix = "Starting "
+    parseLocalLib bs = do
+      r1 <- stripFn "Building library for " bs
+      mkBuildingLocal <$> takeUntilEq "..." r1
 
-completedPrefix :: ByteString
-completedPrefix = "Completed "
+    parseLocalTestSuite bs = do
+      r1 <- stripFn "Building test suite '" bs
+      let r2 = BS.dropWhile (/= squoteW8) r1
+      r3 <- BS.stripPrefix "' for " r2
+      mkBuildingLocal <$> takeUntilEq "..." r3
 
-parseStatus' :: (ByteString -> [Maybe BuildStatusInit]) -> ByteString -> BuildStatusInit
-parseStatus' searches = F.foldMap' go . C8.lines
+    parseLocalExecutable bs = do
+      r1 <- stripFn "Building executable '" bs
+      let r2 = BS.dropWhile (/= squoteW8) r1
+      r3 <- BS.stripPrefix "' for " r2
+      mkBuildingLocal <$> takeUntilEq "..." r3
+
+    -- NOTE: [Local packages]
+    --
+    -- Local packages have a different completion check. Rather than the
+    -- simple "Completed <pkg" log, they instead don't have anything.
+    -- Instead, the final log that mentions the package name looks like:
+    --
+    --   [148 of 148] Compiling Distribution.Simple ( src/Distribution/Simple.hs, /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/Cabal-3.17.0.0/build/Distribution/Simple.o, /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/Cabal-3.17.0.0/build/Distribution/Simple.dyn_o )
+    --
+    -- So we can infer that the package has completed successfully when we
+    -- detect [M of N] and M == N. To find the package name, we scan all
+    -- known "local packages" until we have an infix match in the rest of the
+    -- string.
+    --
+    -- The complexity here is pretty terrible! For each line that matches
+    -- [N of N], we have O(n) for number of local packages, then O(k + p)
+    -- where k is the length of the bytestring and p is the length of the
+    -- package name.
+    --
+    -- This is pretty bad, but we don't have another way that also works
+    -- with --semaphore (logs can be out of order).
+    --
+    -- We _could_ make all of this optional. E.g. provide a flag
+    -- --local-packages that, if off, ignores all local packages.
+    parseLocalCompleted acc bs = do
+      -- Minor optimization, don't even try parsing completed if we do not
+      -- have any local packages.
+      if Set.null acc.buildingLocal
+        then Nothing
+        else do
+          r1 <- parseModuleLog bs
+
+          -- if any local packages match this, then that should be completed.
+          mkCompleted <$> asum (Set.map (pInPath r1) acc.buildingLocal)
+      where
+        pInPath r p =
+          let p' = p.unPackage
+           in if p' `BS.isInfixOf` r
+                then Just p'
+                else Nothing
+
+    parseModuleLog bs = do
+      (pre, post) <- breaksEqStrip " of " bs
+      let d1 = BS.takeWhileEnd isDigit pre
+      let d2 = BS.takeWhile isDigit post
+      guard (d1 == d2)
+      pure post
+
+stripInfix' :: ByteString -> ByteString -> Maybe ByteString
+stripInfix' bs1 = fmap snd . stripInfix bs1
+
+takeUntilEq :: ByteString -> ByteString -> Maybe ByteString
+takeUntilEq n bs = BS.pack <$> go n' bs'
   where
-    go txt = fromMaybe mempty $ asum (searches txt)
+    go :: [Word8] -> [Word8] -> Maybe [Word8]
+    go [] rs = Just rs
+    go (_ : _) [] = Nothing
+    go wss@(w : ws) (r : rs) =
+      if w == r && ws `L.isPrefixOf` rs
+        then Just []
+        else (r :) <$> go wss rs
 
-mkInit ::
-  -- Search function
-  (ByteString -> ByteString -> Maybe ByteString) ->
-  -- BuildStatusInit constructor.
-  (ByteString -> BuildStatusInit) ->
-  -- Bytestring parse fn.
-  (ByteString -> ByteString) ->
-  -- Bytestring prefix to match.
-  ByteString ->
-  ByteString ->
-  Maybe BuildStatusInit
-mkInit searchFn cons parseFn pfx txt = cons . parseFn <$> searchFn pfx txt
+    n' = BS.unpack n
+    bs' = BS.unpack bs
+
+breaksEqStrip :: ByteString -> ByteString -> Maybe (ByteString, ByteString)
+breaksEqStrip n bs = bimap BS.pack BS.pack <$> go n' bs'
+  where
+    go :: [Word8] -> [Word8] -> Maybe ([Word8], [Word8])
+    go [] rs = Just (rs, [])
+    go (_ : _) [] = Nothing
+    go wss@(_ : _) rss@(r : rs) =
+      case wss `L.stripPrefix` rss of
+        Just rest -> Just ([], rest)
+        Nothing -> first (r :) <$> go wss rs
+
+    n' = BS.unpack n
+    bs' = BS.unpack bs
+
+isDigit :: Word8 -> Bool
+isDigit w = w >= 48 && w <= 57
+
+-- Single quote: '
+squoteW8 :: Word8
+squoteW8 = 39
 
 spaceChr :: Word8
 spaceChr = 32
 
--- NOTE: [Prefix whitespace]
---
--- If this doesn't take _some_ whitespace, then there can be false
--- positives when the text Completed appears e.g.
---
---     # Lines below this manually added to bump up 'Completed' category
---
--- parsed as bytestring ', as it thought the trailing squote was the a
--- package name.
---
--- More false positives:
---   - Initial 'Starting...'.
---   - Configuration is affected by ...:
---     - cabal.project
 takeSkipLeadingSpc :: ByteString -> ByteString
 takeSkipLeadingSpc = BS.takeWhile (/= spaceChr) . BS.dropWhile (== spaceChr)
 
@@ -172,6 +272,7 @@ mkPkg lib =
   MkBuildStatus
     { toBuild = Set.singleton $ MkPackage lib,
       building = mempty,
+      buildingLocal = mempty,
       completed = mempty
     }
 
@@ -180,6 +281,16 @@ mkBuilding lib =
   MkBuildStatus
     { toBuild = mempty,
       building = Set.singleton $ MkPackage lib,
+      buildingLocal = mempty,
+      completed = mempty
+    }
+
+mkBuildingLocal :: ByteString -> BuildStatusInit
+mkBuildingLocal lib =
+  MkBuildStatus
+    { toBuild = mempty,
+      building = mempty,
+      buildingLocal = Set.singleton $ MkPackage lib,
       completed = mempty
     }
 
@@ -188,6 +299,7 @@ mkCompleted lib =
   MkBuildStatus
     { toBuild = mempty,
       building = mempty,
+      buildingLocal = mempty,
       completed = Set.singleton $ MkPackage lib
     }
 
@@ -210,14 +322,17 @@ advancePhase status =
   MkBuildStatus
     { toBuild,
       building,
+      buildingLocal = mempty,
       completed = status.completed
     }
   where
     toBuild =
       status.toBuild
-        \\ (status.building `Set.union` status.completed)
+        \\ (building' `Set.union` status.completed)
 
-    building = status.building \\ status.completed
+    building' = status.building `Set.union` status.buildingLocal
+
+    building = building' \\ status.completed
 
 -- | Advances and formats the status.
 formatStatusInit :: Coloring -> FormatStyle -> BuildStatusInit -> Text
