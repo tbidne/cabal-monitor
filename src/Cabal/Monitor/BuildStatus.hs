@@ -78,6 +78,12 @@ data BuildStatus p = MkBuildStatus
     building :: Set Package,
     -- | Local packages that are being built. These require special care for
     -- detecting completion.
+    --
+    -- During the 'BuildStatusPhaseInit' phase, this is like 'building' i.e.
+    -- all local packages that have started building, including completions.
+    --
+    -- In the 'BuildStatusPhaseFinal' phase, this is empty, as we do not need
+    -- the local distinction when rendering the status.
     buildingLocal :: Set Package,
     -- | Packages that have completed building. Same for both phases.
     completed :: Set Package
@@ -180,9 +186,15 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
     --
     -- Local packages have a different completion check. Rather than the
     -- simple "Completed <pkg" log, they instead don't have anything.
-    -- Instead, the final log that mentions the package name looks like:
+    -- The final log that mentions the package name looks like (one line):
     --
-    --   [148 of 148] Compiling Distribution.Simple ( src/Distribution/Simple.hs, /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/Cabal-3.17.0.0/build/Distribution/Simple.o, /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/Cabal-3.17.0.0/build/Distribution/Simple.dyn_o )
+    --   [148 of 148] Compiling Distribution.Simple
+    --     ( src/Distribution/Simple.hs,
+    --       /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/
+    --         Cabal-3.17.0.0/build/Distribution/Simple.o,
+    --       /home/cabal/dist-newstyle/build/x86_64-linux/ghc-9.12.2/
+    --         Cabal-3.17.0.0/build/Distribution/Simple.dyn_o
+    --     )
     --
     -- So we can infer that the package has completed successfully when we
     -- detect [M of N] and M == N. To find the package name, we scan all
@@ -196,9 +208,6 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
     --
     -- This is pretty bad, but we don't have another way that also works
     -- with --semaphore (logs can be out of order).
-    --
-    -- We _could_ make all of this optional. E.g. provide a flag
-    -- --local-packages that, if off, ignores all local packages.
     parseLocalCompleted acc bs = do
       -- Minor optimization, don't even try parsing completed if we do not
       -- have any local packages.
@@ -223,7 +232,7 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
       guard (d1 == d2)
       pure post
 
--- |
+-- | 'stripInfix' that throws away the prefix.
 --
 -- >>> stripInfix' "foo" "barfoobaz"
 -- Just "baz"
