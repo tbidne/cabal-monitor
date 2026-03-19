@@ -10,6 +10,7 @@ import Cabal.Monitor.Args
   )
 import Cabal.Monitor.BuildStatus
   ( BuildStatus (MkBuildStatus, building, completed, toBuild),
+    BuildStatusFinal,
     BuildStatusInit,
     FormatStyle
       ( FormatInl,
@@ -296,7 +297,7 @@ testFormatManualWindow window goldenName inputName = goldenDiffCustom desc golde
 
     runner =
       runEff
-        . SState.evalState (Monitor.BuildWaiting mempty, False)
+        . SState.evalState (Monitor.BuildWaiting, mempty :: BuildStatusFinal, False)
         . PR.runPathReader
         . FR.runFileReader
         . runTerminalMock @Int (Just window)

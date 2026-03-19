@@ -94,6 +94,9 @@ runMonitor rType = do
   args <- Args.getArgs
   monitorBuild rType args
 
+-- (State, Status, StateChanged)
+type MonitorState = (BuildState, BuildStatusFinal, Bool)
+
 -- | Monitors a build.
 monitorBuild ::
   forall r ->
@@ -115,7 +118,7 @@ monitorBuild rType args = withHiddenInput $ do
     Logger.withRegion @rType Linear $ \statusRegion -> do
       styleFn <- mkFormatStyleFn args.height args.width
 
-      SState.evalState (BuildWaiting mempty, False) $ do
+      SState.evalState @MonitorState (BuildWaiting, mempty, False) $ do
         let coreProcs =
               runStatus statusRegion styleFn
                 `race'` logCounter rType coloring
@@ -129,15 +132,14 @@ monitorBuild rType args = withHiddenInput $ do
 
         allProcs `Ex.finally` do
           -- Need the final print here to handle CTRL-C.
-          (finalState, _) <- SState.get @(BuildState, Bool)
+          (_, finalStatus, _) <- SState.get @MonitorState
           -- TODO: This has been manually tested, but it would be nice to have
           -- the test suite verify that the final log is there in all situations
           -- i.e.
           --
           -- - cabal-monitor exits due to --cabal-pid finishing.
           -- - cabal-monitor manually interrupted (e.g. CTRL-C).
-          let finalStatus = BuildState.stateToStatus finalState
-              finalLog = Status.formatStatusFinal coloring (styleFn finalStatus) finalStatus
+          let finalLog = Status.formatStatusFinal coloring (styleFn finalStatus) finalStatus
           Logger.logRegion LogModeFinish statusRegion finalLog
 
   -- If we get there then monitorCabalProc must have finished since none of
@@ -164,7 +166,7 @@ readPrintStatus ::
   ( FileReader :> es,
     HasCallStack,
     PathReader :> es,
-    SharedState (BuildState, Bool) :> es,
+    SharedState MonitorState :> es,
     RegionLogger r :> es
   ) =>
   r ->
@@ -197,7 +199,7 @@ readFormattedStatus ::
   ( FileReader :> es,
     HasCallStack,
     PathReader :> es,
-    SharedState (BuildState, Bool) :> es
+    SharedState MonitorState :> es
   ) =>
   -- | Color.
   Coloring ->
@@ -218,8 +220,10 @@ readFormattedStatus coloring localPackages searchInfix styleFn path = do
 
       -- Update build state.
       SState.modify
-        ( \(prevState, _) ->
-            BuildState.mkNewBuildState prevState statusFinal
+        ( \(prevState, _, _) ->
+            let (newState, stateChanged) =
+                  BuildState.mkNewBuildState prevState statusFinal
+             in (newState, statusFinal, stateChanged)
         )
 
       pure $ Right $ Status.formatStatusFinal coloring style statusFinal
@@ -251,7 +255,7 @@ logCounter ::
   forall es void.
   ( Concurrent :> es,
     HasCallStack,
-    SharedState (BuildState, Bool) :> es,
+    SharedState MonitorState :> es,
     RegionLogger r :> es
   ) =>
   Coloring ->
@@ -265,10 +269,10 @@ logCounter rType coloring = do
           CC.threadDelay 1_000_000
 
           -- In general, we reset the timer when the state has changed.
-          (buildState, stateChanged) <- SState.get @(BuildState, Bool)
+          (buildState, _, stateChanged) <- SState.get @MonitorState
 
           case buildState of
-            Building _ -> do
+            Building -> do
               when stateChanged (State.put @Natural 0)
 
               State.modify @Natural (\(!x) -> x + 1)
@@ -277,13 +281,13 @@ logCounter rType coloring = do
                 LogModeSet
                 r
                 (fmtBuilding elapsed)
-            BuildComplete _ -> do
+            BuildComplete -> do
               elapsed <- State.get
               Logger.logRegion
                 LogModeSet
                 r
                 (fmtCompleted elapsed)
-            BuildWaiting _ -> do
+            BuildWaiting -> do
               when stateChanged (State.put @Natural 0)
 
               State.modify @Natural (\(!x) -> x + 1)
