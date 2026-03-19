@@ -150,9 +150,7 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
       ]
 
     localPackageParsers acc =
-      [ parseLocalLib,
-        parseLocalTestSuite,
-        parseLocalExecutable,
+      [ parseLocal,
         parseLocalCompleted acc
       ]
 
@@ -166,21 +164,20 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
       let r2 = takeSkipLeadingSpc r1
       pure $ mkCompleted r2
 
-    parseLocalLib bs = do
-      r1 <- stripFn "Building library for " bs
-      mkBuildingLocal <$> takeUntilEq "..." r1
+    parseLocal bs = do
+      r1 <- stripFn "Building " bs
+      r2 <-
+        asum
+          [ BS.stripPrefix "library for " r1,
+            parseLocalNamed "test suite '" r1,
+            parseLocalNamed "executable '" r1
+          ]
+      mkBuildingLocal <$> takeUntilEq "..." r2
 
-    parseLocalTestSuite bs = do
-      r1 <- stripFn "Building test suite '" bs
+    parseLocalNamed name bs = do
+      r1 <- BS.stripPrefix name bs
       let r2 = BS.dropWhile (/= squoteW8) r1
-      r3 <- BS.stripPrefix "' for " r2
-      mkBuildingLocal <$> takeUntilEq "..." r3
-
-    parseLocalExecutable bs = do
-      r1 <- stripFn "Building executable '" bs
-      let r2 = BS.dropWhile (/= squoteW8) r1
-      r3 <- BS.stripPrefix "' for " r2
-      mkBuildingLocal <$> takeUntilEq "..." r3
+      BS.stripPrefix "' for " r2
 
     -- NOTE: [Local packages]
     --
