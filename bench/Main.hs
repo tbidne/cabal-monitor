@@ -11,8 +11,8 @@ import Cabal.Monitor.Args
     SearchInfix (MkSearchInfix),
   )
 import Cabal.Monitor.BuildStatus
-  ( BuildStatusInit,
-    BuildStatusFinal,
+  ( BuildStatusFinal,
+    BuildStatusInit,
     FormatStyle (FormatInlTrunc, FormatNl),
   )
 import Cabal.Monitor.BuildStatus qualified as Status
@@ -31,6 +31,7 @@ import TH qualified
 import Test.Tasty.Bench
   ( Benchmark,
     bench,
+    bgroup,
     defaultMain,
     env,
     nf,
@@ -42,16 +43,29 @@ main = do
   defaultSyleFn <- mkStyleFn Nothing Nothing
   compactSyleFn <- mkStyleFn (Just termHeight) (Just termWidth)
 
-  defaultMain
-    [ env (pure sampleBS) benchParseStatus,
-      env (pure localBS) benchParseStatusLocal,
-      env (pure sampleInfixBS) benchParseStatusInfix,
-      env (pure localInfixBS) benchParseStatusLocalInfix,
-      env (pure sampleStatus) benchFormatStatus,
-      env (pure sampleStatus) benchFormatStatusCompact,
-      benchReadFormatted defaultSyleFn samplePath,
-      benchReadFormattedCompact compactSyleFn samplePath
-    ]
+  defaultMain $
+    benchParsers
+      ++ [ env (pure sampleStatus) benchFormatStatus,
+           env (pure sampleStatus) benchFormatStatusCompact,
+           benchReadFormatted defaultSyleFn samplePath,
+           benchReadFormattedCompact compactSyleFn samplePath
+         ]
+
+benchParsers :: [Benchmark]
+benchParsers =
+  [ bgroup "simple" (bsParsers sampleBS),
+    bgroup "local" (bsParsers localBS),
+    bgroup "infix" (bsParsers sampleInfixBS),
+    bgroup "local_infix" (bsParsers localInfixBS)
+  ]
+
+bsParsers :: ByteString -> [Benchmark]
+bsParsers bs =
+  [ env (pure bs) benchParseStatus,
+    env (pure bs) benchParseStatusLocal,
+    env (pure bs) benchParseStatusInfix,
+    env (pure bs) benchParseStatusLocalInfix
+  ]
 
 benchParseStatus :: ByteString -> Benchmark
 benchParseStatus txtLines =
