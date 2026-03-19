@@ -105,6 +105,21 @@ executable cabal-monitor
   hs-source-dirs: app
   ghc-options:    -threaded -with-rtsopts=-N
 
+test-suite unit
+  import:         common-lang
+  type:           exitcode-stdio-1.0
+  main-is:        Main.hs
+  build-depends:
+    , base
+    , cabal-monitor
+    , containers
+    , fs-utils
+    , hedgehog        >=1.0.2   && <1.8
+    , tasty           >=1.1.0.3 && <1.6
+    , tasty-hedgehog  >=1.2.0.0 && <1.5
+
+  hs-source-dirs: test/unit
+
 test-suite functional
   import:         common-lang
   type:           exitcode-stdio-1.0
@@ -120,7 +135,7 @@ test-suite functional
     , fs-effectful
     , fs-utils
     , optparse-effectful
-    , tasty               >=1.1.0.3   && <1.6
+    , tasty
     , tasty-golden        ^>=2.3.1.1
     , terminal-effectful
     , text

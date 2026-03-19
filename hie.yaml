@@ -6,8 +6,14 @@ cradle:
     - path: "./app/Main.hs"
       component: "cabal-monitor:exe:cabal-monitor"
 
+    - path: "./test/unit"
+      component: "cabal-monitor:test:unit"
+
     - path: "./test/functional"
       component: "cabal-monitor:test:functional"
 
     - path: "./bench/Main.hs"
+      component: "cabal-monitor:bench:benchmarks"
+
+    - path: "./bench/TH.hs"
       component: "cabal-monitor:bench:benchmarks"

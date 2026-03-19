@@ -47,6 +47,9 @@ jobs:
           echo "*** Running doctest ***"
           cabal doctest lib:cabal-monitor
 
+      - name: Unit tests
+        run: cabal test unit --test-options '--hedgehog-tests 100000'
+
       - name: Functional tests
         if: ${{ matrix.os != 'windows-latest' }}
         run: cabal test functional
