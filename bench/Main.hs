@@ -12,6 +12,7 @@ import Cabal.Monitor.Args
   )
 import Cabal.Monitor.BuildStatus
   ( BuildStatusInit,
+    BuildStatusFinal,
     FormatStyle (FormatInlTrunc, FormatNl),
   )
 import Cabal.Monitor.BuildStatus qualified as Status
@@ -76,12 +77,12 @@ benchFormatStatusCompact :: BuildStatusInit -> Benchmark
 benchFormatStatusCompact status =
   bench "formatStatus_compact" $ nf (Status.formatStatusInit coloring compactStyle) status
 
-benchReadFormatted :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
+benchReadFormatted :: (BuildStatusFinal -> FormatStyle) -> OsPath -> Benchmark
 benchReadFormatted styleFn path =
   bench "readFormattedStatus" $
     nfIO (runBenchEff . Monitor.readFormattedStatus coloring localPackages searchInfix styleFn $ path)
 
-benchReadFormattedCompact :: (BuildStatusInit -> FormatStyle) -> OsPath -> Benchmark
+benchReadFormattedCompact :: (BuildStatusFinal -> FormatStyle) -> OsPath -> Benchmark
 benchReadFormattedCompact styleFn path =
   bench "readFormattedStatus_compact" $
     nfIO
@@ -90,7 +91,7 @@ benchReadFormattedCompact styleFn path =
           $ path
       )
 
-mkStyleFn :: Maybe Natural -> Maybe Natural -> IO (BuildStatusInit -> FormatStyle)
+mkStyleFn :: Maybe Natural -> Maybe Natural -> IO (BuildStatusFinal -> FormatStyle)
 mkStyleFn mHeight mWidth =
   runEff
     . Term.runTerminal
@@ -153,7 +154,7 @@ runBenchEff ::
 runBenchEff m = runner
   where
     runner = runEff $ runConcurrent $ do
-      SState.evalState (Building, False)
+      SState.evalState (Building mempty, False)
         . Term.runTerminal
         . PR.runPathReader
         . FR.runFileReader

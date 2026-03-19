@@ -296,7 +296,7 @@ testFormatManualWindow window goldenName inputName = goldenDiffCustom desc golde
 
     runner =
       runEff
-        . SState.evalState (Monitor.BuildWaiting, False)
+        . SState.evalState (Monitor.BuildWaiting mempty, False)
         . PR.runPathReader
         . FR.runFileReader
         . runTerminalMock @Int (Just window)

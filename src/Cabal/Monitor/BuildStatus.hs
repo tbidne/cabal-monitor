@@ -536,8 +536,15 @@ int2Nat :: Int -> Natural
 int2Nat = fromIntegral
 
 -- | Returns the size of all packages we want to build.
-numAllPkgs :: BuildStatusInit -> Int
-numAllPkgs status = Set.size status.toBuild
+numAllPkgs :: BuildStatusFinal -> Int
+numAllPkgs status =
+  Set.size $
+    Set.unions
+      [ status.toBuild,
+        status.building,
+        status.buildingLocal,
+        status.completed
+      ]
 
 -- | @stripInfix needle haystack@ returns @Just (pre, post)@ iff
 -- @haystack === pre needle post@. Otherwise returns @Nothing@.

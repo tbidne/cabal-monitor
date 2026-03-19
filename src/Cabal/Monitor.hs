@@ -28,11 +28,12 @@ import Cabal.Monitor.BuildState
   )
 import Cabal.Monitor.BuildState qualified as BuildState
 import Cabal.Monitor.BuildStatus
-  ( BuildStatusInit,
+  ( BuildStatusFinal,
+    BuildStatusInit,
     FormatStyle (FormatInl, FormatInlTrunc, FormatNl, FormatNlTrunc),
   )
 import Cabal.Monitor.BuildStatus qualified as Status
-import Cabal.Monitor.Logger (LogMode (LogModeSet), RegionLogger)
+import Cabal.Monitor.Logger (LogMode (LogModeFinish, LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
 import Cabal.Monitor.Process (MonitorProcessC)
@@ -111,34 +112,46 @@ monitorBuild ::
   Eff es ()
 monitorBuild rType args = withHiddenInput $ do
   cabalPid <- Logger.displayRegions rType $ do
-    SState.evalState (BuildWaiting, False) $ do
-      let coreProcs =
-            runStatus
-              `race'` logCounter rType coloring
-              `race'` drainStdinLoop
+    Logger.withRegion @rType Linear $ \statusRegion -> do
+      styleFn <- mkFormatStyleFn args.height args.width
 
-          allProcs = case args.cabalPid of
-            Nothing -> coreProcs
-            Just pid ->
-              coreProcs
-                `race'` Process.monitorCabalProc pid sleepSeconds
+      SState.evalState (BuildWaiting mempty, False) $ do
+        let coreProcs =
+              runStatus statusRegion styleFn
+                `race'` logCounter rType coloring
+                `race'` drainStdinLoop
 
-      allProcs
+            allProcs = case args.cabalPid of
+              Nothing -> coreProcs
+              Just pid ->
+                coreProcs
+                  `race'` Process.monitorCabalProc pid sleepSeconds
+
+        allProcs `Ex.finally` do
+          -- Need the final print here to handle CTRL-C.
+          (finalState, _) <- SState.get @(BuildState, Bool)
+          -- TODO: This has been manually tested, but it would be nice to have
+          -- the test suite verify that the final log is there in all situations
+          -- i.e.
+          --
+          -- - cabal-monitor exits due to --cabal-pid finishing.
+          -- - cabal-monitor manually interrupted (e.g. CTRL-C).
+          let finalStatus = BuildState.stateToStatus finalState
+              finalLog = Status.formatStatusFinal coloring (styleFn finalStatus) finalStatus
+          Logger.logRegion LogModeFinish statusRegion finalLog
 
   -- If we get there then monitorCabalProc must have finished since none of
   -- the other threads terminate.
   Term.putTextLn $
-    "Process with pid "
+    "\nProcess with pid "
       <> T.pack (show cabalPid)
       <> " is no longer running, terminating cabal-monitor."
   where
     sleepSeconds = fromMaybe 5 args.period
 
-    runStatus = do
-      styleFn <- mkFormatStyleFn args.height args.width
-      Logger.withRegion @rType Linear $ \r -> forever $ do
-        readPrintStatus r coloring localPackages searchInfix styleFn args.filePath
-        CCS.sleep sleepSeconds
+    runStatus r styleFn = forever $ do
+      readPrintStatus r coloring localPackages searchInfix styleFn args.filePath
+      CCS.sleep sleepSeconds
 
     coloring = fromMaybe (MkColoring True) args.coloring
     localPackages = fromMaybe (MkLocalPackages True) args.localPackages
@@ -162,7 +175,7 @@ readPrintStatus ::
   -- | Search infix.
   SearchInfix ->
   -- | Style function.
-  (BuildStatusInit -> FormatStyle) ->
+  (BuildStatusFinal -> FormatStyle) ->
   -- | Path to file to monitor.
   OsPath ->
   Eff es ()
@@ -193,7 +206,7 @@ readFormattedStatus ::
   -- | Search infix.
   SearchInfix ->
   -- | Style function.
-  (BuildStatusInit -> FormatStyle) ->
+  (BuildStatusFinal -> FormatStyle) ->
   OsPath ->
   Eff es (Either ReadStatusError Text)
 readFormattedStatus coloring localPackages searchInfix styleFn path = do
@@ -201,7 +214,7 @@ readFormattedStatus coloring localPackages searchInfix styleFn path = do
     Left err -> pure $ Left err
     Right statusInit -> do
       let statusFinal = Status.advancePhase statusInit
-          style = styleFn statusInit
+          style = styleFn statusFinal
 
       -- Update build state.
       SState.modify
@@ -255,7 +268,7 @@ logCounter rType coloring = do
           (buildState, stateChanged) <- SState.get @(BuildState, Bool)
 
           case buildState of
-            Building -> do
+            Building _ -> do
               when stateChanged (State.put @Natural 0)
 
               State.modify @Natural (\(!x) -> x + 1)
@@ -264,13 +277,13 @@ logCounter rType coloring = do
                 LogModeSet
                 r
                 (fmtBuilding elapsed)
-            BuildComplete -> do
+            BuildComplete _ -> do
               elapsed <- State.get
               Logger.logRegion
                 LogModeSet
                 r
                 (fmtCompleted elapsed)
-            BuildWaiting -> do
+            BuildWaiting _ -> do
               when stateChanged (State.put @Natural 0)
 
               State.modify @Natural (\(!x) -> x + 1)
@@ -309,7 +322,7 @@ mkFormatStyleFn ::
   -- | Function from init to style. This is dynamic in case nothing is
   -- requested and we use heuristics to decide how to best fit the
   -- status, based on its size.
-  Eff es (BuildStatusInit -> FormatStyle)
+  Eff es (BuildStatusFinal -> FormatStyle)
 mkFormatStyleFn mHeight mWidth = do
   case (mHeight, mWidth) of
     (Just height, Just width) -> pure $ const $ FormatInlTrunc height width
@@ -319,7 +332,7 @@ mkFormatStyleFn mHeight mWidth = do
       eResult <- Ex.trySync Term.getTerminalSize
       pure $ case eResult of
         Left _ -> const FormatNl
-        Right sz -> \statusInit ->
+        Right sz -> \statusFinal ->
           -- availPkgLines is used to tell the formatter how much vertical
           -- space it can use before truncating. This value is the
           -- terminal_height - 4, because we have 4 sections:
@@ -334,7 +347,7 @@ mkFormatStyleFn mHeight mWidth = do
           -- to prevent the terminal from jumping to a newline, which can
           -- happen when all space is used up.
           let availPkgLines = sz.height `monus` 4
-              neededLines = int2Nat $ Status.numAllPkgs statusInit
+              neededLines = int2Nat $ Status.numAllPkgs statusFinal
            in if neededLines < availPkgLines
                 -- 2.2. Normal, non-compact format fits in the vertical space;
                 --      use it.
