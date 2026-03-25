@@ -416,18 +416,21 @@ formatAll coloring style toBuildS buildingS completedS = final
           numAs = fromIntegral $ length as
           numCs = fromIntegral $ length cs
 
+          -- Ensures we always have the header and package list, at least.
+          twoOrMore = max 2
+
           (as', cs') =
             if
               -- 1. num_as < hEach: Take all as, use the rest for cs.
               | numAs < hEach ->
                   let (hLeft, as_r) = takeCount hRemaining as
-                   in (as_r, takeTrunc hLeft cs)
+                   in (as_r, takeTrunc (twoOrMore hLeft) cs)
               -- 2. num_cs < hEach: Take all cs, use the rest for as.
               | numCs < hEach ->
                   let (hLeft, cs_r) = takeCount hRemaining cs
-                   in (takeTrunc hLeft as, cs_r)
+                   in (takeTrunc (twoOrMore hLeft) as, cs_r)
               -- 3. Neither fits completely. Divide evenly.
-              | otherwise -> (takeTrunc hEach as, takeTrunc hEach cs)
+              | otherwise -> (takeTrunc (twoOrMore hEach) as, takeTrunc (twoOrMore hEach) cs)
        in concatNewlines as' bs' cs'
 
     -- NOTE: We do the coloring here since the "safe" way to color functions,

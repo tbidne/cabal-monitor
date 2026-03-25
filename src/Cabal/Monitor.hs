@@ -339,18 +339,17 @@ mkFormatStyleFn mHeight mWidth = do
         Right sz -> \statusFinal ->
           -- availPkgLines is used to tell the formatter how much vertical
           -- space it can use before truncating. This value is the
-          -- terminal_height - 4, because we have 4 sections:
+          -- terminal_height - 8, because we have 4 sections:
           --
           --   (To Build, Building, Completed, Timer)
           --
-          -- And each section has a trailing newline. Each section also
-          -- has a header, but the formatter includes that in its
-          -- calculations, so we do not need to take it into account here.
+          -- And each section has a trailing newline + header.
           --
           -- Finally, we subtract 1 from availPkgLines (same as the width),
           -- to prevent the terminal from jumping to a newline, which can
           -- happen when all space is used up.
-          let availPkgLines = sz.height `monus` 4
+          let buffer = 4 * 2
+              availPkgLines = sz.height `monus` buffer
               neededLines = int2Nat $ Status.numAllPkgs statusFinal
            in if neededLines < availPkgLines
                 -- 2.2. Normal, non-compact format fits in the vertical space;
@@ -358,7 +357,7 @@ mkFormatStyleFn mHeight mWidth = do
                 then FormatNl
                 -- 2.3. Does not fit in vertical space. Use compact, with length
                 --      determined by terminal size.
-                else FormatInlTrunc (availPkgLines - 1) (sz.width - 1)
+                else FormatInlTrunc availPkgLines (sz.width - 1)
 
 -- | Subtraction, clamped to zero.
 --

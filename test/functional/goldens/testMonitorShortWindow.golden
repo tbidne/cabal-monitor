@@ -5,8 +5,7 @@ Building: 0
 Completed: 0
 --------------------------------------------------------------------------------
 To Build: 8
-  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1
-  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6
+  ...
 
 Building: 0
 
@@ -52,5 +51,4 @@ To Build: 0
 Building: 0
 
 Completed: 8
-  - aeson-0.7, bits-0.6, byteable-0.1.1, indexed-profunctors-0.1.1.1, lens-1
-  - mtl-compat-0.2.2, profunctors-2, string-qq-0.0.6
+  ...

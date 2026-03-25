@@ -1,0 +1,24 @@
+In order, the following will be built (use -v for more details):
+ - Boolean-0.2.4 (lib:Boolean) (requires download & build)
+ - Sit-0.2023.8.3
+ - Spintax-0.3.7.0
+ - Spock-api-0.14.0.0
+ - TCache-0.13.3
+ - generated-0.1.0.0
+ - reroute-0.7.0.0
+ - PSQueue-1.2.2
+ - PyF-0.11.5.0
+ - QuasiText-0.1.2.6
+ - Ranged-sets-0.5.0
+ - RoundingFiasco-0.1.0.0
+ - SafeSemaphore-0.10.1
+ - SciBaseTypes-0.1.1.0
+ - ShellCheck-0.11.0
+Starting     PSQueue-1.2.2
+Starting     PyF-0.11.5.0
+Starting     QuasiText-0.1.2.6
+Starting     Ranged-sets-0.5.0
+Starting     RoundingFiasco-0.1.0.0
+Starting     SafeSemaphore-0.10.1
+Starting     SciBaseTypes-0.1.1.0
+Starting     ShellCheck-0.11.0
