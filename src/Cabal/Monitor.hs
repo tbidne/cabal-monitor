@@ -12,13 +12,6 @@ module Cabal.Monitor
   )
 where
 
-import Cabal.Monitor.Args
-  ( Args (coloring, filePath, height, period, pid, width),
-    Coloring (MkColoring, unColoring),
-    LocalPackages (MkLocalPackages),
-    SearchInfix (MkSearchInfix),
-  )
-import Cabal.Monitor.Args qualified as Args
 import Cabal.Monitor.BuildState
   ( BuildState
       ( BuildComplete,
@@ -33,6 +26,16 @@ import Cabal.Monitor.BuildStatus
     FormatStyle (FormatInl, FormatInlTrunc, FormatNl, FormatNlTrunc),
   )
 import Cabal.Monitor.BuildStatus qualified as Status
+import Cabal.Monitor.Config
+  ( Coloring (unColoring),
+    Config (coloring, filePath, height, period, pid, width),
+    Height (MkHeight),
+    LocalPackages,
+    Period (MkPeriod),
+    SearchInfix,
+    Width (MkWidth),
+  )
+import Cabal.Monitor.Config qualified as Config
 import Cabal.Monitor.Logger (LogMode (LogModeFinish, LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
@@ -43,7 +46,6 @@ import Control.Exception.Utils (trySync)
 import Control.Monad (forever, void, when)
 import Data.ByteString (ByteString)
 import Data.Functor ((<&>))
-import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Time.Relative qualified as Rel
@@ -60,8 +62,8 @@ import Effectful.FileSystem.HandleReader.Static (HandleReader)
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static (HandleWriter)
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
-import Effectful.FileSystem.PathReader.Static (PathReader)
-import Effectful.FileSystem.PathReader.Static qualified as PR
+import Effectful.FileSystem.PathReader.Dynamic (PathReader)
+import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.Optparse.Static (Optparse)
 import Effectful.State.Static.Local qualified as State
 import Effectful.State.Static.Shared qualified as SState
@@ -91,8 +93,8 @@ runMonitor ::
   ) =>
   Eff es ()
 runMonitor rType = do
-  args <- Args.getArgs
-  monitorBuild rType args
+  config <- Config.getConfig
+  monitorBuild rType config
 
 -- (State, Status, StateChanged)
 type MonitorState = (BuildState, BuildStatusFinal, Bool)
@@ -111,7 +113,7 @@ monitorBuild ::
     RegionLogger r :> es,
     Terminal :> es
   ) =>
-  Args ->
+  Config ->
   Eff es ()
 monitorBuild rType args = withHiddenInput $ do
   cabalPid <- Logger.displayRegions rType $ do
@@ -149,15 +151,15 @@ monitorBuild rType args = withHiddenInput $ do
       <> T.pack (show cabalPid)
       <> " is no longer running, terminating cabal-monitor."
   where
-    sleepSeconds = fromMaybe 5 args.period
+    sleepSeconds@(MkPeriod sleepSeconds') = args.period
 
     runStatus r styleFn = forever $ do
       readPrintStatus r coloring localPackages searchInfix styleFn args.filePath
-      CCS.sleep sleepSeconds
+      CCS.sleep sleepSeconds'
 
-    coloring = fromMaybe (MkColoring True) args.coloring
-    localPackages = fromMaybe (MkLocalPackages True) args.localPackages
-    searchInfix = fromMaybe (MkSearchInfix False) args.searchInfix
+    coloring = args.coloring
+    localPackages = args.localPackages
+    searchInfix = args.searchInfix
 
 type SharedState s = SState.State s
 
@@ -320,9 +322,9 @@ mkFormatStyleFn ::
     Terminal :> es
   ) =>
   -- | Maybe terminal height
-  Maybe Natural ->
+  Maybe Height ->
   -- | Maybe terminal width
-  Maybe Natural ->
+  Maybe Width ->
   -- | Function from init to style. This is dynamic in case nothing is
   -- requested and we use heuristics to decide how to best fit the
   -- status, based on its size.
@@ -357,7 +359,7 @@ mkFormatStyleFn mHeight mWidth = do
                 then FormatNl
                 -- 2.3. Does not fit in vertical space. Use compact, with length
                 --      determined by terminal size.
-                else FormatInlTrunc availPkgLines (sz.width - 1)
+                else FormatInlTrunc (MkHeight availPkgLines) (MkWidth $ sz.width - 1)
 
 -- | Subtraction, clamped to zero.
 --

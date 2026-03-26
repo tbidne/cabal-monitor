@@ -8,7 +8,7 @@ import Effectful.Concurrent qualified as CC
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
-import Effectful.FileSystem.PathReader.Static qualified as PR
+import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.Optparse.Static qualified as EOA
 import Effectful.Terminal.Dynamic qualified as Term
 import System.Console.Regions (ConsoleRegion)

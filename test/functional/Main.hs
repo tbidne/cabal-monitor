@@ -3,11 +3,6 @@
 module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Args
-  ( Coloring (MkColoring),
-    LocalPackages (MkLocalPackages),
-    SearchInfix (MkSearchInfix),
-  )
 import Cabal.Monitor.BuildStatus
   ( BuildStatus (MkBuildStatus, building, completed, toBuild),
     BuildStatusFinal,
@@ -20,6 +15,11 @@ import Cabal.Monitor.BuildStatus
       ),
   )
 import Cabal.Monitor.BuildStatus qualified as BuildStatus
+import Cabal.Monitor.Config
+  ( Coloring (MkColoring),
+    LocalPackages (MkLocalPackages),
+    SearchInfix (MkSearchInfix),
+  )
 import Cabal.Monitor.Logger
   ( RegionLogger
       ( DisplayRegions,
@@ -41,15 +41,21 @@ import Data.Text qualified as T
 import Effectful (Eff, IOE, MonadIO (liftIO), runEff, type (:>))
 import Effectful.Concurrent qualified as ECC
 import Effectful.Concurrent.Async qualified as EAsync
-import Effectful.Dispatch.Dynamic (interpret, interpret_, localSeqUnlift)
+import Effectful.Dispatch.Dynamic
+  ( interpret,
+    interpret_,
+    localSeqUnlift,
+    passthrough,
+    reinterpret,
+  )
 import Effectful.Dynamic.Utils (ShowEffect (showEffectCons))
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.FileWriter.Static qualified as FW
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
-import Effectful.FileSystem.PathReader.Static (PathReader)
-import Effectful.FileSystem.PathReader.Static qualified as PR
-import Effectful.FileSystem.PathWriter.Static qualified as PW
+import Effectful.FileSystem.PathReader.Dynamic (PathReader)
+import Effectful.FileSystem.PathReader.Dynamic qualified as PR
+import Effectful.FileSystem.PathWriter.Dynamic qualified as PW
 import Effectful.Optparse.Static qualified as EOA
 import Effectful.Process (Process)
 import Effectful.Process qualified as EProcess
@@ -306,7 +312,7 @@ testFormatManualWindow window goldenName inputName = goldenDiffCustom desc golde
     runner =
       runEff
         . SState.evalState (Monitor.BuildWaiting, mempty :: BuildStatusFinal, False)
-        . PR.runPathReader
+        . runPathReader
         . FR.runFileReader
         . runTerminalMock @Int (Just window)
 
@@ -359,7 +365,7 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
         . Process.runMonitorProcessC
         . runTerminalMock mWindow
         . runRegionLoggerMock ref
-        . PR.runPathReader
+        . runPathReader
         . HW.runHandleWriter
         . HR.runHandleReader
         . FR.runFileReader
@@ -449,7 +455,7 @@ runTestEff ::
 runTestEff =
   runEff
     . PW.runPathWriter
-    . PR.runPathReader
+    . runPathReader
 
 coloring :: Coloring
 coloring = MkColoring False
@@ -485,3 +491,13 @@ sToBs = C8.pack
 
 tToBs :: Text -> ByteString
 tToBs = UTF8.encodeUtf8
+
+runPathReader :: (IOE :> es) => Eff (PathReader : es) a -> Eff es a
+runPathReader = reinterpret PR.runPathReader $ \env -> \case
+  PR.DoesFileExist p -> do
+    let pStr = decodeLenient p
+    if "xdg" `L.isInfixOf` pStr
+      then pure False
+      else PR.doesFileExist p
+  PR.GetXdgDirectory _ _ -> pure [osp|xdg|]
+  other -> passthrough env other

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedLists #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-module Cabal.Monitor.Args.TH
+module Cabal.Monitor.Config.Args.TH
   ( gitData,
   )
 where

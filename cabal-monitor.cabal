@@ -20,6 +20,7 @@ extra-source-files:
   test/functional/*.txt
   test/functional/build.sh
   test/functional/goldens/*.golden
+  test/unit/config.toml
 
 extra-doc-files:    CHANGELOG.md
 
@@ -55,10 +56,13 @@ library
   autogen-modules: Paths_cabal_monitor
   exposed-modules:
     Cabal.Monitor
-    Cabal.Monitor.Args
-    Cabal.Monitor.Args.TH
     Cabal.Monitor.BuildState
     Cabal.Monitor.BuildStatus
+    Cabal.Monitor.Config
+    Cabal.Monitor.Config.Args
+    Cabal.Monitor.Config.Args.TH
+    Cabal.Monitor.Config.Data
+    Cabal.Monitor.Config.Toml
     Cabal.Monitor.Logger
     Cabal.Monitor.Pretty
     Cabal.Monitor.Process
@@ -84,6 +88,7 @@ library
     , terminal-effectful    ^>=0.1
     , text                  >=1.2.3.2  && <2.2
     , time                  >=1.9.3    && <1.16
+    , toml-reader           >=0.2.0.0  && <0.4
 
   if !os(windows)
     build-depends: unix-effectful ^>=0.1
@@ -113,10 +118,14 @@ test-suite unit
     , base
     , cabal-monitor
     , containers
+    , effectful
+    , fs-effectful
     , fs-utils
-    , hedgehog        >=1.0.2   && <1.8
-    , tasty           >=1.1.0.3 && <1.6
-    , tasty-hedgehog  >=1.2.0.0 && <1.5
+    , hedgehog            >=1.0.2   && <1.8
+    , optparse-effectful
+    , tasty               >=1.1.0.3 && <1.6
+    , tasty-hedgehog      >=1.2.0.0 && <1.5
+    , tasty-hunit         >=0.9     && <0.11
 
   hs-source-dirs: test/unit
 

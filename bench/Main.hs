@@ -5,28 +5,32 @@ module Main (main) where
 
 import Cabal.Monitor (BuildState (Building))
 import Cabal.Monitor qualified as Monitor
-import Cabal.Monitor.Args
-  ( Coloring (MkColoring),
-    LocalPackages (MkLocalPackages),
-    SearchInfix (MkSearchInfix),
-  )
 import Cabal.Monitor.BuildStatus
   ( BuildStatusFinal,
     BuildStatusInit,
     FormatStyle (FormatInlTrunc, FormatNl),
   )
 import Cabal.Monitor.BuildStatus qualified as Status
+import Cabal.Monitor.Config
+  ( Coloring (MkColoring),
+    Height,
+    LocalPackages (MkLocalPackages),
+    SearchInfix (MkSearchInfix),
+    Width,
+  )
 import Data.ByteString (ByteString)
 import Data.ByteString.Char8 qualified as C8
-import Effectful (Eff, IOE, runEff)
+import Data.List qualified as L
+import Effectful (Eff, IOE, runEff, (:>))
 import Effectful.Concurrent (Concurrent, runConcurrent)
+import Effectful.Dispatch.Dynamic (passthrough, reinterpret)
 import Effectful.FileSystem.FileReader.Static qualified as FR
-import Effectful.FileSystem.PathReader.Static qualified as PR
+import Effectful.FileSystem.PathReader.Dynamic (PathReader)
+import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.State.Static.Shared qualified as SState
 import Effectful.Terminal.Dynamic qualified as Term
-import FileSystem.OsPath (OsPath, ospPathSep)
+import FileSystem.OsPath (OsPath, decodeLenient, osp, ospPathSep)
 import GHC.Stack (HasCallStack)
-import Numeric.Natural (Natural)
 import TH qualified
 import Test.Tasty.Bench
   ( Benchmark,
@@ -105,7 +109,7 @@ benchReadFormattedCompact styleFn path =
           $ path
       )
 
-mkStyleFn :: Maybe Natural -> Maybe Natural -> IO (BuildStatusFinal -> FormatStyle)
+mkStyleFn :: Maybe Height -> Maybe Width -> IO (BuildStatusFinal -> FormatStyle)
 mkStyleFn mHeight mWidth =
   runEff
     . Term.runTerminal
@@ -123,10 +127,10 @@ localPackages = MkLocalPackages False
 searchInfix :: SearchInfix
 searchInfix = MkSearchInfix False
 
-termHeight :: Natural
+termHeight :: Height
 termHeight = 25
 
-termWidth :: Natural
+termWidth :: Width
 termWidth = 80
 
 samplePath :: OsPath
@@ -170,6 +174,16 @@ runBenchEff m = runner
     runner = runEff $ runConcurrent $ do
       SState.evalState (Building, mempty :: BuildStatusFinal, False)
         . Term.runTerminal
-        . PR.runPathReader
+        . runPathReader
         . FR.runFileReader
         $ m
+
+runPathReader :: (IOE :> es) => Eff (PathReader : es) a -> Eff es a
+runPathReader = reinterpret PR.runPathReader $ \env' -> \case
+  PR.DoesFileExist p -> do
+    let pStr = decodeLenient p
+    if "xdg" `L.isInfixOf` pStr
+      then pure False
+      else PR.doesFileExist p
+  PR.GetXdgDirectory _ _ -> pure [osp|xdg|]
+  other -> passthrough env' other

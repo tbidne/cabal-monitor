@@ -16,6 +16,7 @@ import Effectful.Dispatch.Dynamic (HasCallStack)
 import GHC.Natural (Natural)
 
 #if !WINDOWS
+import Cabal.Monitor.Config (Period (MkPeriod), Pid (MkPid))
 import Control.Monad (unless)
 import Data.Bits (toIntegralSized)
 import Data.Functor ((<&>))
@@ -24,6 +25,8 @@ import Effectful.Concurrent.Static qualified as CCS
 import Effectful.Posix.Signals.Static (PosixSignals)
 import Effectful.Posix.Signals.Static qualified as Signals
 import System.Posix.Types (ProcessID)
+#else
+import Cabal.Monitor.Config (Period, Pid)
 #endif
 
 -- | Compat alias for windows/posix-specific required constraints.
@@ -36,9 +39,9 @@ monitorCabalProc ::
     MonitorProcessC es
   ) =>
   -- | pid.
-  Natural ->
+  Pid ->
   -- | Sleep seconds.
-  Natural ->
+  Period ->
   Eff es Natural
 #if WINDOWS
 monitorCabalProc _ _ =
@@ -52,7 +55,7 @@ runMonitorProcessC = id
 
 #else
 
-monitorCabalProc pid sleepSeconds = do
+monitorCabalProc (MkPid pid) (MkPeriod sleepSeconds) = do
   processId <- case toIntegralSized @Natural @ProcessID pid of
     Nothing ->
       Ex.throwString $ "Failed converting pid " ++ show pid

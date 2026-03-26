@@ -22,10 +22,12 @@ module Cabal.Monitor.BuildStatus
   )
 where
 
-import Cabal.Monitor.Args
+import Cabal.Monitor.Config
   ( Coloring (unColoring),
+    Height (unHeight),
     LocalPackages (unLocalPackages),
     SearchInfix (unSearchInfix),
+    Width (unWidth),
   )
 import Cabal.Monitor.Pretty qualified as Pretty
 import Control.Applicative (asum)
@@ -341,13 +343,13 @@ data FormatStyle
     FormatNl
   | -- | Format each package on a newline, truncating lines exceeding the
     -- given height.
-    FormatNlTrunc Natural
+    FormatNlTrunc Height
   | -- | Format packages inline, creating a newline once we exceed the
     -- given width.
-    FormatInl Natural
+    FormatInl Width
   | -- | Given height and width, formats inline (width) and truncates
     -- (height).
-    FormatInlTrunc Natural Natural
+    FormatInlTrunc Height Width
 
 -- | Advances the phase.
 advancePhase :: BuildStatusInit -> BuildStatusFinal
@@ -408,7 +410,7 @@ formatAll coloring style toBuildS buildingS completedS = final
 
     concatTruncate height as bs cs =
       let -- Take all building that we can, get remaining height.
-          (hRemaining, bs') = takeCount height bs
+          (hRemaining, bs') = takeCount height.unHeight bs
 
           -- Calculate heights. hEach is the max amount each remaining
           -- section gets if both are too large.
@@ -470,7 +472,7 @@ formatNewlines = L.reverse . foldl' go []
   where
     go acc p = prependNewline (BSB.byteString p.unPackage) : acc
 
-formatInline :: Natural -> [Package] -> [Builder]
+formatInline :: Width -> [Package] -> [Builder]
 formatInline width = L.reverse . fmap fst . foldl' go []
   where
     go :: [(Builder, Natural)] -> Package -> [(Builder, Natural)]
@@ -480,7 +482,7 @@ formatInline width = L.reverse . fmap fst . foldl' go []
     go ((currBuilder, currLen) : accs) p =
       let (newBuilder, newLen) = pkgToData p
           totalLen = newLen + currLen + newPkgIdent
-       in if totalLen + 1 > width
+       in if totalLen + 1 > width.unWidth
             then
               (prependNewline newBuilder, newLen + newlineIdent)
                 : (currBuilder, currLen)

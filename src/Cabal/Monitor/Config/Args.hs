@@ -1,16 +1,23 @@
 {-# LANGUAGE OverloadedLists #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Cabal.Monitor.Args
-  ( Args (..),
-    Coloring (..),
-    LocalPackages (..),
-    SearchInfix (..),
+module Cabal.Monitor.Config.Args
+  ( -- * Args
+    Args (..),
     getArgs,
   )
 where
 
-import Cabal.Monitor.Args.TH qualified as TH
+import Cabal.Monitor.Config.Args.TH qualified as TH
+import Cabal.Monitor.Config.Data
+  ( Coloring (MkColoring),
+    Height (MkHeight),
+    LocalPackages (MkLocalPackages),
+    Period (MkPeriod),
+    Pid (MkPid),
+    SearchInfix (MkSearchInfix),
+    Width (MkWidth),
+  )
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.String (IsString (fromString))
@@ -24,7 +31,6 @@ import FileSystem.OsPath (OsPath)
 import FileSystem.OsPath qualified as OsPath
 import FileSystem.OsString (OsString)
 import FileSystem.OsString qualified as OsString
-import Numeric.Natural (Natural)
 import Options.Applicative
   ( Mod,
     Parser,
@@ -51,23 +57,15 @@ import System.Info qualified as Info
 -- | CLI args.
 data Args = MkArgs
   { coloring :: Maybe Coloring,
+    configPath :: Maybe OsPath,
     filePath :: OsPath,
-    height :: Maybe Natural,
+    height :: Maybe Height,
     localPackages :: Maybe LocalPackages,
-    period :: Maybe Natural,
-    pid :: Maybe Natural,
+    period :: Maybe Period,
+    pid :: Maybe Pid,
     searchInfix :: Maybe SearchInfix,
-    width :: Maybe Natural
+    width :: Maybe Width
   }
-  deriving stock (Eq, Show)
-
-newtype Coloring = MkColoring {unColoring :: Bool}
-  deriving stock (Eq, Show)
-
-newtype LocalPackages = MkLocalPackages {unLocalPackages :: Bool}
-  deriving stock (Eq, Show)
-
-newtype SearchInfix = MkSearchInfix {unSearchInfix :: Bool}
   deriving stock (Eq, Show)
 
 getArgs :: (HasCallStack, Optparse :> es) => Eff es Args
@@ -128,12 +126,13 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
+      ~(configPath, filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
         MkArgs
           { coloring,
+            configPath,
             filePath,
             height,
             localPackages,
@@ -146,8 +145,9 @@ argsParser = mainParser <**> OA.helper <**> version
     coreOptsParser =
       OA.parserOptionGroup
         "Core options:"
-        $ (,,,,)
-          <$> filePathParser
+        $ (,,,,,)
+          <$> configParser
+          <*> filePathParser
           <*> localPackagesParser
           <*> periodParser
           <*> pidParser
@@ -160,6 +160,25 @@ argsParser = mainParser <**> OA.helper <**> version
           <$> coloringParser
           <*> heightParser
           <*> widthParser
+
+configParser :: Parser (Maybe OsPath)
+configParser =
+  OA.optional
+    $ OA.option
+      readPath
+    $ mconcat
+      [ OA.short 'c',
+        OA.long "config",
+        OA.metavar "(PATH | off)",
+        OA.completer EOC.compgenCwdPathsCompleter,
+        mkHelp $
+          mconcat
+            [ "Path to TOML config file. If not given, we automatically look ",
+              "in XDG config e.g. ~/.config/cabal-monitor/config.toml"
+            ]
+      ]
+  where
+    readPath = OA.str >>= OsPath.encodeFail
 
 filePathParser :: Parser OsPath
 filePathParser =
@@ -175,22 +194,22 @@ filePathParser =
   where
     readPath = OA.str >>= OsPath.encodeFail
 
-heightParser :: Parser (Maybe Natural)
+heightParser :: Parser (Maybe Height)
 heightParser =
   OA.optional
     $ OA.option
-      OA.auto
+      (MkHeight <$> OA.auto)
     $ mconcat
       [ OA.long "height",
         OA.metavar "NAT",
         mkHelp "Maximum number of lines to display."
       ]
 
-pidParser :: Parser (Maybe Natural)
+pidParser :: Parser (Maybe Pid)
 pidParser =
   OA.optional
     $ OA.option
-      OA.auto
+      (MkPid <$> OA.auto)
     $ mconcat
       [ OA.long "pid",
         OA.metavar "NAT",
@@ -241,11 +260,11 @@ localPackagesParser =
         "off" -> pure $ MkLocalPackages False
         bad -> fail $ "Unexpected --local-packages: " ++ bad
 
-periodParser :: Parser (Maybe Natural)
+periodParser :: Parser (Maybe Period)
 periodParser =
   OA.optional
     $ OA.option
-      OA.auto
+      (MkPeriod <$> OA.auto)
     $ mconcat
       [ OA.short 'p',
         OA.long "period",
@@ -278,11 +297,11 @@ searchInfixParser =
           "with a timestamp. Defaults to 'off'."
         ]
 
-widthParser :: Parser (Maybe Natural)
+widthParser :: Parser (Maybe Width)
 widthParser =
   OA.optional
     $ OA.option
-      OA.auto
+      (MkWidth <$> OA.auto)
     $ mconcat
       [ OA.long "width",
         OA.metavar "NAT",

@@ -1,0 +1,9 @@
+[core]
+local-packages = 'off'
+period = 20
+search-infix = 'on'
+
+[formatting]
+color = 'off'
+height = 15
+width = 20
