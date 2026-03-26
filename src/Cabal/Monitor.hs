@@ -13,7 +13,7 @@ module Cabal.Monitor
 where
 
 import Cabal.Monitor.Args
-  ( Args (cabalPid, coloring, filePath, height, period, width),
+  ( Args (coloring, filePath, height, period, pid, width),
     Coloring (MkColoring, unColoring),
     LocalPackages (MkLocalPackages),
     SearchInfix (MkSearchInfix),
@@ -124,7 +124,7 @@ monitorBuild rType args = withHiddenInput $ do
                 `race'` logCounter rType coloring
                 `race'` drainStdinLoop
 
-            allProcs = case args.cabalPid of
+            allProcs = case args.pid of
               Nothing -> coreProcs
               Just pid ->
                 coreProcs

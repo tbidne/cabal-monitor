@@ -50,12 +50,12 @@ import System.Info qualified as Info
 
 -- | CLI args.
 data Args = MkArgs
-  { cabalPid :: Maybe Natural,
-    coloring :: Maybe Coloring,
+  { coloring :: Maybe Coloring,
     filePath :: OsPath,
     height :: Maybe Natural,
     localPackages :: Maybe LocalPackages,
     period :: Maybe Natural,
+    pid :: Maybe Natural,
     searchInfix :: Maybe SearchInfix,
     width :: Maybe Natural
   }
@@ -128,17 +128,17 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(cabalPid, filePath, localPackages, period, searchInfix) <- coreOptsParser
+      ~(filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
         MkArgs
-          { cabalPid,
-            coloring,
+          { coloring,
             filePath,
             height,
             localPackages,
             period,
+            pid,
             searchInfix,
             width
           }
@@ -147,10 +147,10 @@ argsParser = mainParser <**> OA.helper <**> version
       OA.parserOptionGroup
         "Core options:"
         $ (,,,,)
-          <$> cabalPidParser
-          <*> filePathParser
+          <$> filePathParser
           <*> localPackagesParser
           <*> periodParser
+          <*> pidParser
           <*> searchInfixParser
 
     formattingOptsParser =
@@ -186,18 +186,19 @@ heightParser =
         mkHelp "Maximum number of lines to display."
       ]
 
-cabalPidParser :: Parser (Maybe Natural)
-cabalPidParser =
+pidParser :: Parser (Maybe Natural)
+pidParser =
   OA.optional
     $ OA.option
       OA.auto
     $ mconcat
-      [ OA.long "cabal-pid",
+      [ OA.long "pid",
         OA.metavar "NAT",
         mkHelp $
           mconcat
-            [ "The pid of the cabal-process. Use to exit automatically ",
-              "after cabal has finished. This is unavailable on windows."
+            [ "The pid of the process to watch (usually cabal). Used to exit ",
+              "automatically after the process has finished. This is unavailable ",
+              "on windows."
             ]
       ]
 
