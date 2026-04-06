@@ -96,8 +96,8 @@ runMonitor rType = do
   config <- Config.getConfig
   monitorBuild rType config
 
--- (State, Status, StateChanged)
-type MonitorState = (BuildState, BuildStatusFinal, Bool)
+-- (State, Status)
+type MonitorState = (BuildState, BuildStatusFinal)
 
 -- | Monitors a build.
 monitorBuild ::
@@ -120,7 +120,7 @@ monitorBuild rType args = withHiddenInput $ do
     Logger.withRegion @rType Linear $ \statusRegion -> do
       styleFn <- mkFormatStyleFn args.height args.width
 
-      SState.evalState @MonitorState (BuildWaiting, mempty, False) $ do
+      SState.evalState @MonitorState (BuildWaiting, mempty) $ do
         let coreProcs =
               runStatus statusRegion styleFn
                 `race'` logCounter rType coloring
@@ -134,7 +134,7 @@ monitorBuild rType args = withHiddenInput $ do
 
         allProcs `Ex.finally` do
           -- Need the final print here to handle CTRL-C.
-          (_, finalStatus, _) <- SState.get @MonitorState
+          (_, finalStatus) <- SState.get @MonitorState
           -- TODO: This has been manually tested, but it would be nice to have
           -- the test suite verify that the final log is there in all situations
           -- i.e.
@@ -221,12 +221,8 @@ readFormattedStatus coloring localPackages searchInfix styleFn path = do
           style = styleFn statusFinal
 
       -- Update build state.
-      SState.modify
-        ( \(prevState, _, _) ->
-            let (newState, stateChanged) =
-                  BuildState.mkNewBuildState prevState statusFinal
-             in (newState, statusFinal, stateChanged)
-        )
+      let newState = BuildState.mkNewBuildState statusFinal
+      SState.put (newState, statusFinal)
 
       pure $ Right $ Status.formatStatusFinal coloring style statusFinal
   where
@@ -264,40 +260,51 @@ logCounter ::
   Eff es void
 logCounter rType coloring = do
   CC.threadDelay 100_000
-  Logger.withRegion @rType Linear $ \r ->
-    State.evalState @Natural 0 $
-      forever $
-        do
-          CC.threadDelay 1_000_000
+  Logger.withRegion @rType Linear $ \r -> do
+    (initState, _) <- SState.get @MonitorState
+    State.evalState @BuildState initState $
+      State.evalState @Natural 0 $
+        forever $
+          do
+            CC.threadDelay 1_000_000
 
-          -- In general, we reset the timer when the state has changed.
-          (buildState, _, stateChanged) <- SState.get @MonitorState
+            prevState <- State.get @BuildState
 
-          case buildState of
-            Building -> do
-              when stateChanged (State.put @Natural 0)
+            -- In general, we reset the timer when the state has changed.
+            (buildState, _) <- SState.get @MonitorState
 
-              State.modify @Natural (\(!x) -> x + 1)
-              elapsed <- State.get
-              Logger.logRegion
-                LogModeSet
-                r
-                (fmtBuilding elapsed)
-            BuildComplete -> do
-              elapsed <- State.get
-              Logger.logRegion
-                LogModeSet
-                r
-                (fmtCompleted elapsed)
-            BuildWaiting -> do
-              when stateChanged (State.put @Natural 0)
+            -- Determine if the state changed, save new state. By saving the
+            -- prev state here, we are no longer dependent on readStatus
+            -- to tell us if the state changed (readStatus does change the
+            -- actual state, however).
+            let stateChanged = prevState /= buildState
+            State.put @BuildState buildState
 
-              State.modify @Natural (\(!x) -> x + 1)
-              elapsed <- State.get
-              Logger.logRegion
-                LogModeSet
-                r
-                (fmtWaiting elapsed)
+            case buildState of
+              Building -> do
+                when stateChanged (State.put @Natural 0)
+
+                State.modify @Natural (\(!x) -> x + 1)
+                elapsed <- State.get
+                Logger.logRegion
+                  LogModeSet
+                  r
+                  (fmtBuilding elapsed)
+              BuildComplete -> do
+                elapsed <- State.get
+                Logger.logRegion
+                  LogModeSet
+                  r
+                  (fmtCompleted elapsed)
+              BuildWaiting -> do
+                when stateChanged (State.put @Natural 0)
+
+                State.modify @Natural (\(!x) -> x + 1)
+                elapsed <- State.get
+                Logger.logRegion
+                  LogModeSet
+                  r
+                  (fmtWaiting elapsed)
   where
     fmtWaiting = fmtX "Waiting to start: "
     fmtBuilding = fmtX "Building: "

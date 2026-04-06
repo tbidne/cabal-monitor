@@ -20,8 +20,8 @@ data BuildState
 
 -- | Derives the new state from the status, returns a boolean that is
 -- True iff the state changed.
-mkNewBuildState :: BuildState -> BuildStatusFinal -> (BuildState, Bool)
-mkNewBuildState prevState status = (newState, newState /= prevState)
+mkNewBuildState :: BuildStatusFinal -> BuildState
+mkNewBuildState status = newState
   where
     newState = mkBuildState status
 

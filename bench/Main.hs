@@ -163,7 +163,7 @@ runBenchEff ::
     [ FR.FileReader,
       PR.PathReader,
       Term.Terminal,
-      SState.State (BuildState, BuildStatusFinal, Bool),
+      SState.State (BuildState, BuildStatusFinal),
       Concurrent,
       IOE
     ]
@@ -172,7 +172,7 @@ runBenchEff ::
 runBenchEff m = runner
   where
     runner = runEff $ runConcurrent $ do
-      SState.evalState (Building, mempty :: BuildStatusFinal, False)
+      SState.evalState (Building, mempty :: BuildStatusFinal)
         . Term.runTerminal
         . runPathReader
         . FR.runFileReader
