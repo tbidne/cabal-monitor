@@ -266,8 +266,7 @@ periodParser =
     $ OA.option
       (MkPeriod <$> OA.auto)
     $ mconcat
-      [ OA.short 'p',
-        OA.long "period",
+      [ OA.long "period",
         OA.metavar "NAT",
         mkHelp "Monitor refresh period, in seconds."
       ]
