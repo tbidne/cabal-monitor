@@ -56,18 +56,28 @@ import System.Info qualified as Info
 
 -- | CLI args.
 data Args = MkArgs
-  { coloring :: Maybe Coloring,
+  { -- | Whether to color the logs.
+    coloring :: Maybe Coloring,
     configPath :: Maybe OsPath,
+    -- | Path to file to monitor.
     filePath :: OsPath,
+    -- | Possible terminal height.
     height :: Maybe Height,
+    -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: Maybe LocalPackages,
+    -- | How often to read the status, in seconds.
     period :: Maybe Period,
+    -- | Pid of the process we are monitoring, for exiting automatically.
     pid :: Maybe Pid,
+    -- | Whether to search logs for infix patterns, for more flexibility at
+    -- the cost of performance.
     searchInfix :: Maybe SearchInfix,
+    -- | Possible terminal width.
     width :: Maybe Width
   }
   deriving stock (Eq, Show)
 
+-- | Reads CLI args.
 getArgs :: (HasCallStack, Optparse :> es) => Eff es Args
 getArgs = EOA.execParser parserInfo
 

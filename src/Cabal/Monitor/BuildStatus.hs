@@ -58,7 +58,7 @@ newtype Package = MkPackage {unPackage :: ByteString}
   deriving newtype (IsString)
   deriving anyclass (NFData)
 
--- | Describes the possible 'phasess' for the status.
+-- | Describes the possible 'phases' for the status.
 data BuildStatusPhase
   = -- | Phase right after the file is read.
     BuildStatusPhaseInit
@@ -184,7 +184,7 @@ parseStatus localPackages searchInfix = go mempty . C8.lines
     -- NOTE: [Local packages]
     --
     -- Local packages have a different completion check. Rather than the
-    -- simple "Completed <pkg" log, they instead don't have anything.
+    -- simple "Completed <pkg>" log, they instead don't have anything.
     -- The final log that mentions the package name looks like (one line):
     --
     --   [148 of 148] Compiling Distribution.Simple

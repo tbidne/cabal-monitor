@@ -27,6 +27,7 @@ import Language.Haskell.TH (Code, Q)
 import System.OsString qualified as OsString
 import Text.Read qualified as TR
 
+-- | Returns git latest commit (date, hash, short hash)
 gitData :: Code Q (OsString, OsString, OsString)
 gitData = toCode qs
   where

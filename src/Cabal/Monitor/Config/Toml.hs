@@ -33,12 +33,20 @@ import TOML
     getFieldOptWith,
   )
 
+-- | TOML configuration.
 data Toml = MkToml
-  { coloring :: Maybe Coloring,
+  { -- | Whether to color the logs.
+    coloring :: Maybe Coloring,
+    -- | Possible terminal height.
     height :: Maybe Height,
+    -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: Maybe LocalPackages,
+    -- | How often to read the status, in seconds.
     period :: Maybe Period,
+    -- | Whether to search logs for infix patterns, for more flexibility at
+    -- the cost of performance.
     searchInfix :: Maybe SearchInfix,
+    -- | Possible terminal width.
     width :: Maybe Width
   }
   deriving stock (Eq, Show)
@@ -80,11 +88,13 @@ decodeSwitch =
     "on" -> pure True
     other -> fail $ "Expected (on | off), received: " <> other
 
+-- | Reads TOML config. If no path is given, we look in xdg config.
 getTomlConfig ::
   ( FileReader :> es,
     HasCallStack,
     PathReader :> es
   ) =>
+  -- | Path to toml config.
   Maybe OsPath ->
   Eff es (Maybe Toml)
 getTomlConfig (Just path) = Just <$> readTomlConfig path

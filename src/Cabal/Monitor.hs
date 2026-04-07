@@ -92,9 +92,7 @@ runMonitor ::
     Terminal :> es
   ) =>
   Eff es ()
-runMonitor rType = do
-  config <- Config.getConfig
-  monitorBuild rType config
+runMonitor rType = Config.getConfig >>= monitorBuild rType
 
 -- (State, Status)
 type MonitorState = (BuildState, BuildStatusFinal)
@@ -228,6 +226,7 @@ readFormattedStatus coloring localPackages searchInfix styleFn path = do
   where
     parseStatus = Status.parseStatus localPackages searchInfix
 
+-- | Error when reading the status.
 newtype ReadStatusError = PathDoesNotExist OsPath
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData)

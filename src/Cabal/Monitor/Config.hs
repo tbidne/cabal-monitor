@@ -54,18 +54,29 @@ import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.Optparse.Static (Optparse)
 import FileSystem.OsPath (OsPath)
 
+-- | Config used by cabal-monitor.
 data Config = MkConfig
-  { coloring :: Coloring,
+  { -- | Whether to color the logs.
+    coloring :: Coloring,
+    -- | Path to file to monitor.
     filePath :: OsPath,
+    -- | Possible terminal height.
     height :: Maybe Height,
+    -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: LocalPackages,
+    -- | How often to read the status, in seconds.
     period :: Period,
+    -- | Pid of the process we are monitoring, for exiting automatically.
     pid :: Maybe Pid,
+    -- | Whether to search logs for infix patterns, for more flexibility at
+    -- the cost of performance.
     searchInfix :: SearchInfix,
+    -- | Possible terminal width.
     width :: Maybe Width
   }
   deriving stock (Eq, Show)
 
+-- | Combines CLI args and TOML config to produce a final 'Config'.
 getConfig ::
   ( FileReader :> es,
     HasCallStack,
