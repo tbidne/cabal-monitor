@@ -6,6 +6,7 @@ module Cabal.Monitor.Config.Data
 
     -- * Data
     Coloring (..),
+    Debug (..),
     Height (..),
     LocalPackages (..),
     Period (..),
@@ -49,6 +50,10 @@ toMaybe (Just x) = x
 newtype Coloring = MkColoring {unColoring :: Bool}
   deriving stock (Eq, Show)
   deriving (Default) via SwitchOn
+
+newtype Debug = MkDebug {unDebug :: Bool}
+  deriving stock (Eq, Show)
+  deriving (Default) via SwitchOff
 
 -- | Terminal height.
 newtype Height = MkHeight {unHeight :: Natural}

@@ -29,30 +29,17 @@ source-repository-package
   location: https://github.com/tbidne/bounds.git
   tag: b7ca541cfdd8564bcebe5d38456fe7abf77885b8
 
--- windows cannot build unix package
-if os(windows)
-  source-repository-package
-    type: git
-    location: https://github.com/tbidne/effectful-libs.git
-    tag: 326ee75e7705ccaf010941ae698f1c43355d4c1b
-    subdir:
-      lib/concurrent-effectful
-      lib/effectful-utils
-      lib/fs-effectful
-      lib/optparse-effectful
-      lib/terminal-effectful
-else
-  source-repository-package
-    type: git
-    location: https://github.com/tbidne/effectful-libs.git
-    tag: 326ee75e7705ccaf010941ae698f1c43355d4c1b
-    subdir:
-      lib/concurrent-effectful
-      lib/effectful-utils
-      lib/fs-effectful
-      lib/optparse-effectful
-      lib/terminal-effectful
-      lib/unix-effectful
+source-repository-package
+  type: git
+  location: https://github.com/tbidne/effectful-libs.git
+  tag: 326ee75e7705ccaf010941ae698f1c43355d4c1b
+  subdir:
+    lib/concurrent-effectful
+    lib/effectful-utils
+    lib/environment-effectful
+    lib/fs-effectful
+    lib/optparse-effectful
+    lib/terminal-effectful
 
 source-repository-package
   type: git

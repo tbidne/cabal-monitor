@@ -1,0 +1,22 @@
+Process took ~5 seconds as expected
+
+To Build: 7
+  - Boolean-0.2.4
+  - Sit-0.2023.8.3
+  - Spintax-0.3.7.0
+  - Spock-api-0.14.0.0
+  - TCache-0.13.3
+  - generated-0.1.0.0
+  - reroute-0.7.0.0
+
+Building: 8
+  - PSQueue-1.2.2
+  - PyF-0.11.5.0
+  - QuasiText-0.1.2.6
+  - Ranged-sets-0.5.0
+  - RoundingFiasco-0.1.0.0
+  - SafeSemaphore-0.10.1
+  - SciBaseTypes-0.1.1.0
+  - ShellCheck-0.11.0
+
+Completed: 0

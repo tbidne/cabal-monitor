@@ -5,6 +5,7 @@ on: # yamllint disable-line rule:truthy rule:comments
   push:
     branches:
       - main
+      - pid
 
   pull_request:
     branches:
@@ -51,8 +52,17 @@ jobs:
         run: cabal test unit --test-options '--hedgehog-tests 100000'
 
       - name: Functional tests
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: cabal test functional
+        id: functional
+        run: cabal test functional --test-options '--size-cutoff 100000'
+
+      - uses: actions/upload-artifact@v4
+        name: CLI Tests Upload
+        if: ${{ failure() && steps.functional.conclusion == 'failure' }}
+        with:
+          name: functional-tests-artifacts_${{ matrix.os }}_${{ matrix.ghc }}
+          path: |
+            test/functional/goldens/*actual
+          retention-days: 1
 
       - name: Benchmarks
         if: ${{ matrix.os == 'ubuntu-latest' }}

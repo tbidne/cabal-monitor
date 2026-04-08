@@ -11,6 +11,7 @@ where
 import Cabal.Monitor.Config.Args.TH qualified as TH
 import Cabal.Monitor.Config.Data
   ( Coloring (MkColoring),
+    Debug (MkDebug),
     Height (MkHeight),
     LocalPackages (MkLocalPackages),
     Period (MkPeriod),
@@ -33,6 +34,7 @@ import FileSystem.OsString (OsString)
 import FileSystem.OsString qualified as OsString
 import Options.Applicative
   ( Mod,
+    OptionFields,
     Parser,
     ParserInfo
       ( ParserInfo,
@@ -44,6 +46,7 @@ import Options.Applicative
         infoPolicy,
         infoProgDesc
       ),
+    ReadM,
     (<**>),
   )
 import Options.Applicative qualified as OA
@@ -58,7 +61,10 @@ import System.Info qualified as Info
 data Args = MkArgs
   { -- | Whether to color the logs.
     coloring :: Maybe Coloring,
+    -- | Path to toml config.
     configPath :: Maybe OsPath,
+    -- | Debug flag.
+    debug :: Maybe Debug,
     -- | Path to file to monitor.
     filePath :: OsPath,
     -- | Possible terminal height.
@@ -136,13 +142,14 @@ argsParser :: Parser Args
 argsParser = mainParser <**> OA.helper <**> version
   where
     mainParser = do
-      ~(configPath, filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
+      ~(configPath, debug, filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
 
       pure $
         MkArgs
           { coloring,
             configPath,
+            debug,
             filePath,
             height,
             localPackages,
@@ -155,8 +162,9 @@ argsParser = mainParser <**> OA.helper <**> version
     coreOptsParser =
       OA.parserOptionGroup
         "Core options:"
-        $ (,,,,,)
+        $ (,,,,,,)
           <$> configParser
+          <*> debugParser
           <*> filePathParser
           <*> localPackagesParser
           <*> periodParser
@@ -189,6 +197,16 @@ configParser =
       ]
   where
     readPath = OA.str >>= OsPath.encodeFail
+
+debugParser :: Parser (Maybe Debug)
+debugParser =
+  OA.optional
+    . fmap MkDebug
+    . mkSwitch
+    $ mconcat
+      [ OA.long "debug",
+        OA.internal
+      ]
 
 filePathParser :: Parser OsPath
 filePathParser =
@@ -226,49 +244,34 @@ pidParser =
         mkHelp $
           mconcat
             [ "The pid of the process to watch (usually cabal). Used to exit ",
-              "automatically after the process has finished. This is unavailable ",
-              "on windows."
+              "automatically after the process has finished."
             ]
       ]
 
 coloringParser :: Parser (Maybe Coloring)
 coloringParser =
-  OA.optional $
-    OA.option readColoring $
-      mconcat
-        [ OA.long "color",
-          OA.metavar "(on | off)",
-          OA.completeWith ["on", "off"],
-          mkHelp "Coloring options. Defaults to 'on'."
-        ]
-  where
-    readColoring =
-      OA.str >>= \case
-        "on" -> pure $ MkColoring True
-        "off" -> pure $ MkColoring False
-        bad -> fail $ "Unexpected --color: " ++ bad
+  OA.optional
+    . fmap MkColoring
+    . mkSwitch
+    $ mconcat
+      [ OA.long "color",
+        mkHelp "Coloring options. Defaults to 'on'."
+      ]
 
 localPackagesParser :: Parser (Maybe LocalPackages)
 localPackagesParser =
-  OA.optional $
-    OA.option readColoring $
-      mconcat
-        [ OA.long "local-packages",
-          OA.metavar "(on | off)",
-          OA.completeWith ["on", "off"],
-          mkHelp $
-            mconcat
-              [ "Local packages require special handling in order to detect ",
-                "completion. This flag turns this handling on, at a significant ",
-                "performance cost. Defaults to 'on'."
-              ]
-        ]
-  where
-    readColoring =
-      OA.str >>= \case
-        "on" -> pure $ MkLocalPackages True
-        "off" -> pure $ MkLocalPackages False
-        bad -> fail $ "Unexpected --local-packages: " ++ bad
+  OA.optional
+    . fmap MkLocalPackages
+    . mkSwitch
+    $ mconcat
+      [ OA.long "local-packages",
+        mkHelp $
+          mconcat
+            [ "Local packages require special handling in order to detect ",
+              "completion. This flag turns this handling on, at a significant ",
+              "performance cost. Defaults to 'on'."
+            ]
+      ]
 
 periodParser :: Parser (Maybe Period)
 periodParser =
@@ -283,28 +286,19 @@ periodParser =
 
 searchInfixParser :: Parser (Maybe SearchInfix)
 searchInfixParser =
-  OA.optional $
-    OA.option readFn $
-      mconcat
-        [ OA.long "search-infix",
-          OA.metavar "(on | off)",
-          OA.completeWith ["on", "off"],
-          mkHelpNoLine helpTxt
-        ]
-  where
-    readFn =
-      OA.str >>= \case
-        "on" -> pure $ MkSearchInfix True
-        "off" -> pure $ MkSearchInfix False
-        bad -> fail $ "Unexpected --search-infix: " ++ bad
-
-    helpTxt =
-      mconcat
-        [ "Searches for expected cabal log keywords as infix patterns, as ",
-          "opposed to prefix. Slower but more flexible e.g. compatible with ",
-          "the cabal log file being processed to have each line prefixed ",
-          "with a timestamp. Defaults to 'off'."
-        ]
+  OA.optional
+    . fmap MkSearchInfix
+    . mkSwitch
+    $ mconcat
+      [ OA.long "search-infix",
+        mkHelp $
+          mconcat
+            [ "Searches for expected cabal log keywords as infix patterns, as ",
+              "opposed to prefix. Slower but more flexible e.g. compatible with ",
+              "the cabal log file being processed to have each line prefixed ",
+              "with a timestamp. Defaults to 'off'."
+            ]
+      ]
 
 widthParser :: Parser (Maybe Width)
 widthParser =
@@ -381,3 +375,21 @@ mkMultiHelpNoLine =
 
 toMDoc :: String -> Maybe Doc
 toMDoc = Chunk.unChunk . Chunk.paragraph
+
+-- Makes a switch that takes '(on | off)'. For consistency, this should be
+-- preferred for any on/off switch, rather than a normal flag
+-- (e.g. --foo (on | off) vs. --foo).
+mkSwitch :: Mod OptionFields Bool -> Parser Bool
+mkSwitch opts = OA.option readSwitch opts'
+  where
+    opts' =
+      OA.metavar "(on | off)"
+        <> OA.completeWith ["on", "off"]
+        <> opts
+
+readSwitch :: ReadM Bool
+readSwitch =
+  OA.str >>= \case
+    "off" -> pure False
+    "on" -> pure True
+    other -> fail $ "Expected (on | off), received: " ++ other
