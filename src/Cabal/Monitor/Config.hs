@@ -5,6 +5,7 @@ module Cabal.Monitor.Config
 
     -- * Base Types
     Coloring (..),
+    Debug (..),
     Height (..),
     LocalPackages (..),
     Period (..),
@@ -27,6 +28,7 @@ import Cabal.Monitor.Config.Args
 import Cabal.Monitor.Config.Args qualified as Args
 import Cabal.Monitor.Config.Data
   ( Coloring (MkColoring, unColoring),
+    Debug (MkDebug, unDebug),
     Height (MkHeight, unHeight),
     LocalPackages (MkLocalPackages, unLocalPackages),
     Period (MkPeriod, unPeriod),
@@ -35,6 +37,7 @@ import Cabal.Monitor.Config.Data
     Width (MkWidth, unWidth),
     (<|.|>),
   )
+import Cabal.Monitor.Config.Data qualified as Data
 import Cabal.Monitor.Config.Toml
   ( Toml
       ( coloring,
@@ -58,6 +61,8 @@ import FileSystem.OsPath (OsPath)
 data Config = MkConfig
   { -- | Whether to color the logs.
     coloring :: Coloring,
+    -- | Debug flag.
+    debug :: Debug,
     -- | Path to file to monitor.
     filePath :: OsPath,
     -- | Possible terminal height.
@@ -90,6 +95,7 @@ getConfig = do
   pure $
     MkConfig
       { coloring = args.coloring <|.|> (toml >>= (.coloring)),
+        debug = Data.toMaybe args.debug,
         filePath = args.filePath,
         height = args.height <|> (toml >>= (.height)),
         localPackages = args.localPackages <|.|> (toml >>= (.localPackages)),

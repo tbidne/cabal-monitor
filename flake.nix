@@ -93,10 +93,10 @@
               // nix-hs-utils.mkRelLibs "${inputs.effectful-libs}/lib" final [
                 "concurrent-effectful"
                 "effectful-utils"
+                "environment-effectful"
                 "fs-effectful"
                 "optparse-effectful"
                 "terminal-effectful"
-                "unix-effectful"
               ];
           };
           compilerPkgs = {

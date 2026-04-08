@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module Cabal.Monitor.BuildStatus
   ( -- * Types
     BuildStatus (..),
@@ -19,6 +21,10 @@ module Cabal.Monitor.BuildStatus
 
     -- * Functions
     numAllPkgs,
+
+    -- * Misc
+    linesCrLf,
+    nl,
   )
 where
 
@@ -38,7 +44,6 @@ import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Builder qualified as BSB
-import Data.ByteString.Char8 qualified as C8
 import Data.ByteString.Lazy qualified as BSL
 import Data.Kind (Type)
 import Data.List qualified as L
@@ -51,6 +56,10 @@ import Data.Word (Word8)
 import FileSystem.UTF8 qualified as UTF8
 import GHC.Generics (Generic)
 import GHC.Natural (Natural)
+
+#if !WINDOWS
+import Data.ByteString.Char8 qualified as C8
+#endif
 
 -- | Package.
 newtype Package = MkPackage {unPackage :: ByteString}
@@ -113,7 +122,7 @@ parseStatus ::
   -- | ByteString to parse.
   ByteString ->
   BuildStatusInit
-parseStatus localPackages searchInfix = go mempty . C8.lines
+parseStatus localPackages searchInfix = go mempty . bsLines
   where
     stripFn =
       if searchInfix.unSearchInfix
@@ -443,18 +452,18 @@ formatAll coloring style toBuildS buildingS completedS = final
           mconcat
             [ [Pretty.magenta],
               as,
-              [Pretty.endCode, "\n", "\n", Pretty.yellow],
+              [Pretty.endCode, nl, nl, Pretty.yellow],
               bs,
-              [Pretty.endCode, "\n", "\n", Pretty.green],
+              [Pretty.endCode, nl, nl, Pretty.green],
               cs,
               [Pretty.endCode]
             ]
         else
           mconcat
             [ as,
-              ["\n", "\n"],
+              [nl, nl],
               bs,
-              ["\n", "\n"],
+              [nl, nl],
               cs
             ]
 
@@ -499,7 +508,7 @@ formatInline width = L.reverse . fmap fst . foldl' go []
        in (BSB.byteString bs, int2Nat $ BS.length bs)
 
 prependNewline :: Builder -> Builder
-prependNewline b = "\n  - " <> b
+prependNewline b = nl <> "  - " <> b
 
 -- | @takeCount n xs@ takes up to @n@ elements from @xs@, and returns the
 -- difference.
@@ -516,6 +525,16 @@ takeCount k = fmap L.reverse . go (k, [])
     go acc@(0, _) _ = acc
     go (!cnt, zs) (x : xs) = go (cnt - 1, x : zs) xs
 
+#if WINDOWS
+-- | @takeTrunc n xs@ takes up to @n@ elements from @xs@, appending an
+-- ellipsis if it could not take everything.
+--
+-- >>> takeTrunc 5 ["1", "2"]
+-- ["1","2"]
+--
+-- >>> takeTrunc 3 ["1", "2", "3", "4", "5"]
+-- ["1","2","\r\n  ..."]
+#else
 -- | @takeTrunc n xs@ takes up to @n@ elements from @xs@, appending an
 -- ellipsis if it could not take everything.
 --
@@ -524,13 +543,14 @@ takeCount k = fmap L.reverse . go (k, [])
 --
 -- >>> takeTrunc 3 ["1", "2", "3", "4", "5"]
 -- ["1","2","\n  ..."]
+#endif
 takeTrunc :: Natural -> [Builder] -> [Builder]
 -- 1. Cannot take anymore.
 takeTrunc 0 acc = acc
 -- 2. No more to take.
 takeTrunc _ [] = []
 -- 3. Can take 1 but more than one left: add ellipsis.
-takeTrunc 1 (_ : _ : _) = ["\n  ..."]
+takeTrunc 1 (_ : _ : _) = [nl <> "  ..."]
 -- 4. General case: take 1, recurse.
 takeTrunc !n (b : bs) = b : takeTrunc (n - 1) bs
 
@@ -560,3 +580,53 @@ stripInfix :: ByteString -> ByteString -> Maybe (ByteString, ByteString)
 stripInfix bs1 bs2 = (pre,) <$> BS.stripPrefix bs1 rest
   where
     (pre, rest) = BS.breakSubstring bs1 bs2
+
+nl :: (IsString s) => s
+{-# INLINE nl #-}
+
+bsLines :: ByteString -> [ByteString]
+
+#if WINDOWS
+
+nl = "\r\n"
+
+bsLines = linesCrLf
+
+#else
+
+nl = "\n"
+
+bsLines = C8.lines
+
+#endif
+
+-- | Splits a bytestring on lf and crlf.
+linesCrLf :: ByteString -> [ByteString]
+linesCrLf bs =
+  fmap (BS.pack . L.reverse)
+    . L.reverse
+    . go initAcc
+    $ wrds
+  where
+    -- Special case: leading newline is considered a break.
+    initAcc = case wrds of
+      (10 : _) -> [[]]
+      (13 : 10 : _) -> [[]]
+      _ -> []
+
+    wrds = BS.unpack bs
+
+    go :: [[Word8]] -> [Word8] -> [[Word8]]
+    -- Empty string, return acc. Trailing newlines are ignored.
+    go acc [10] = acc
+    go acc [13, 10] = acc
+    go acc [] = acc
+    -- Empty acc. Add next char or empty if break.
+    go [] (10 : ws) = go [[]] ws
+    go [] (13 : 10 : ws) = go [[]] ws
+    go [] (w : ws) = go [[w]] ws
+    -- Normal case. If this is a line break, begin a new empty list.
+    -- Otherwise add the char to current word.
+    go (a : as) (10 : ws) = go ([] : a : as) ws
+    go (a : as) (13 : 10 : ws) = go ([] : a : as) ws
+    go (a : as) (w : ws) = go ((w : a) : as) ws

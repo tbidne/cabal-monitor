@@ -30,10 +30,14 @@ import Cabal.Monitor.Config
     SearchInfix (unSearchInfix),
   )
 import Cabal.Monitor.Config qualified as Config
+import Data.ByteString (ByteString)
+import Data.ByteString.Char8 qualified as C8
 import Data.List qualified as L
 import Data.Maybe (fromMaybe)
 import Data.Set (Set)
 import Data.Set qualified as Set
+import Data.Text (Text)
+import Data.Text qualified as T
 import Effectful (Eff, IOE, runEff, type (:>))
 import Effectful.Dispatch.Dynamic (passthrough, reinterpret)
 import Effectful.FileSystem.FileReader.Static qualified as FR
@@ -70,7 +74,8 @@ main =
     testGroup
       "Unit"
       [ configTests,
-        testAdvancePhase
+        testAdvancePhase,
+        lineSplitTest
       ]
 
 configTests :: TestTree
@@ -262,3 +267,79 @@ genPackage =
   MkPackage
     . UTF8.encodeUtf8
     <$> Gen.text (Range.linearFrom 0 0 10) Gen.lower
+
+lineSplitTest :: TestTree
+lineSplitTest =
+  testGroup
+    "lines"
+    [ testLinesNlEq,
+      testLinesCrNlEq,
+      testLinesCrLfCases
+    ]
+
+testLinesNlEq :: TestTree
+testLinesNlEq = testProp desc "testLinesNlEq" $ do
+  bs <- forAll genBsNoCr
+  let r = BuildStatus.linesCrLf bs
+      e = C8.lines bs
+
+  r === e
+  where
+    desc = "linesCrLf lf == C8.lines lf"
+
+testLinesCrNlEq :: TestTree
+testLinesCrNlEq = testProp desc "testLinesCrNlEq" $ do
+  (nl, crnl) <- forAll genNlAndCrlf
+  let r = BuildStatus.linesCrLf crnl
+      e = C8.lines nl
+
+  r === e
+  where
+    desc = "linesCrLf crlf == C8.lines nl"
+
+testLinesCrLfCases :: TestTree
+testLinesCrLfCases = testCase desc $ do
+  [] @=? C8.lines ""
+  [] @=? BuildStatus.linesCrLf ""
+
+  [""] @=? C8.lines "\n"
+  [""] @=? BuildStatus.linesCrLf "\n"
+  [""] @=? BuildStatus.linesCrLf "\r\n"
+  ["\r"] @=? BuildStatus.linesCrLf "\r"
+
+  ["", ""] @=? C8.lines "\n\n"
+  ["", ""] @=? BuildStatus.linesCrLf "\n\n"
+  ["", ""] @=? BuildStatus.linesCrLf "\r\n\n"
+  ["", ""] @=? BuildStatus.linesCrLf "\n\r\n"
+  ["", ""] @=? BuildStatus.linesCrLf "\r\n\r\n"
+
+  ["", "ab", "cd"] @=? C8.lines "\nab\ncd\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\nab\ncd\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\r\nab\ncd\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\nab\r\ncd\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\nab\ncd\r\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\r\nab\r\ncd\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\nab\r\ncd\r\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\nab\r\ncd\r\n"
+  ["", "ab", "cd"] @=? BuildStatus.linesCrLf "\r\nab\r\ncd\r\n"
+  where
+    desc = "linesCrLf cases"
+
+genBsNoCr :: Gen ByteString
+genBsNoCr = UTF8.encodeUtf8 . T.replace "\r" "" <$> genTextNoCr
+
+-- | Generates bytestrings where the first may have newlines, and the second
+-- has all newlines replaced w/ crlf.
+genNlAndCrlf :: Gen (ByteString, ByteString)
+genNlAndCrlf = f <$> genTextNoCr
+  where
+    f t =
+      ( UTF8.encodeUtf8 t,
+        UTF8.encodeUtf8 . T.replace "\n" "\r\n" $ t
+      )
+
+genTextNoCr :: Gen Text
+genTextNoCr =
+  fmap (T.replace "\r" "")
+    . Gen.text (Range.linearFrom 0 0 10)
+    $ Gen.unicode

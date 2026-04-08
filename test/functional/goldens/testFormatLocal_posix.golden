@@ -1,0 +1,19 @@
+To Build: 0
+
+Building: 1
+  - hackage-security-0.6.3.2
+
+Completed: 13
+  - Cabal-3.17.0.0
+  - Cabal-QuickCheck-3.17.0.0
+  - Cabal-described-3.17.0.0
+  - Cabal-hooks-3.17
+  - Cabal-syntax-3.17.0.0
+  - Cabal-tests-3
+  - Cabal-tree-diff-3.17.0.0
+  - buildinfo-reference-generator-0
+  - cabal-benchmarks-3
+  - cabal-install-3.17.0.0
+  - cabal-install-solver-3.17.0.0
+  - cabal-testsuite-3
+  - solver-benchmarks-3

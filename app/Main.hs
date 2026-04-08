@@ -2,14 +2,15 @@ module Main (main) where
 
 import Cabal.Monitor qualified as Monitor
 import Cabal.Monitor.Logger qualified as Logger
-import Cabal.Monitor.Process qualified as Process
 import Effectful (runEff)
 import Effectful.Concurrent qualified as CC
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.FileWriter.Static qualified as FW
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.Optparse.Static qualified as EOA
+import Effectful.Process qualified as P
 import Effectful.Terminal.Dynamic qualified as Term
 import System.Console.Regions (ConsoleRegion)
 
@@ -22,11 +23,12 @@ main = runner (Monitor.runMonitor ConsoleRegion)
     runner =
       runEff
         . CC.runConcurrent
-        . Process.runMonitorProcessC
+        . P.runProcess
         . Logger.runRegionLogger
         . Term.runTerminal
         . PR.runPathReader
         . HW.runHandleWriter
         . HR.runHandleReader
         . FR.runFileReader
+        . FW.runFileWriter
         . EOA.runOptparse

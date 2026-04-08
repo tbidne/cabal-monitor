@@ -39,7 +39,6 @@ import Cabal.Monitor.Config qualified as Config
 import Cabal.Monitor.Logger (LogMode (LogModeFinish, LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
 import Cabal.Monitor.Pretty qualified as Pretty
-import Cabal.Monitor.Process (MonitorProcessC)
 import Cabal.Monitor.Process qualified as Process
 import Control.DeepSeq (NFData)
 import Control.Exception.Utils (trySync)
@@ -58,6 +57,7 @@ import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.Exception qualified as Ex
 import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.FileReader.Static qualified as FR
+import Effectful.FileSystem.FileWriter.Static (FileWriter)
 import Effectful.FileSystem.HandleReader.Static (HandleReader)
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static (HandleWriter)
@@ -65,6 +65,7 @@ import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.Optparse.Static (Optparse)
+import Effectful.Process (Process)
 import Effectful.State.Static.Local qualified as State
 import Effectful.State.Static.Shared qualified as SState
 import Effectful.Terminal.Dynamic (Terminal)
@@ -82,12 +83,13 @@ runMonitor ::
   forall es.
   ( Concurrent :> es,
     FileReader :> es,
+    FileWriter :> es,
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
-    MonitorProcessC es,
     Optparse :> es,
     PathReader :> es,
+    Process :> es,
     RegionLogger r :> es,
     Terminal :> es
   ) =>
@@ -103,20 +105,21 @@ monitorBuild ::
   forall es.
   ( Concurrent :> es,
     FileReader :> es,
+    FileWriter :> es,
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
-    MonitorProcessC es,
     PathReader :> es,
+    Process :> es,
     RegionLogger r :> es,
     Terminal :> es
   ) =>
   Config ->
   Eff es ()
-monitorBuild rType args = withHiddenInput $ do
+monitorBuild rType config = withHiddenInput $ do
   cabalPid <- Logger.displayRegions rType $ do
     Logger.withRegion @rType Linear $ \statusRegion -> do
-      styleFn <- mkFormatStyleFn args.height args.width
+      styleFn <- mkFormatStyleFn config.height config.width
 
       SState.evalState @MonitorState (BuildWaiting, mempty) $ do
         let coreProcs =
@@ -124,11 +127,11 @@ monitorBuild rType args = withHiddenInput $ do
                 `race'` logCounter rType coloring
                 `race'` drainStdinLoop
 
-            allProcs = case args.pid of
+            allProcs = case config.pid of
               Nothing -> coreProcs
               Just pid ->
                 coreProcs
-                  `race'` Process.monitorCabalProc pid sleepSeconds
+                  `race'` Process.monitorCabalProc config.debug pid sleepSeconds
 
         allProcs `Ex.finally` do
           -- Need the final print here to handle CTRL-C.
@@ -145,19 +148,20 @@ monitorBuild rType args = withHiddenInput $ do
   -- If we get there then monitorCabalProc must have finished since none of
   -- the other threads terminate.
   Term.putTextLn $
-    "\nProcess with pid "
+    Status.nl
+      <> "Process with pid "
       <> T.pack (show cabalPid)
       <> " is no longer running, terminating cabal-monitor."
   where
-    sleepSeconds@(MkPeriod sleepSeconds') = args.period
+    sleepSeconds@(MkPeriod sleepSeconds') = config.period
 
     runStatus r styleFn = forever $ do
-      readPrintStatus r coloring localPackages searchInfix styleFn args.filePath
+      readPrintStatus r coloring localPackages searchInfix styleFn config.filePath
       CCS.sleep sleepSeconds'
 
-    coloring = args.coloring
-    localPackages = args.localPackages
-    searchInfix = args.searchInfix
+    coloring = config.coloring
+    localPackages = config.localPackages
+    searchInfix = config.searchInfix
 
 type SharedState s = SState.State s
 
@@ -316,7 +320,7 @@ logCounter rType coloring = do
 
     -- Need to put the newline _before_ the colorize, so that coloring does
     -- not bleed through.
-    fmtX header = ("\n" <>) . colorize . (header <>) . fmtTime
+    fmtX header = (Status.nl <>) . colorize . (header <>) . fmtTime
 
     fmtTime =
       T.pack

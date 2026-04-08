@@ -90,9 +90,6 @@ library
     , time                  >=1.9.3    && <1.16
     , toml-reader           >=0.2.0.0  && <0.4
 
-  if !os(windows)
-    build-depends: unix-effectful ^>=0.1
-
   hs-source-dirs:  src
 
 executable cabal-monitor
@@ -116,6 +113,7 @@ test-suite unit
   main-is:        Main.hs
   build-depends:
     , base
+    , bytestring
     , cabal-monitor
     , containers
     , effectful
@@ -126,6 +124,7 @@ test-suite unit
     , tasty               >=1.1.0.3 && <1.6
     , tasty-hedgehog      >=1.2.0.0 && <1.5
     , tasty-hunit         >=0.9     && <0.11
+    , text
 
   hs-source-dirs: test/unit
 
@@ -135,21 +134,24 @@ test-suite functional
   main-is:        Main.hs
   build-depends:
     , base
-    , bytestring          >=0.10.12.0 && <0.13
+    , bytestring             >=0.10.12.0 && <0.13
     , cabal-monitor
+    , concurrent-effectful
     , containers
     , effectful
     , effectful-utils
-    , env-guard           ^>=0.2
+    , env-guard              ^>=0.2
+    , environment-effectful  ^>=0.1
     , fs-effectful
     , fs-utils
     , optparse-effectful
     , tasty
-    , tasty-golden        ^>=2.3.1.1
+    , tasty-golden           ^>=2.3.1.1
     , terminal-effectful
     , text
 
   hs-source-dirs: test/functional
+  ghc-options:    -threaded
 
 benchmark benchmarks
   import:         common-lang
