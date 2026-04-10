@@ -291,7 +291,7 @@ searchInfixParser =
     . mkSwitch
     $ mconcat
       [ OA.long "search-infix",
-        mkHelp $
+        mkHelpNoLine $
           mconcat
             [ "Searches for expected cabal log keywords as infix patterns, as ",
               "opposed to prefix. Slower but more flexible e.g. compatible with ",
