@@ -43,6 +43,7 @@ import Effectful.Dispatch.Dynamic (passthrough, reinterpret)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
+import Effectful.Notify.Dynamic qualified as Notify
 import Effectful.Optparse.Static qualified as Optparse
 import FileSystem.OsPath (OsPath, decodeLenient, osp, ospPathSep)
 import FileSystem.UTF8 qualified as UTF8
@@ -197,6 +198,7 @@ runConfig args mXdgPath = Env.withArgs args $ runner Config.getConfig
       runEff
         . FR.runFileReader
         . Optparse.runOptparse
+        . Notify.runNotify
         . runPathReader
 
     runPathReader :: (IOE :> es) => Eff (PathReader : es) a -> Eff es a

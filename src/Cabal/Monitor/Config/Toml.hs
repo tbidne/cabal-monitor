@@ -15,7 +15,9 @@ import Cabal.Monitor.Config.Data
     Period (MkPeriod),
     SearchInfix (MkSearchInfix),
     Width (MkWidth),
+    WithDisabled,
   )
+import Cabal.Monitor.Notify (NotifyAction, parseActionText, parseSystemText)
 import Control.Category ((>>>))
 import Data.Maybe (fromMaybe)
 import Effectful (Eff, type (:>))
@@ -25,6 +27,7 @@ import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.FileReader.Static qualified as FR
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
+import Effectful.Notify.Dynamic (NotifySystem)
 import FileSystem.OsPath (OsPath, ospPathSep)
 import TOML
   ( DecodeTOML (tomlDecoder),
@@ -41,6 +44,10 @@ data Toml = MkToml
     height :: Maybe Height,
     -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: Maybe LocalPackages,
+    -- | Notify action.
+    notifyAction :: Maybe (WithDisabled NotifyAction),
+    -- | Notify system.
+    notifySystem :: Maybe NotifySystem,
     -- | How often to read the status, in seconds.
     period :: Maybe Period,
     -- | Whether to search logs for infix patterns, for more flexibility at
@@ -55,11 +62,14 @@ instance DecodeTOML Toml where
   tomlDecoder = do
     (localPackages, period, searchInfix) <- decodeCore
     (coloring, height, width) <- decodeFormatting
+    (notifyAction, notifySystem) <- decodeNotify
     pure $
       MkToml
         { coloring,
           height,
           localPackages,
+          notifyAction,
+          notifySystem,
           period,
           searchInfix,
           width
@@ -80,6 +90,13 @@ instance DecodeTOML Toml where
               <$> (fmap MkColoring <$> getFieldOptWith decodeSwitch "color")
               <*> (fmap MkHeight <$> getFieldOptWith tomlDecoder "height")
               <*> (fmap MkWidth <$> getFieldOptWith tomlDecoder "width")
+
+      decodeNotify =
+        fmap (fromMaybe (Nothing, Nothing)) $
+          flip getFieldOptWith "notify" $ do
+            (,)
+              <$> getFieldOptWith (tomlDecoder >>= parseActionText) "action"
+              <*> getFieldOptWith (tomlDecoder >>= parseSystemText) "system"
 
 decodeSwitch :: Decoder Bool
 decodeSwitch =

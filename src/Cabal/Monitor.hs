@@ -31,6 +31,7 @@ import Cabal.Monitor.Config
     Config (coloring, filePath, height, period, pid, width),
     Height (MkHeight),
     LocalPackages,
+    NotifyConfig,
     Period (MkPeriod),
     SearchInfix,
     Width (MkWidth),
@@ -38,12 +39,19 @@ import Cabal.Monitor.Config
 import Cabal.Monitor.Config qualified as Config
 import Cabal.Monitor.Logger (LogMode (LogModeFinish, LogModeSet), RegionLogger)
 import Cabal.Monitor.Logger qualified as Logger
+import Cabal.Monitor.Notify
+  ( NotifyAction
+      ( NotifyActionFinish,
+        NotifyActionStateChange
+      ),
+  )
 import Cabal.Monitor.Pretty qualified as Pretty
 import Cabal.Monitor.Process qualified as Process
 import Control.DeepSeq (NFData)
 import Control.Exception.Utils (trySync)
 import Control.Monad (forever, void, when)
 import Data.ByteString (ByteString)
+import Data.Function ((&))
 import Data.Functor ((<&>))
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -64,6 +72,8 @@ import Effectful.FileSystem.HandleWriter.Static (HandleWriter)
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
+import Effectful.Notify.Dynamic (Notify)
+import Effectful.Notify.Dynamic qualified as Notify
 import Effectful.Optparse.Static (Optparse)
 import Effectful.Process (Process)
 import Effectful.State.Static.Local qualified as State
@@ -87,6 +97,7 @@ runMonitor ::
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
+    Notify :> es,
     Optparse :> es,
     PathReader :> es,
     Process :> es,
@@ -109,6 +120,7 @@ monitorBuild ::
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
+    Notify :> es,
     PathReader :> es,
     Process :> es,
     RegionLogger r :> es,
@@ -124,7 +136,7 @@ monitorBuild rType config = withHiddenInput $ do
       SState.evalState @MonitorState (BuildWaiting, mempty) $ do
         let coreProcs =
               runStatus statusRegion styleFn
-                `race'` logCounter rType coloring
+                `race'` logCounter rType config.notify coloring
                 `race'` drainStdinLoop
 
             allProcs = case config.pid of
@@ -147,11 +159,24 @@ monitorBuild rType config = withHiddenInput $ do
 
   -- If we get there then monitorCabalProc must have finished since none of
   -- the other threads terminate.
-  Term.putTextLn $
-    Status.nl
-      <> "Process with pid "
-      <> T.pack (show cabalPid)
-      <> " is no longer running, terminating cabal-monitor."
+  let msg =
+        "Process with pid "
+          <> T.pack (show cabalPid)
+          <> " is no longer running, terminating cabal-monitor."
+
+  Term.putTextLn $ Status.nl <> msg
+
+  case config.notify of
+    Nothing -> pure ()
+    Just (action, notifyEnv) -> do
+      case action of
+        NotifyActionStateChange -> pure ()
+        _ -> do
+          let note =
+                Notify.mkNote "Finished"
+                  & Notify.setBody (Just msg)
+                  & Notify.setTitle (Just "Cabal-monitor")
+          Notify.notify notifyEnv note
   where
     sleepSeconds@(MkPeriod sleepSeconds') = config.period
 
@@ -256,12 +281,14 @@ logCounter ::
   forall es void.
   ( Concurrent :> es,
     HasCallStack,
+    Notify :> es,
     SharedState MonitorState :> es,
     RegionLogger r :> es
   ) =>
+  NotifyConfig ->
   Coloring ->
   Eff es void
-logCounter rType coloring = do
+logCounter rType notifyConfig coloring = do
   CC.threadDelay 100_000
   Logger.withRegion @rType Linear $ \r -> do
     (initState, _) <- SState.get @MonitorState
@@ -285,7 +312,9 @@ logCounter rType coloring = do
 
             case buildState of
               Building -> do
-                when stateChanged (State.put @Natural 0)
+                when stateChanged $ do
+                  State.put @Natural 0
+                  notifyFn $ mkNote "building"
 
                 State.modify @Natural (\(!x) -> x + 1)
                 elapsed <- State.get
@@ -294,13 +323,18 @@ logCounter rType coloring = do
                   r
                   (fmtBuilding elapsed)
               BuildComplete -> do
+                when stateChanged $ do
+                  notifyFn $ mkNote "complete"
+
                 elapsed <- State.get
                 Logger.logRegion
                   LogModeSet
                   r
                   (fmtCompleted elapsed)
               BuildWaiting -> do
-                when stateChanged (State.put @Natural 0)
+                when stateChanged $ do
+                  State.put @Natural 0
+                  notifyFn $ mkNote "waiting"
 
                 State.modify @Natural (\(!x) -> x + 1)
                 elapsed <- State.get
@@ -325,6 +359,17 @@ logCounter rType coloring = do
     fmtTime =
       T.pack
         . Rel.formatSeconds Rel.defaultFormat
+
+    notifyFn = case notifyConfig of
+      Nothing -> \_ -> pure ()
+      Just (action, notifyEnv) -> case action of
+        NotifyActionFinish -> \_ -> pure ()
+        _ -> Notify.notify notifyEnv
+
+    mkNote state =
+      Notify.mkNote "State changed"
+        & Notify.setBody (Just $ "New state: " <> state)
+        & Notify.setTitle (Just "Cabal-Monitor")
 
 -- | Creates the style to use.
 mkFormatStyleFn ::

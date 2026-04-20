@@ -20,7 +20,7 @@
     };
 
     effectful-libs = {
-      url = "github:tbidne/effectful-libs";
+      url = "github:tbidne/effectful-libs/notify";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nix-hs-utils.follows = "nix-hs-utils";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,6 +95,7 @@
                 "effectful-utils"
                 "environment-effectful"
                 "fs-effectful"
+                "notify-effectful"
                 "optparse-effectful"
                 "terminal-effectful"
               ];

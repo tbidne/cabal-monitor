@@ -18,13 +18,19 @@ import Cabal.Monitor.Config.Data
     Pid (MkPid),
     SearchInfix (MkSearchInfix),
     Width (MkWidth),
+    WithDisabled,
   )
+import Cabal.Monitor.Notify
+  ( NotifyAction,
+  )
+import Cabal.Monitor.Notify qualified as Notify
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.String (IsString (fromString))
 import Data.Version (showVersion)
 import Effectful (Eff, (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
+import Effectful.Notify.Dynamic (NotifySystem)
 import Effectful.Optparse.Completer qualified as EOC
 import Effectful.Optparse.Static (Optparse)
 import Effectful.Optparse.Static qualified as EOA
@@ -71,6 +77,10 @@ data Args = MkArgs
     height :: Maybe Height,
     -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: Maybe LocalPackages,
+    -- | Notify action.
+    notifyAction :: Maybe (WithDisabled NotifyAction),
+    -- | Notify system.
+    notifySystem :: Maybe NotifySystem,
     -- | How often to read the status, in seconds.
     period :: Maybe Period,
     -- | Pid of the process we are monitoring, for exiting automatically.
@@ -129,12 +139,12 @@ parserInfo =
     identPara :: Int -> Int -> NonEmpty String -> Chunk Doc
     identPara hIndent lIndent (h :| xs) =
       Chunk.vcatChunks
-        . (\ys -> toChunk hIndent h : ys)
-        . fmap (toChunk lIndent)
+        . (\ys -> toc hIndent h : ys)
+        . fmap (toc lIndent)
         $ xs
 
-    toChunk _ "" = line
-    toChunk i other = fmap (Pretty.indent i) . Chunk.stringChunk $ other
+    toc _ "" = line
+    toc i other = fmap (Pretty.indent i) . Chunk.stringChunk $ other
 
     line = Chunk (Just Pretty.softline)
 
@@ -144,6 +154,7 @@ argsParser = mainParser <**> OA.helper <**> version
     mainParser = do
       ~(configPath, debug, filePath, localPackages, period, pid, searchInfix) <- coreOptsParser
       ~(coloring, height, width) <- formattingOptsParser
+      ~(notifyAction, notifySystem) <- notificationOpsParser
 
       pure $
         MkArgs
@@ -153,6 +164,8 @@ argsParser = mainParser <**> OA.helper <**> version
             filePath,
             height,
             localPackages,
+            notifyAction,
+            notifySystem,
             period,
             pid,
             searchInfix,
@@ -178,6 +191,13 @@ argsParser = mainParser <**> OA.helper <**> version
           <$> coloringParser
           <*> heightParser
           <*> widthParser
+
+    notificationOpsParser =
+      OA.parserOptionGroup
+        "Notification options:"
+        $ (,)
+          <$> notifyActionParser
+          <*> notifySystemParser
 
 configParser :: Parser (Maybe OsPath)
 configParser =
@@ -272,6 +292,56 @@ localPackagesParser =
               "performance cost. Defaults to 'on'."
             ]
       ]
+
+notifyActionParser :: Parser (Maybe (WithDisabled NotifyAction))
+notifyActionParser =
+  OA.optional
+    . OA.option (OA.str >>= Notify.parseActionText)
+    $ mconcat
+      [ OA.long "notify-action",
+        OA.metavar Notify.actionMeta,
+        helpTxt
+      ]
+  where
+    helpTxt =
+      itemize
+        [ intro,
+          hall,
+          hfinal,
+          hstate
+        ]
+
+    intro = "Sends notifications for various actions. Only available on windows."
+
+    hfinal = "final: Sends off a single notification when cabal-monitor finishes via --pid."
+    hstate = "state: Sends off a notification for each state change."
+    hall = "all: Implies 'final' and 'sate'."
+
+notifySystemParser :: Parser (Maybe NotifySystem)
+notifySystemParser =
+  OA.optional
+    . OA.option (OA.str >>= Notify.parseSystemText)
+    $ mconcat
+      [ OA.long "notify-system",
+        OA.metavar Notify.systemMeta,
+        helpTxt
+      ]
+  where
+    helpTxt =
+      itemizeNoLine
+        [ intro,
+          happleScript,
+          hdbus,
+          hnotifySend,
+          hwindows
+        ]
+
+    intro = "Notification system to use."
+
+    happleScript = "apple-script: AppleScript, available on osx."
+    hdbus = "dbus: Uses a dbus notification server, available on linux."
+    hnotifySend = "notify-send: Uses notify-send (libnotify), available on linux."
+    hwindows = "windows: Does nothing, available on windows."
 
 periodParser :: Parser (Maybe Period)
 periodParser =
@@ -393,3 +463,32 @@ readSwitch =
     "off" -> pure False
     "on" -> pure True
     other -> fail $ "Expected (on | off), received: " ++ other
+
+itemize :: NonEmpty String -> Mod OptionFields a
+itemize =
+  OA.helpDoc
+    . Chunk.unChunk
+    . fmap (<> Pretty.line)
+    . itemizeHelper
+
+itemizeNoLine :: NonEmpty String -> Mod OptionFields a
+itemizeNoLine =
+  OA.helpDoc
+    . Chunk.unChunk
+    . itemizeHelper
+
+itemizeHelper :: NonEmpty String -> Chunk Doc
+itemizeHelper (intro :| ds) =
+  Chunk.vcatChunks
+    ( Chunk.paragraph intro
+        : toChunk Pretty.softline
+        : (toItem <$> ds)
+    )
+  where
+    toItem d =
+      fmap (Pretty.nest 2)
+        . Chunk.paragraph
+        $ ("- " <> d)
+
+toChunk :: a -> Chunk a
+toChunk = Chunk . Just

@@ -58,6 +58,7 @@ import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
 import Effectful.FileSystem.PathWriter.Dynamic qualified as PW
+import Effectful.Notify.Dynamic qualified as Notify
 import Effectful.Optparse.Static qualified as EOA
 import Effectful.Process qualified as EProcess
 import Effectful.State.Static.Shared qualified as SState
@@ -336,6 +337,9 @@ testPidExit = goldenDiffCustom desc goldenFP actualFP $ do
       runEff
         . ECC.runConcurrent
         . EEnv.runEnvironment
+        -- Can use real runNotify since we are not sending anything in the
+        -- tests.
+        . Notify.runNotify
         . EProcess.runProcess
         . runTerminalMock @Int Nothing termRef
         -- By only checking 'finish' logs, we verify that the log has been
@@ -657,6 +661,7 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
       runEff
         . ECC.runConcurrent
         . EProcess.runProcess
+        . Notify.runNotify
         . runTerminalMock mWindow termRef
         . runRegionLoggerMock False logsRef
         . runPathReader
