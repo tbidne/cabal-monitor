@@ -95,6 +95,7 @@
                 "effectful-utils"
                 "environment-effectful"
                 "fs-effectful"
+                "notify-effectful"
                 "optparse-effectful"
                 "terminal-effectful"
               ];

@@ -2,7 +2,7 @@ module Cabal.Monitor.Config.Data
   ( -- * Default
     Default (..),
     toMaybe,
-    (<|.|>),
+    (<.>),
 
     -- * Data
     Coloring (..),
@@ -13,11 +13,17 @@ module Cabal.Monitor.Config.Data
     Pid (..),
     SearchInfix (..),
     Width (..),
+
+    -- * Disabled
+    WithDisabled (..),
   )
 where
 
 import Control.Applicative ((<|>))
+import Data.Text (Text)
+import Data.Text qualified as T
 import Numeric.Natural (Natural)
+import TOML (DecodeTOML (tomlDecoder))
 
 -- | Class for default values.
 class Default a where
@@ -36,10 +42,10 @@ instance Default SwitchOn where
   def = MkSwitchOn True
 
 -- | Combines 'Maybe's via 'Alt', returning the result or 'Default' value.
-(<|.|>) :: (Default a) => Maybe a -> Maybe a -> a
-l <|.|> r = toMaybe $ l <|> r
+(<.>) :: (Default a) => Maybe a -> Maybe a -> a
+l <.> r = toMaybe $ l <|> r
 
-infixr 6 <|.|>
+infixr 6 <.>
 
 -- | Returns the given value if it is 'Just', or 'def' if 'Nothing'.
 toMaybe :: (Default a) => Maybe a -> a
@@ -88,3 +94,16 @@ newtype SearchInfix = MkSearchInfix {unSearchInfix :: Bool}
 newtype Width = MkWidth {unWidth :: Natural}
   deriving stock (Eq, Show)
   deriving newtype (Num)
+
+data WithDisabled a
+  = With a
+  | Disabled
+  deriving stock (Eq, Show)
+
+instance (DecodeTOML a) => DecodeTOML (WithDisabled a) where
+  tomlDecoder = parseText <|> With <$> tomlDecoder
+    where
+      parseText = do
+        tomlDecoder @Text >>= \case
+          "off" -> pure Disabled
+          other -> fail $ "Expected 'off', received: " <> T.unpack other

@@ -64,6 +64,7 @@ library
     Cabal.Monitor.Config.Data
     Cabal.Monitor.Config.Toml
     Cabal.Monitor.Logger
+    Cabal.Monitor.Notify
     Cabal.Monitor.Pretty
     Cabal.Monitor.Process
 
@@ -80,6 +81,7 @@ library
     , fs-effectful          ^>=0.1
     , fs-utils              ^>=0.1
     , gitrev-typed          ^>=0.1
+    , notify-effectful      ^>=0.1
     , optparse-applicative  >=0.15     && <0.20
     , optparse-effectful    ^>=0.1
     , os-string             ^>=2.0.0
@@ -101,6 +103,7 @@ executable cabal-monitor
     , concurrent-output
     , effectful
     , fs-effectful
+    , notify-effectful
     , optparse-effectful
     , terminal-effectful
 
@@ -120,6 +123,7 @@ test-suite unit
     , fs-effectful
     , fs-utils
     , hedgehog            >=1.0.2   && <1.8
+    , notify-effectful
     , optparse-effectful
     , tasty               >=1.1.0.3 && <1.6
     , tasty-hedgehog      >=1.2.0.0 && <1.5
@@ -144,6 +148,7 @@ test-suite functional
     , environment-effectful  ^>=0.1
     , fs-effectful
     , fs-utils
+    , notify-effectful
     , optparse-effectful
     , tasty
     , tasty-golden           ^>=2.3.1.1

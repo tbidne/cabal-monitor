@@ -9,6 +9,7 @@ import Effectful.FileSystem.FileWriter.Static qualified as FW
 import Effectful.FileSystem.HandleReader.Static qualified as HR
 import Effectful.FileSystem.HandleWriter.Static qualified as HW
 import Effectful.FileSystem.PathReader.Dynamic qualified as PR
+import Effectful.Notify.Dynamic qualified as Notify
 import Effectful.Optparse.Static qualified as EOA
 import Effectful.Process qualified as P
 import Effectful.Terminal.Dynamic qualified as Term
@@ -24,6 +25,7 @@ main = runner (Monitor.runMonitor ConsoleRegion)
       runEff
         . CC.runConcurrent
         . P.runProcess
+        . Notify.runNotify
         . Logger.runRegionLogger
         . Term.runTerminal
         . PR.runPathReader
