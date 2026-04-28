@@ -89,7 +89,8 @@ import System.IO qualified as IO
 
 -- | Parses CLI args and runs the monitor loop.
 runMonitor ::
-  forall r ->
+  forall consoleRegion ->
+  forall notifyEnv ->
   forall es.
   ( Concurrent :> es,
     FileReader :> es,
@@ -97,22 +98,22 @@ runMonitor ::
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
-    Notify :> es,
+    Notify notifyEnv :> es,
     Optparse :> es,
     PathReader :> es,
     Process :> es,
-    RegionLogger r :> es,
+    RegionLogger consoleRegion :> es,
     Terminal :> es
   ) =>
   Eff es ()
-runMonitor rType = Config.getConfig >>= monitorBuild rType
+runMonitor rType notifyEnv = (Config.getConfig @notifyEnv) >>= monitorBuild rType
 
 -- (State, Status)
 type MonitorState = (BuildState, BuildStatusFinal)
 
 -- | Monitors a build.
 monitorBuild ::
-  forall r ->
+  forall consoleRegion ->
   forall es.
   ( Concurrent :> es,
     FileReader :> es,
@@ -120,13 +121,13 @@ monitorBuild ::
     HandleReader :> es,
     HandleWriter :> es,
     HasCallStack,
-    Notify :> es,
+    Notify notifyEnv :> es,
     PathReader :> es,
     Process :> es,
-    RegionLogger r :> es,
+    RegionLogger consoleRegion :> es,
     Terminal :> es
   ) =>
-  Config ->
+  Config notifyEnv ->
   Eff es ()
 monitorBuild rType config = withHiddenInput $ do
   cabalPid <- Logger.displayRegions rType $ do
@@ -281,11 +282,11 @@ logCounter ::
   forall es void.
   ( Concurrent :> es,
     HasCallStack,
-    Notify :> es,
+    Notify notifyEnv :> es,
     SharedState MonitorState :> es,
     RegionLogger r :> es
   ) =>
-  NotifyConfig ->
+  NotifyConfig notifyEnv ->
   Coloring ->
   Eff es void
 logCounter rType notifyConfig coloring = do
