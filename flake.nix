@@ -20,7 +20,7 @@
     };
 
     effectful-libs = {
-      url = "github:tbidne/effectful-libs";
+      url = "github:tbidne/effectful-libs/notify-fam";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nix-hs-utils.follows = "nix-hs-utils";
       inputs.nixpkgs.follows = "nixpkgs";

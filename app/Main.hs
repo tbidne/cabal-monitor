@@ -19,7 +19,7 @@ import System.Console.Regions (ConsoleRegion)
 --
 -- @since 0.1
 main :: IO ()
-main = runner (Monitor.runMonitor ConsoleRegion)
+main = runner (Monitor.runMonitor ConsoleRegion Notify.NotifyEnv)
   where
     runner =
       runEff

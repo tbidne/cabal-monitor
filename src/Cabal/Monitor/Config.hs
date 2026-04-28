@@ -59,13 +59,13 @@ import Effectful (Eff, type (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
-import Effectful.Notify.Dynamic (Notify, NotifyEnv)
+import Effectful.Notify.Dynamic (Notify)
 import Effectful.Notify.Dynamic qualified as Notify
 import Effectful.Optparse.Static (Optparse)
 import FileSystem.OsPath (OsPath)
 
 -- | Config used by cabal-monitor.
-data Config = MkConfig
+data Config notifyEnv = MkConfig
   { -- | Whether to color the logs.
     coloring :: Coloring,
     -- | Debug flag.
@@ -77,7 +77,7 @@ data Config = MkConfig
     -- | Whether to monitor output for local packages (requires extra logic).
     localPackages :: LocalPackages,
     -- | Notify.
-    notify :: NotifyConfig,
+    notify :: NotifyConfig notifyEnv,
     -- | How often to read the status, in seconds.
     period :: Period,
     -- | Pid of the process we are monitoring, for exiting automatically.
@@ -90,17 +90,18 @@ data Config = MkConfig
   }
   deriving stock (Show)
 
-type NotifyConfig = Maybe (NotifyAction, NotifyEnv)
+type NotifyConfig notifyEnv = Maybe (NotifyAction, notifyEnv)
 
 -- | Combines CLI args and TOML config to produce a final 'Config'.
 getConfig ::
+  forall notifyEnv es.
   ( FileReader :> es,
     HasCallStack,
-    Notify :> es,
+    Notify notifyEnv :> es,
     Optparse :> es,
     PathReader :> es
   ) =>
-  Eff es Config
+  Eff es (Config notifyEnv)
 getConfig = do
   args <- Args.getArgs
   toml <- Toml.getTomlConfig args.configPath

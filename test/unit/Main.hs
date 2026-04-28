@@ -191,7 +191,7 @@ testArgsOverridesToml = testCase desc $ do
 
     tomlPath = [ospPathSep|test/unit/config.toml|]
 
-runConfig :: [String] -> Maybe OsPath -> IO Config
+runConfig :: [String] -> Maybe OsPath -> IO (Config Notify.NotifyEnv)
 runConfig args mXdgPath = Env.withArgs args $ runner Config.getConfig
   where
     runner =

@@ -292,7 +292,7 @@ testPidExit = goldenDiffCustom desc goldenFP actualFP $ do
           pid <- liftIO $ IORef.readIORef processPidRef
           let args = mkArgs pid
 
-          EEnv.withArgs args $ Monitor.runMonitor Unit
+          EEnv.withArgs args $ Monitor.runMonitor Unit Notify.NotifyEnv
 
   -- This should finish around 5 seconds, but we include the timeout so we
   -- do not get an infinite loop in case of failure.
@@ -653,7 +653,7 @@ runMonitorLogs getTestArgs buildFileOsPath cliArgs = do
           runBuildScript buildFileOsPath
             `EAsync.concurrently`
             -- start this second so build file exists.
-            (ECC.threadDelay 500_000 *> Monitor.runMonitor Unit)
+            (ECC.threadDelay 500_000 *> Monitor.runMonitor Unit Notify.NotifyEnv)
       )
   IORef.readIORef logsRef
   where
