@@ -28,7 +28,7 @@ parseSystemText = \case
   other ->
     fail $
       "Expected "
-        ++ actionMeta
+        ++ systemMeta
         ++ ", received: "
         ++ T.unpack other
 
