@@ -55,8 +55,10 @@ import Cabal.Monitor.Config.Toml
 import Cabal.Monitor.Config.Toml qualified as Toml
 import Cabal.Monitor.Notify (NotifyAction)
 import Control.Applicative ((<|>))
+import Control.Exception (Exception)
 import Effectful (Eff, type (:>))
 import Effectful.Dispatch.Dynamic (HasCallStack)
+import Effectful.Exception (throwIO)
 import Effectful.FileSystem.FileReader.Static (FileReader)
 import Effectful.FileSystem.PathReader.Dynamic (PathReader)
 import Effectful.Notify.Dynamic (Notify)
@@ -112,7 +114,7 @@ getConfig = do
         (Nothing, Nothing) -> Notify.defaultNotifySystem
 
       onAct act = do
-        notifySystemOs <- Notify.notifySystemToOs notifySystem
+        notifySystemOs <- throwLeft $ Notify.notifySystemToOs notifySystem
         notifyEnv <- Notify.initNotifyEnv notifySystemOs
         pure $ Just (act, notifyEnv)
 
@@ -135,3 +137,7 @@ getConfig = do
         searchInfix = args.searchInfix <.> (toml >>= (.searchInfix)),
         width = args.width <|> (toml >>= (.width))
       }
+
+throwLeft :: (Exception e) => Either e a -> Eff es a
+throwLeft (Left ex) = throwIO ex
+throwLeft (Right x) = pure x

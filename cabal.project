@@ -32,7 +32,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/tbidne/effectful-libs.git
-  tag: b70d61418ef58fd850c82b3809b61c4b23f4f602
+  tag: a25f888a50abe6b3bed49fbafd68f4184c5b8c17
   subdir:
     lib/concurrent-effectful
     lib/effectful-utils
