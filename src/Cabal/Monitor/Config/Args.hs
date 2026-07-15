@@ -311,11 +311,11 @@ notifyActionParser =
           hstate
         ]
 
-    intro = "Sends notifications for various actions. Only available on windows."
+    intro = "Sends notifications for various actions. Not available on windows."
 
     hfinal = "final: Sends off a single notification when cabal-monitor finishes via --pid."
     hstate = "state: Sends off a notification for each state change."
-    hall = "all: Implies 'final' and 'sate'."
+    hall = "all: Implies 'final' and 'state'."
 
 notifySystemParser :: Parser (Maybe NotifySystem)
 notifySystemParser =
